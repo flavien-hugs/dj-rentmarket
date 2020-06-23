@@ -11,6 +11,18 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
 import os
+from django.core.exceptions import ImproperlyConfigured
+
+
+def get_env_variable(var_name, default_value=None):
+    try:
+        return os.environ[var_name]
+    except KeyError:
+        if default_value is None:
+            error_msg = "Set the {} environment variable".format(var_name)
+            raise ImproperlyConfigured(error_msg)
+        else:
+            return default_value
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,13 +32,16 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'zb9g!qw2vat#pfkd16*ylu2b+*&mcf42#1)%qfr_4@6*f72heo'
+SECRET_KEY = get_env_variable('SECRET_KEY', 'zb9g!qw2vat#pfkd16*ylu2b+*&mcf42#1)%qfr_4@6*f72heo')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+DEFAULT_CHARSET = 'UTF-8'
+DEFAULT_CONTENT_TYPE = 'text/html'
+SITE_DESCRIPTION = ''
+META_KEYWORDS = ''
 ALLOWED_HOSTS = []
-
+SITE_NAME = 'Rent Market'
 
 # Application definition
 
@@ -54,7 +69,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -63,6 +78,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+
+            'debug': DEBUG,
         },
     },
 ]
@@ -86,35 +103,43 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
+    'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    'OPTIONS': {'max_similarity': 0.9,}},
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    'OPTIONS': {'min_length': 9,}
     },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',},
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
 
 
+# PASSWORD HASHERS
+PASSWORD_HASHERS = [
+    'django.contrib.auth.hashers.Argon2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2PasswordHasher',
+    'django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher',
+    'django.contrib.auth.hashers.BCryptSHA256PasswordHasher',
+]
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-
+LANGUAGE_CODE = 'fr'
 TIME_ZONE = 'UTC'
-
-USE_I18N = True
-
-USE_L10N = True
-
-USE_TZ = True
+USE_I18N = USE_L10N = USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+STATICFILES_FINDERS = [
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+]

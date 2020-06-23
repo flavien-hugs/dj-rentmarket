@@ -1,0 +1,16 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+
+[packages]
+argon2-cffi="*"
+Django="*"
+django-widget-tweaks="*"
+django-heroku="*"
+django-toolbelt="*"
+gunicorn="*"
+pillow="*"
+whitenoise="*"
+
+[requires]
+python_version = "3.8.3"
