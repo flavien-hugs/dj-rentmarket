@@ -9,6 +9,10 @@ Cette application permet aux utilisateurs de pouvoir mettre en location leurs pr
 
 ## CONTRIBUTEURS
 
+Merci aux contributeurs:
+
+    Guy Jo (@chatbot-io)
+
 
 Cette plateforme a été développé et testé avec [python 3.6](https://www.python.org)
 et [Django3](https://www.djangoproject.com) version LTS.
