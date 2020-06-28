@@ -1,0 +1,57 @@
+<!-- Navigation 1 -->
+<nav class="py-3 bg-light text-center navigation_1">
+    <div class="container px-xl-0">
+        <div class="row justify-content-center align-items-center f-16">
+            <div class="mb-20 mb-lg-0 col-lg-3 text-lg-left">
+                <a href="/" class="link color-main f-24 bold">
+                RentMarket</a>
+            </div>
+            <div class="col-lg-6">
+                <a href="/" class="link mx-15 color-main">Accueil</a>
+                <a href="#" class="link mx-15 color-main">Produits</a>
+                <a href="#" class="link mx-15 color-main">Comment ça marche ?</a>
+                <a href="#" class="link mx-15 color-main">Besoin aide ?</a>
+            </div>
+            {% if user.is_authenticated %}
+                <div class="mt-20 mt-lg-0 col-lg-3 d-flex flex-wrap justify-content-center justify-content-lg-end align-items-center">
+                    <a href="#" class="link mr-20 color-main">Mon compte</a>
+                    <a href="{% url "accounts:logout" %}" class="btn mr-20 sm action-2 f-16">Deconnexion</a>
+                </div>
+            {% else %}
+                <div class="mt-20 mt-lg-0 col-lg-3 d-flex flex-wrap justify-content-center justify-content-lg-end align-items-center">
+                    <a href="{% url "accounts:signup" %}" class="link mr-20 color-main">Inscription</a>
+                    <a href="{% url "accounts:login" %}" class="btn mr-20 sm action-2 f-16">Se connecter</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</nav>
+
+
+<!-- Navigation Mobile type 2 -->
+<a class="open_menu color-main bg-light radius_full">
+    <i class="fas fa-bars lh-40"></i>
+</a>
+
+<div class="navigation_mobile bg-light type2">
+    <a class="close_menu color-main"><i class="fas fa-times"></i></a>
+    <div class="px-40 pt-60 pb-60 text-center inner">       
+        <div><a href="#" class="f-heading f-22 link color-main mb-20">Dashboard</a></div>       
+        <div><a href="#" class="f-heading f-22 link color-main mb-20">High-Tech</a></div>       
+        <div><a href="#" class="f-heading f-22 link color-main mb-20">Automobile</a></div>      
+        <div><a href="#" class="f-heading f-22 link color-main mb-20">Loisirs</a></div>     
+        <div><a href="#" class="f-heading f-22 link color-main mb-20">Livres</a></div>      
+        <div><a href="#" class="f-heading f-22 link color-main mb-20">Vetements</a></div>
+        
+        <div><a href="#" class="f-12 link color-main op-7 text-uppercase sp-20 mb-20">Aide</a></div>
+        <div><a href="#" class="f-12 link color-main op-7 text-uppercase sp-20 mb-20">F.A.Q.</a></div>
+        <div><a href="#" class="f-12 link color-main op-7 text-uppercase sp-20 mb-20">Conctact</a></div>
+        <div><a href="#" class="f-12 link color-main op-7 text-uppercase sp-20 mb-20">A propos de RentMarket</a></div>
+                        
+        <div class="socials mt-60">
+            <a href="#" target="_blank" class="link color-main f-18 mx-10"><i class="fab fa-twitter"></i></a>
+            <a href="#" target="_blank" class="link color-main f-18 mx-10"><i class="fab fa-facebook"></i></a>
+            <a href="#" target="_blank" class="link color-main f-18 mx-10"><i class="fab fa-instagram"></i></a>
+        </div>
+    </div>
+</div>

@@ -11,6 +11,7 @@ django-toolbelt="*"
 gunicorn="*"
 pillow="*"
 whitenoise="*"
+django-countries="*"
 
 [requires]
 python_version = "3.8.3"

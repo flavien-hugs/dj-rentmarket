@@ -2,63 +2,38 @@
 <!DOCTYPE html>
     <html lang="fr">
     <head>
-        <meta charset="UTF-8">
-        <title>Rent Market</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="">
-        <meta name="author" content="">
         {% load static %} {% get_static_prefix as STATIC_PREFIX %}
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.1/css/all.min.css" rel="stylesheet">
-        <!-- fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Merriweather:300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
-
-        <!-- Bootstrap core CSS -->
-        <link href="{{ STATIC_PREFIX }}css/custom.min.css" rel="stylesheet">
-
+        {% include "includes/meta.html" %}
+        {% include "includes/css.html" %}
+        <title>Akwaba sur RentMarket</title>
     </head>
 
-    <body>
-        <div class="overlay"></div>
-        <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop"><source src="{{ STATIC_PREFIX }}mp4/bg.mp4" type="video/mp4"></video>
-        <div class="masthead">
-            <div class="masthead-bg"></div>
-            <div class="container h-100">
-                <div class="row h-100">
-                    <div class="col-12 my-auto">
-                        <div class="masthead-content text-white py-5 py-md-0">
-                            <h1 class="mb-3">Coming Soon!</h1>
-                            <p class="mb-5">Nous travaillons dur pour terminer le développement de ce site.</p>
-                            <div class="input-group input-group-newsletter">
-                                    <p class="small text-monospace mb-0">&copy;
-                                        <script>document.write(new Date().getFullYear());
-                                    </script> &mdash; <a class="text-white font-weight-bold" href="#" target="_blank" title="Rent Market"> Rent Market </a> &mdash; V.0.0.1
-                                    </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+    <body class="d-flex flex-column">
+        <div class="flex-grow-1 flex-shrink-0">
+            <!-- Navigation -->{% include "includes/nav.html" %}<!-- End Navigation -->
+            <section class="section-header">
+                {% block header %}{% endblock header %}
+            </section>
+            <section class="section-feature">
+                {% block features %}
+                {% endblock features %}
+            </section>
+            <main class="section-content">
+                {% block content %}
+                {% endblock content %}
+            </main>
+        </div>
+
+        <!-- start footer -->
+        <footer class="footer flex-shrink-0">
+            <div class="container py-3 text-center">
+                <p class="text-monospace font-weight-bold text-uppercase mb-0">&copy; Copyright
+                    <script>document.write(new Date().getFullYear());
+                    </script> <a href="/" title="easy broker"> RentMarket</a> &mdash; Bêta test &mdash; V.0.0.1
+                </p>
             </div>
-        </div>
-
-        <div class="social-icons">
-            <ul class="list-unstyled text-center mb-0">
-                <li class="list-unstyled-item">
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                </li>
-                <li class="list-unstyled-item">
-                    <a href="#">
-                        <i class="fab fa-facebook-f"></i>
-                    </a>
-                </li>
-            </ul>
-        </div>
-
-
-        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        </footer><!--./end footer -->
+        {% include "includes/js.html" %}
         <!-- Custom scripts for this template -->      
     </body>
 </html>

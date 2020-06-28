@@ -1,0 +1,35 @@
+{% extends "accounts/base.html" %}
+{% block auth_content %}
+    <div class="card">
+        <h4 class="card-header text-uppercase text-center py-3"><i class="fa fa-user mr-2"></i> se connexion</h4>
+        <div class="card-body">
+          {% if form.non_field_errors %}
+            <div class="card-body">
+              <div class="alert alert-danger" role="alert">
+                {% for error in form.non_field_errors %}
+                  <p {% if forloop.last %}class="mb-0"{% endif %}>
+                    {{ error }}
+                  </p>
+                {% endfor %}
+              </div>
+            </div>
+          {% endif %}
+
+          <form method="post" novalidate>
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{ next }}">
+            {% include 'layouts/form.html' %}
+            <div class="col-lg-12 py-3">
+              <button style="background-color:#dc3545;" class="btn btn-block btn-lg font-weight-bold text-white rounded" type="submit">Se connecter</button>
+            </div><!-- /.end button login -->
+            <div class="d-flex align-items-center justify-content-lg-end justify-content-center">
+              <a href="{% url 'password_reset' %}">Mot de passe oublié ?</a>
+            </div><!-- password reset link -->
+
+            <div class="text-center mt-3">
+            Nouvel utilisateur ? <a href="{% url "accounts:signup" %}" class="text-dark font-weight-bold"><u>Inscription</u></a>
+            </div><!-- signup link -->
+          </form>
+        </div>
+    </div>
+{% endblock auth_content %}

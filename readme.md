@@ -1,4 +1,4 @@
-# [RENTMARKET](https://github.com/flavien-hugs/RentMarket) - Application Web de location d'objet de tout genre.
+# [RENTMARKET](https://github.com/flavien-hugs/RentMarket) - Application Web de location d'objet.
 
 [![RENTMARKET](https://img.shields.io/badge/RENTMARKET-V.0.0.1-success.svg)](https://unsta-shortenurl.herokuapp.com/)
 [![Django Version](https://img.shields.io/badge/Django-Version3-success.svg)](http://www.djangoproject.com)

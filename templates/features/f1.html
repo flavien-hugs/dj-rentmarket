@@ -1,0 +1,136 @@
+<!-- Feature 1 -->
+<section class="py-4 bg-light text-center feature_1">
+    <div class="container px-xl-0">
+        <div class="row justify-content-center">
+            <div class="col-xl-10">
+                <h2 class="py-3 small">3 Bonnes raisons</h2>
+                <div class="row justify-content-center">
+                    <div class="col-md-4 mb-50">
+                        <i class="fas fa-briefcase f-60 action-3"></i>
+                        <div class="mt-20 mb-25 f-22 title">Mettre à Profit<br>Ces produits</div>
+                        <div class="color-heading text-adaptive">
+                            Un moyen idéal pour arrondir ces fins de mois.
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-50">
+                        <i class="fas fa-compress-arrows-alt f-60 action-3"></i>
+                        <div class="mt-20 mb-25 f-22 title">La<br>communauté</div>
+                        <div class="color-heading text-adaptive">
+                            Vous disposez d'un grand reseaux de personnes pret à louer vos produits.
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-50">
+                        <i class="fas fa-desktop f-60 action-3"></i>
+                        <div class="mt-20 mb-25 f-22 title">Votre<br>écran partout</div>
+                        <div class="color-heading text-adaptive">
+                            Vous disposez d'un tableau de bord  <br>
+                            pour suivre nos activiés
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Showcase 1 -->
+<section class="py-2 showcase_1">
+    <div class="container px-xl-0">
+        <div class="row justify-content-center text-center">
+            <div class="col-xl-8 col-lg-10">
+                <h2 class="small">Un besoin, Une envie</h2>
+                <div class="my-2 f-22 color-heading text-adaptive description">
+                    Objets disponible pour vos besoins à bas prix de location.
+                </div>
+                <div class="buttons">
+                    <a href="#" class="btn mt-25 mx-15 action-1">Parcourez la vitrine</a>
+                    <a href="#" class="btn mt-25 mx-15 border-gray color-main">Mettre en location</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="py-3 row justify-content-center">
+            {% for obj in object_list %}
+                <div class="py-2 col-lg-4 col-md-6 col-sm-9 block">
+                    <a href="#" class="d-block">
+                        <img src="{% if obj %}
+                        {{ obj.img1.url }} {% else %} {{ STATIC_PREFIX }}img/produits/img-1.jpg{% endif %}" alt="{{ obj.name }}" class="img-fluid">
+                    </a>
+                    <a href="#" class="link mt-20 mb-10 f-22 color-main title">
+                        {{ obj.name|safe }}
+                    </a>
+                    <div class="color-heading text-adaptive">
+                        {{ obj.description|safe|truncatewords:15 }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Ecommerce 1 -->
+<section class="container ecommerce_1 py-2 pb-5">
+    <div class="px-xl-0">
+        <div class="row justify-content-center text-center text-lg-left main_info">
+            <div class="col-lg-8">
+                <h3 class="mb-2">Marché en ligne avec le plus grand choix de produits</h3>
+                <div class="row">
+                    <div class="col-xl-9 col-lg-10 color-heading text-adaptive">Dans notre boutique en ligne, le plus grand choix de produits de la planète. Libre
+                        livraison et beaucoup d'avantages pour vous encore.
+                    </div>
+                </div>
+                <a href="#" class="btn mt-2 action-1 px-xl-4">Louer et mettez en location</a>
+            </div>
+            <div class="mt-50 mt-lg-0 col-lg-4">
+                <img src="{{ STATIC_PREFIX }}img/ec1/ecomerce-1-7.jpg" alt="" class="img-fluid">
+            </div>
+        </div>
+
+        <div class="py-3 row justify-content-center products">
+            <div class="mt-2 col-lg-4 col-md-7 col-sm-10 d-flex align-items-start product">
+                <a href="#" class="img_link">
+                    <img src="{{ STATIC_PREFIX }}img/ec1/ecomerce-1-1.jpg" alt="" class="mw-120 flex-shrink-0 img-fluid">
+                </a>
+                <div class="pl-3 relative pb-60 h-full inner">
+                    <a href="#" class="link color-main f-14 text-uppercase semibold sp-20 title">iPhone XR</a>
+                    <div class="mt-1 color-heading text-adaptive">
+                        Super Retina en deux <br>
+                        tailles - y compris le <br>
+                        le plus grand écran jamais vu sur l'iphone.
+                        <a href="#" class="btn absolute sm border-gray color-main medium f-16">59000CFA</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-2 col-lg-4 col-md-7 col-sm-10 d-flex align-items-start product">
+                <a href="#" class="img_link">
+                    <img src="{{ STATIC_PREFIX }}img/ec1/ecomerce-1-2.jpg" alt="" class="mw-120 flex-shrink-0 img-fluid">
+                </a>
+                <div class="pl-3 relative pb-60 h-full inner">
+                    <a href="#" class="link color-main f-14 text-uppercase semibold sp-20 title">Apple watch</a>
+                    <div class="mt-1 color-heading text-adaptive">
+                        Obtenez la motivation <br>
+                        vous devez atteindre <br>
+                        vos objectifs de fitness.
+                    </div>
+                    <a href="#" class="btn absolute sm border-gray color-main medium f-16">9000CFA</a>
+                </div>
+            </div>
+
+            <div class="mt-2 col-lg-4 col-md-7 col-sm-10 d-flex align-items-start product">
+                <a href="#" class="img_link">
+                    <img src="{{ STATIC_PREFIX }}img/ec1/ecomerce-1-3.jpg" alt="" class="mw-120 flex-shrink-0 img-fluid">
+                </a>
+                <div class="pl-3 relative pb-60 h-full inner">
+                    <a href="#" class="link color-main f-14 text-uppercase semibold sp-20 title">VR Headsets</a>
+                    <div class="mt-1 color-heading text-adaptive">
+                        Meilleur Qualité <br>
+                        tridmensionnel <br>
+                        Durables environment.
+                        <a href="#" class="btn absolute sm border-gray color-main medium f-16">89000CFA</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
