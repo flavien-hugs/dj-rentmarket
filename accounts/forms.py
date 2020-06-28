@@ -8,11 +8,15 @@ from django_countries.widgets import CountrySelectWidget
 
 class SignUpForm(UserCreationForm):
     country = CountryField(blank_label='selectionner votre pays').formfield()
-    email = forms.EmailField(max_length=200, required=True)
+    city = forms.CharField(label='Ville', max_length=10, required=True)
+    email = forms.EmailField(label='Email', max_length=200, required=True)
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'country', 'password1', 'password2')
+        fields = (
+            'username', 'email', 'country', 'city',
+            'password1', 'password2'
+        )
         widgets = {
             'country': CountrySelectWidget()
         }
