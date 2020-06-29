@@ -28,7 +28,7 @@ def signup(request):
 
 
 @method_decorator(login_required, name='dispatch')
-class UserUpdateView(UpdateView):
+class AccountUpdateView(UpdateView):
     form_class = UserInfoUpdateForm
     template_name = "accounts/account.html"
     success_url = reverse_lazy('accounts:updated')
