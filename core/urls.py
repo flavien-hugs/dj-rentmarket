@@ -9,7 +9,7 @@ admin.autodiscover()
 urlpatterns = [
     path('', include('shop.urls', namespace='shop')),
     path('customer/', include('accounts.urls', namespace='accounts')),
-    path('location/', include('cart.urls', namespace='cart')),
+    # path('location/', include('cart.urls', namespace='cart')),
     path('admin/', admin.site.urls),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
