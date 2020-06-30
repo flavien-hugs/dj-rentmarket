@@ -2,6 +2,7 @@ import os
 from django.db import models
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.text import slugify
 
 
 def rename(instance, filename):
@@ -33,11 +34,14 @@ class ImageModel(models.Model):
     img1 = models.ImageField('Image_1', upload_to=rename)
     img2 = models.ImageField('Image_2', upload_to=rename, blank=True)
     img3 = models.ImageField('Image_3', upload_to=rename, blank=True)
+    img4 = models.ImageField('Image_4', upload_to=rename, blank=True)
+    img5 = models.ImageField('Image_5', upload_to=rename, blank=True)
 
 
 # Create your models here.
 class ProductModel(ImageModel):
-    category = models.ForeignKey(CategoryModel, verbose_name='categorie', on_delete=models.CASCADE)
+    category = models.ManyToManyField(
+        CategoryModel, verbose_name='categorie')
     name = models.CharField('Nom', max_length=200, db_index=True)
     slug = models.SlugField('Url', max_length=200, db_index=True)
     desc = models.TextField('Description', blank=True)
@@ -52,8 +56,19 @@ class ProductModel(ImageModel):
         verbose_name_plural = 'produits'
 
     def __str__(self):
-        return self.name
+        return "%s (%s)" % (self.name, ", ".join(
+            category.name for category in self.category.all()
+            ),
+        )
+
+    def save(self):
+        if not self.slug:
+            self.slug = slugify(self.title)
+        return super(ProductModel, self).save()
 
     def get_absolute_url(self):
         return reverse(
             'shop:produit_detail', kwargs={'slug': str(self.slug)})
+
+    def get_view_product_count(self):
+        return ProductModel.objects.filter(name=self).count()

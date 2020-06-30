@@ -20,6 +20,12 @@ class HomeListView(ListView):
 
 # DETAIL PRODUIT
 class ProductDetailView(DetailView):
+    Model = ProductModel
+    template_name = 'shop/products/product_detail.html'
+
+    def get_queryset(self):
+        queryset = ProductModel.objects.filter(available=True)
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
