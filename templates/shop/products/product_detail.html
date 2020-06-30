@@ -1,0 +1,372 @@
+{% extends "shop/index.html" %}
+{% load shoptags %}
+
+{% block slideshow %}{% endblock slideshow %}
+
+{% block content %}
+    {% block breadcrumb %}
+    {% include "layouts/breadcrumb.html" %}    
+    {% endblock breadcrumb %}
+
+    <div class="container">
+        <div class="shop-layout shop-layout--sidebar--start">
+            <div class="shop-layout__sidebar">
+                <div class="block block-sidebar">
+                    {% include "shop/products/category.html" %}
+                    {% show_latest_product 10 %}
+                </div>
+            </div>
+
+            <div class="shop-layout__content">
+                <div class="block">
+                    <div class="product product--layout--sidebar" data-layout="sidebar">
+                        <div class="product__content">
+                            <!-- .product__gallery -->
+                            <div class="product__gallery">
+                                <div class="product-gallery">
+                                    <div class="product-gallery__featured">
+                                        <div class="owl-carousel" id="product-image">
+                                            <a href="{{ object.img2.url }}" target="_blank">
+                                                <img src="{{ object.img2.url }}" alt="{{ object.name }}">
+                                            </a>
+
+                                            <a href="{{ object.img3.url }}" target="_blank">
+                                                <img src="{{ object.img3.url }}" alt="{{ object.name }}">
+                                            </a>
+
+                                            <a href="{{ object.img4.url }}" target="_blank">
+                                                <img src="{{ object.img4.url }}" alt="{{ object.name }}">
+                                            </a>
+
+                                            <a href="{{ object.img5.url }}" target="_blank">
+                                                <img src="{{ object.img5.url }}" alt="">
+                                            </a>
+                                        </div>
+                                    </div>
+
+                                    <div class="product-gallery__carousel">
+                                        <div class="owl-carousel" id="product-carousel">
+                                            <a class="product-gallery__carousel-item">
+                                                <img class="product-gallery__carousel-image" src="{{ object.img2.url }}" alt="{{ object.name }}">
+                                            </a>
+
+                                            <a class="product-gallery__carousel-item">
+                                                <img class="product-gallery__carousel-image" src="{{ object.img3.url }}" alt="{{ object.name }}">
+                                            </a>
+
+                                            <a class="product-gallery__carousel-item">
+                                                <img class="product-gallery__carousel-image" src="{{ object.img4.url }}" alt="{{ object.name }}">
+                                            </a>
+
+                                            <a class="product-gallery__carousel-item">
+                                                <img class="product-gallery__carousel-image" src="{{ object.img5.url }}" alt="{{ object.name }}">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div><!-- .product__gallery / end -->
+
+                            <!-- .product__info -->
+                            <div class="product__info">
+                                <div class="product__wishlist-compare">
+                                    <button type="button" class="btn btn-sm btn-light btn-svg-icon" data-toggle="tooltip" data-placement="right" title="Wishlist">
+                                        <svg width="16px" height="16px">
+                                            <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#wishlist-16"></use>
+                                        </svg>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-light btn-svg-icon" data-toggle="tooltip" data-placement="right" title="Compare">
+                                        <svg width="16px" height="16px">
+                                            <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#compare-16"></use>
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <h1 class="product__name">
+                                {{ object.name|safe }}</h1>
+                                <div class="product__rating">
+                                    <!-- reviews --> 
+                                    <div class="product__rating-stars">
+                                        <div class="rating">
+                                            <div class="rating__body">
+                                                <svg class="rating__star rating__star--active" width="13px" height="12px">
+                                                    <g class="rating__fill">
+                                                        <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#star-normal">
+                                                        </use>
+                                                    </g>
+
+                                                    <g class="rating__stroke">
+                                                        <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#star-normal-stroke"></use>
+                                                    </g>
+                                                </svg>
+
+                                                <div class="rating__star rating__star--only-edge rating__star--active">
+                                                    <div class="rating__fill">
+                                                        <div class="fake-svg-icon"></div>
+                                                    </div>
+                                                    <div class="rating__stroke">
+                                                        <div class="fake-svg-icon"></div>
+                                                    </div>
+                                                </div>
+                                                <svg class="rating__star rating__star--active" width="13px" height="12px">
+                                                    <g class="rating__fill">
+                                                        <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#star-normal"></use>
+                                                    </g>
+                                                    <g class="rating__stroke"><use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#star-normal-stroke">
+                                                    </use></g>
+                                                </svg>
+
+                                                <div class="rating__star rating__star--only-edge rating__star--active">
+                                                    <div class="rating__fill">
+                                                        <div class="fake-svg-icon"></div>
+                                                    </div>
+                                                    <div class="rating__stroke">
+                                                        <div class="fake-svg-icon">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <svg class="rating__star rating__star--active" width="13px" height="12px">
+                                                    <g class="rating__fill">
+                                                        <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#star-normal"></use>
+                                                    </g>
+                                                    <g class="rating__stroke">
+                                                        <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#star-normal-stroke">
+                                                        </use>
+                                                    </g>
+                                                </svg>
+                                                <div class="rating__star rating__star--only-edge rating__star--active">
+                                                    <div class="rating__fill">
+                                                        <div class="fake-svg-icon"></div>
+                                                    </div>
+
+                                                    <div class="rating__stroke">
+                                                        <div class="fake-svg-icon">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <svg class="rating__star rating__star--active" width="13px" height="12px">
+                                                    <g class="rating__fill">
+                                                        <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#star-normal"></use>
+                                                    </g>
+
+                                                    <g class="rating__stroke">
+                                                        <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#star-normal-stroke"></use>
+                                                    </g>
+                                                </svg>
+
+                                                <div class="rating__star rating__star--only-edge rating__star--active">
+                                                    <div class="rating__fill">
+                                                        <div class="fake-svg-icon">
+                                                        </div>
+                                                    </div>
+                                                    <div class="rating__stroke">
+                                                        <div class="fake-svg-icon">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <svg class="rating__star rating__star--active" width="13px" height="12px">
+                                                    <g class="rating__fill">
+                                                        <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#star-normal"></use>
+                                                    </g>
+                                                    <g class="rating__stroke">
+                                                        <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#star-normal-stroke"></use>
+                                                    </g>
+                                                </svg>
+
+                                                <div class="rating__star rating__star--only-edge rating__star--active">
+                                                    <div class="rating__fill">
+                                                        <div class="fake-svg-icon"></div>
+                                                    </div>
+                                                    <div class="rating__stroke">
+                                                        <div class="fake-svg-icon">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- end reviews --> 
+
+                                    <div class="product__rating-legend">
+                                        <a href="#">7 Reviews</a>
+                                        <span>/</span>
+                                        <a href="#tab-reviews">Write A Review</a>
+                                    </div>
+                                </div>
+
+                                <div class="product__description">
+                                    {{ object.desc }}
+                                </div>
+                                <ul class="product__features">
+                                    <li>Speed: 750 RPM</li>
+                                    <li>Power Source: Cordless-Electric</li>
+                                    <li>Battery Cell Type: Lithium</li>
+                                    <li>Voltage: 20 Volts</li>
+                                    <li>Battery Capacity: 2 Ah</li>
+                                </ul>
+
+                                <ul class="product__meta">
+                                    <li class="product__meta-availability">
+                                        Availability: <span class="text-success">In Stock</span>
+                                    </li>
+                                    <li>Brand: <a href="#">Wakita</a></li>
+                                    <li>SKU: 83690/32</li>
+                                </ul>
+                            </div><!-- .product__info / end -->
+
+                            <!-- .product__sidebar -->
+                            <div class="product__sidebar">
+                                <div class="product__availability">
+                                    Availability:
+                                    <span class="text-success">In Stock</span>
+                                </div>
+                                <div class="product__prices">${{ object.price }}</div>
+
+                                <!-- .product__options -->
+                                <form class="product__options">
+                                    <div class="form-group product__option">
+                                        <label class="product__option-label" for="product-quantity">
+                                            Quantity
+                                        </label>
+                                        <div class="product__actions">
+                                            <div class="product__actions-item">
+                                                <div class="input-number product__quantity">
+                                                    <input id="product-quantity" class="input-number__input form-control form-control-lg" type="number" min="1" value="1">
+                                                    <div class="input-number__add">
+                                                    </div>
+                                                    <div class="input-number__sub">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="product__actions-item product__actions-item--addtocart">
+                                                <a href="#" class="btn btn-primary btn-lg">Add to cart</a>
+                                            </div>
+
+                                            <div class="product__actions-item product__actions-item--wishlist">
+                                                <button type="button" class="btn btn-secondary btn-svg-icon btn-lg" data-toggle="tooltip" title="Wishlist">
+                                                    <svg width="16px" height="16px">
+                                                        <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#wishlist-16">
+                                                        </use>
+                                                    </svg>
+                                                </button>
+                                            </div>
+
+                                            <div class="product__actions-item product__actions-item--compare">
+                                                <button type="button" class="btn btn-secondary btn-svg-icon btn-lg" data-toggle="tooltip" title="Compare">
+                                                    <svg width="16px" height="16px">
+                                                        <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#compare-16"></use>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form><!-- .product__options / end -->
+                            </div><!-- .product__end -->
+
+                            <div class="product__footer">
+                                <div class="product__tags tags">
+                                    <div class="tags__list">
+                                        <a href="#">Mounts</a>
+                                        <a href="#">Electrodes</a>
+                                        <a href="#">Chainsaws</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="product-tabs product-tabs--layout--sidebar">
+                        <div class="product-tabs__list">
+                            <a href="#tab-description" class="product-tabs__item product-tabs__item--active">Description
+                            </a>
+                            <a href="#tab-specification" class="product-tabs__item">Specification</a>
+                            <a href="#tab-reviews" class="product-tabs__item">Reviews</a>
+                        </div>
+
+                        <div class="product-tabs__content">
+                            <div class="product-tabs__pane product-tabs__pane--active" id="tab-description">
+                                <div class="typography">
+                                    <h5>Product Full Description</h5>
+                                    <p>{{ object.desc }}</p>
+                                </div>
+                            </div>
+
+                            <div class="product-tabs__pane" id="tab-specification">
+                                <div class="spec">
+                                    <h5 class="spec__header">Specification</h5>
+                                    <div class="spec__section">
+                                        <h4 class="spec__section-title">General</h4>
+                                        <div class="spec__row">
+                                            <div class="spec__name">Material</div>
+                                            <div class="spec__value">Aluminium, Plastic</div>
+                                        </div>
+
+                                        <div class="spec__row">
+                                            <div class="spec__name">Engine Type</div>
+                                            <div class="spec__value">Brushless</div>
+                                        </div>
+
+                                        <div class="spec__row">
+                                            <div class="spec__name">Battery Voltage
+                                            </div>
+                                            <div class="spec__value">18 V</div>
+                                        </div>
+                                        <div class="spec__row">
+                                            <div class="spec__name">Battery Type</div>
+                                            <div class="spec__value">Li-lon</div>
+                                        </div>
+
+                                        <div class="spec__row">
+                                            <div class="spec__name">Number of Speeds</div>
+                                            <div class="spec__value">2</div>
+                                        </div>
+
+                                        <div class="spec__row">
+                                            <div class="spec__name">Charge Time</div>
+                                            <div class="spec__value">1.08 h</div>
+                                        </div>
+
+                                        <div class="spec__row">
+                                            <div class="spec__name">Weight</div>
+                                            <div class="spec__value">1.5 kg</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="spec__section">
+                                        <h class="spec__section-title">Dimensions</h4>
+                                        <div class="spec__row">
+                                            <div class="spec__name">Length</div>
+                                            <div class="spec__value">99 mm</div>
+                                        </div>
+                                        <div class="spec__row">
+                                            <div class="spec__name">Width</div>
+                                            <div class="spec__value">207 mm</div>
+                                        </div>
+                                        <div class="spec__row">
+                                            <div class="spec__name">Height</div>
+                                            <div class="spec__value">208 mm</div>
+                                        </div>
+                                    </div>
+                                    <div class="spec__disclaimer">
+                                        Information on technical characteristics, the delivery set, the country of manufacture and the appearance of the goods is for reference only and is based on the latest information available at the time of publication
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="product-tabs__pane" id="tab-reviews">
+                                <div class="reviews-view">
+                                    {% include "shop/review/review.html" %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- .block-related-products-carousel -->
+                {% show_similar_product 15 %}
+                <!-- end block-related-products-carousel -->
+            </div>    
+        </div>
+    </div>
+{% endblock content %}

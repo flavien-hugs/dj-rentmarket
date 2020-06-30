@@ -1,0 +1,31 @@
+ <div class="page-header">
+    <div class="page-header__container container">
+        <div class="page-header__breadcrumb">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="{% url "shop:home" %}">
+                            <i class="fa fa-home"></i>
+                        </a>
+                        <svg class="breadcrumb-arrow" width="6px" height="9px">
+                            <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#arrow-rounded-right-6x9"></use>
+                        </svg>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="{% url "shop:home" %}">produit</a>
+                        <svg class="breadcrumb-arrow" width="6px" height="9px"><use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#arrow-rounded-right-6x9"></use>
+                        </svg>
+                    </li>
+                    <li class="breadcrumb-item">
+                        <a href="#">detail</a>
+                        <svg class="breadcrumb-arrow" width="6px" height="9px"><use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#arrow-rounded-right-6x9"></use>
+                        </svg>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        {{ object.name }}
+                    </li>
+                </ol>
+            </nav>
+        </div>
+    </div>
+</div>

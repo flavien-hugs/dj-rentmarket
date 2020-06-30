@@ -1,0 +1,30 @@
+{% load shoptags %}
+
+<div class="block-sidebar__item">
+    <div class="widget-products widget">
+        <h4 class="widget__title">Produits récents</h4>
+        <div class="widget-products__list">
+            {% for obj in latest_product %}
+                <div class="widget-products__item">
+                    <div class="widget-products__image">
+                        <a href="{{ obj.get_absolute_url }}">
+                            <img src="{{ obj.img1.url }}" alt="{{ obj.name }}">
+                        </a>
+                    </div>
+
+                    <div class="widget-products__info">
+                        <div class="widget-products__name">
+                            <a href="{{ obj.get_absolute_url }}">
+                                {{ obj.name|safe }}
+                            </a>
+                        </div>
+
+                        <div class="widget-products__prices">
+                            {{ obj.price }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
