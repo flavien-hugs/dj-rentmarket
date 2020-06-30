@@ -4,6 +4,8 @@ from django.urls import path, include
 from django.conf.urls.static import static
 
 
+admin.autodiscover()
+
 urlpatterns = [
     path('', include('shop.urls', namespace='shop')),
     path('customer/', include('accounts.urls', namespace='accounts')),
