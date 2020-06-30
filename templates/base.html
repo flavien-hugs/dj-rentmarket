@@ -8,21 +8,22 @@
         <title>Akwaba sur RentMarket</title>
     </head>
 
-    <body>
+    <body class="d-flex flex-column">
         <!-- Navigation -->
         {% include "includes/nav.html" %}<!-- End Navigation -->
-
         <!-- site -->
         <div class="site">
-            <!-- mobile site__header -->
-            {% include "includes/menu/mobile.html" %}
-            {% include "includes/menu/desktop.html" %}
-            <!-- end mobile site__header -->
+            <div class="flex-grow-1 flex-shrink-0">
+                <!-- mobile site__header -->
+                {% include "includes/menu/mobile.html" %}
+                {% include "includes/menu/desktop.html" %}
+                <!-- end mobile site__header -->
 
-            <!-- site__body -->
-            <div class="site__body">
-                {% block slideshow %}{% endblock slideshow %}
-                {% block content %}{% endblock content %}
+                <!-- site__body -->
+                <div class="site__body">
+                    {% block slideshow %}{% endblock slideshow %}
+                    {% block content %}{% endblock content %}
+                </div>
             </div>
             <!-- site footer -->
             {% include "layouts/footer.html" %}<!--./end footer -->
