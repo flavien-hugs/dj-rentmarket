@@ -30,7 +30,7 @@ SITE_DESCRIPTION = ''
 META_KEYWORDS = ''
 ALLOWED_HOSTS = []
 SITE_NAME = 'Rent Market'
-CART_SESSION_ID = 'cart'
+CART_SESSION_ID = 'cartsession'
 
 # Application definition
 
