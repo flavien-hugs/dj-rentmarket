@@ -17,21 +17,15 @@
             <!-- mobile site__header -->
             {% include "includes/menu/mobile.html" %}
             {% include "includes/menu/desktop.html" %}
-            <!-- mobile site__header / end -->
+            <!-- end mobile site__header -->
 
-            <section class="container-body">
-                <div class="site__body">
-                    {% block slideshow %}
-                    {% endblock slideshow %}
-
-                    {% block content %}
-                    {% endblock content %}
-                </div>
-            </section>
-
+            <!-- site__body -->
+            <div class="site__body">
+                {% block slideshow %}{% endblock slideshow %}
+                {% block content %}{% endblock content %}
+            </div>
             <!-- site footer -->
-            {% include "layouts/footer.html" %}
-            <!--./end footer -->
+            {% include "layouts/footer.html" %}<!--./end footer -->
         </div><!-- ./end site -->
         
         {% include "includes/js.html" %}
