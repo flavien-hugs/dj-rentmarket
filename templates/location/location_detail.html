@@ -1,0 +1,118 @@
+{% extends "shop/index.html" %}
+{% load shoptags %}
+
+{% block slideshow %}{% endblock slideshow %}
+
+{% block content %}
+    {% block breadcrumb %}
+    {% include "layouts/breadcrumb.html" %}    
+    {% endblock breadcrumb %}
+
+    <div class="cart block">
+        <div class="container">
+            {% if location %}
+            <table class="cart__table cart-table">
+                <thead class="cart-table__head">
+                    <tr class="cart-table__row">
+                        <th class="cart-table__column cart-table__column--image">Image</th>
+                        <th class="cart-table__column cart-table__column--product">Produit</th>
+                        <th class="cart-table__column cart-table__column--price">Prix</th>
+                        <th class="cart-table__column cart-table__column--quantity">Date emprunt</th>
+                        <th class="cart-table__column cart-table__column--total">Date de retour</th>
+                        <th class="cart-table__column cart-table__column--remove"></th>
+                    </tr>
+                </thead>
+
+                <tbody class="cart-table__body">
+                    {% for obj in location %}
+                        {% with product=obj.product %}
+                            <tr class="cart-table__row">
+                                <td class="cart-table__column cart-table__column--image">
+                                    <a href="{{ product.get_absolute_url }}">
+                                        <img src="{% if product.img1 %}{{ product.img1.url }}{% endif %}" alt="{{ product.name }}">
+                                    </a>
+                                </td>
+
+                                <td class="cart-table__column cart-table__column--product">
+                                    <a href="{{ product.get_absolute_url }}" class="cart-table__product-name">
+                                    {{ product.name|truncatewords:10|safe }}</a>
+
+                                    <ul class="cart-table__options">
+                                        <li>Color: Yellow</li>
+                                        <li>Material: Aluminium</li>
+                                    </ul>
+                                </td>
+
+                                <td class="cart-table__column cart-table__column--price" data-title="Prix">{{ product.price|floatformat:0|safe }}</td>
+
+                                <td class="cart-table__column cart-table__column--quantity" data-title="Date de location">01/07/2020</td>
+
+                                <td class="cart-table__column cart-table__column--total" data-title="Date de retour">15/07/2020</td>
+
+                                <td class="cart-table__column cart-table__column--remove">
+                                    <a href="{% url "location:remove" product.id %}" type="button" class="btn btn-light btn-sm btn-svg-icon">
+                                        <svg width="12px" height="12px">
+                                            <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#cross-12"></use>
+                                        </svg>
+                                    </a>
+                                </td>
+                            </tr> 
+                        {% endwith %}
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+            
+            <!-- Coupon -->
+            <div class="cart__actions">
+                <form class="cart__coupon-form">
+                    <label for="input-coupon-code" class="sr-only">Coupon</label>
+                    <input type="text" class="form-control" id="input-coupon-code" placeholder="Code promo"> <button type="submit" class="btn btn-primary">Appliquer
+                    </button>
+                </form>
+                <div class="cart__buttons">
+                    <a href="#" class="btn btn-light">
+                    Ajouter d'autres produits</a>
+                    <a href="#" class="btn btn-primary cart__update-button">Modifier mon panier de location</a>
+                </div>
+            </div><!-- end coupon -->
+            
+            <!-- Cart Totals -->
+            <div class="row justify-content-end pt-5">
+                <div class="col-12 col-md-7 col-lg-6 col-xl-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title">Total des objets loués</h3>
+                            <table class="cart__totals">
+                                <thead class="cart__totals-header">
+                                    <tr>
+                                        <th>Sous-total</th>
+                                        <td>{{ location.get_total_price|floatformat:0|safe }} Fr CFA</td>
+                                    </tr>
+                                </thead>
+                                <tbody class="cart__totals-body">
+                                    <tr>
+                                        <th>Shipping</th>
+                                        <td>$25.00
+                                            <div class="cart__calc-shipping">
+                                                <a href="#">Calculate Shipping</a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+
+                                <tfoot class="cart__totals-footer">
+                                    <tr>
+                                        <th>Total</th>
+                                        <td>{{ product.get_total_price }}</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            <a class="btn btn-primary btn-xl btn-block cart__checkout-button" href="#">Procéder à la location</a>
+                        </div>
+                    </div>
+                </div>
+            </div><!-- end cart total -->
+        </div>
+    </div>
+{% endblock content %}

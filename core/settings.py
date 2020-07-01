@@ -30,8 +30,9 @@ SITE_DESCRIPTION = ''
 META_KEYWORDS = ''
 ALLOWED_HOSTS = []
 SITE_NAME = 'Rent Market'
-CART_SESSION_ID = 'cartsession'
-
+LOCATION_SESSION_ID = 'cartsession'
+USE_THOUSAND_SEPARATOR = True
+THOUSAND_SEPARATOR = ' '
 # Application definition
 
 INSTALLED_APPS = [
@@ -46,7 +47,7 @@ INSTALLED_APPS = [
     'django_countries',
     'accounts.apps.AccountsConfig',
     'shop.apps.ShopConfig',
-    # 'cart.apps.CartConfig',
+    'location.apps.LocationConfig',
 ]
 
 MIDDLEWARE = [
@@ -71,10 +72,10 @@ TEMPLATES = [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
+                'django.template.context_processors.i18n',
+                'django.template.context_processors.csrf',
                 'django.contrib.messages.context_processors.messages',
-                # ...
-                # Processeur de contexte du panier
-                'cart.context_processors.cart',
+                'location.context_processors.location',
             ],
 
             'debug': DEBUG,

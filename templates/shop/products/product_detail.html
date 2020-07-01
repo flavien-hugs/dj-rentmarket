@@ -69,12 +69,12 @@
                             <!-- .product__info -->
                             <div class="product__info">
                                 <div class="product__wishlist-compare">
-                                    <button type="button" class="btn btn-sm btn-light btn-svg-icon" data-toggle="tooltip" data-placement="right" title="Wishlist">
+                                    <button type="button" class="btn btn-sm btn-light btn-svg-icon" data-toggle="tooltip" data-placement="right" title="Liker">
                                         <svg width="16px" height="16px">
                                             <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#wishlist-16"></use>
                                         </svg>
                                     </button>
-                                    <button type="button" class="btn btn-sm btn-light btn-svg-icon" data-toggle="tooltip" data-placement="right" title="Compare">
+                                    <button type="button" class="btn btn-sm btn-light btn-svg-icon" data-toggle="tooltip" data-placement="right" title="Comparer">
                                         <svg width="16px" height="16px">
                                             <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#compare-16"></use>
                                         </svg>
@@ -218,19 +218,19 @@
                             <!-- .product__sidebar -->
                             <div class="product__sidebar">
                                 <div class="product__availability">
-                                    Availability:
-                                    <span class="text-success">In Stock</span>
+                                    Disponibilité:
+                                    <span class="text-success">Oui</span>
                                 </div>
-                                <div class="product__prices">${{ object.price }}</div>
+                                <div class="product__prices">{{ object.price|floatformat:0|safe }} Fr CFA</div>
 
                                 <!-- .product__options -->
                                 <form class="product__options">
                                     <div class="form-group product__option">
-                                        <label class="product__option-label" for="product-quantity">
+                                         <!-- <label class="product__option-label" for="product-quantity">
                                             Quantity
-                                        </label>
+                                        </label> -->
                                         <div class="product__actions">
-                                            <div class="product__actions-item">
+                                            <!-- <div class="product__actions-item">
                                                 <div class="input-number product__quantity">
                                                     <input id="product-quantity" class="input-number__input form-control form-control-lg" type="number" min="1" value="1">
                                                     <div class="input-number__add">
@@ -238,10 +238,10 @@
                                                     <div class="input-number__sub">
                                                     </div>
                                                 </div>
-                                            </div>
+                                            </div> -->
 
                                             <div class="product__actions-item product__actions-item--addtocart">
-                                                <a href="#" class="btn btn-primary btn-lg">Add to cart</a>
+                                                <a href="{% url "location:add" object.id %}" class="btn btn-primary btn-lg">Louer</a>
                                             </div>
 
                                             <div class="product__actions-item product__actions-item--wishlist">
@@ -288,16 +288,16 @@
                         <div class="product-tabs__content">
                             <div class="product-tabs__pane product-tabs__pane--active" id="tab-description">
                                 <div class="typography">
-                                    <h5>Product Full Description</h5>
+                                    <h5>Description Global du produit</h5>
                                     <p>{{ object.desc }}</p>
                                 </div>
                             </div>
 
                             <div class="product-tabs__pane" id="tab-specification">
                                 <div class="spec">
-                                    <h5 class="spec__header">Specification</h5>
+                                    <h5 class="spec__header">Spécification</h5>
                                     <div class="spec__section">
-                                        <h4 class="spec__section-title">General</h4>
+                                        <h4 class="spec__section-title">Général</h4>
                                         <div class="spec__row">
                                             <div class="spec__name">Material</div>
                                             <div class="spec__value">Aluminium, Plastic</div>
