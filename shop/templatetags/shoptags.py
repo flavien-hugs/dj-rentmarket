@@ -10,9 +10,8 @@ register = template.Library()
 def show_latest_product(count=20):
     latest_product = ProductModel.objects.filter(
         available=True,
-        pub_date__gte=datetime.date.today(),
         pub_date__isnull=False,
-        ).order_by('pub_date')[:count]
+        ).order_by('-pub_date')[:count]
     context = {'latest_product': latest_product}
     return context
 

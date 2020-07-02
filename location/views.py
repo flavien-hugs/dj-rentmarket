@@ -23,5 +23,5 @@ def removeLocation(request, product):
 def detailLocation(request):
     location = Location(request)
     template = 'location/location_detail.html'
-    context = {'location': location}
+    context = {'location': location, 'page_title': 'location'}
     return render(request, template, context)

@@ -11,27 +11,27 @@
                             <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#arrow-rounded-right-6x9"></use>
                         </svg>
                     </li>
+
                     <li class="breadcrumb-item">
-                        <a href="{% url "shop:home" %}">produit</a>
-                        <svg class="breadcrumb-arrow" width="6px" height="9px"><use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#arrow-rounded-right-6x9"></use>
-                        </svg>
+                        {% for cat in category %}
+                        categorie {{ cat.count|pluralize:"s" }}  
+                            <a href="{{ cat.get_absolute_url }}">
+                                : {{ cat.name|safe }}
+                                {% if not forloop.last %}, {% endif %}
+                            </a>
+                            {% if not forloop.last %}
+                                <svg class="breadcrumb-arrow" width="6px" height="9px">
+                                    <use xlink:href="{{ STATIC_PREFIX }}img/svg/sprite.svg#arrow-rounded-right-6x9"></use>
+                                </svg>
+                            {% endif %}
+                        {% endfor %}
                     </li>
-                    <li class="breadcrumb-item">
-                        <a href="#">detail</a>
-                        <svg class="breadcrumb-arrow" width="6px" height="9px"><use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#arrow-rounded-right-6x9"></use>
-                        </svg>
-                    </li>
-                    {% if object %}
-                        <li class="breadcrumb-item active" aria-current="page">
-                            {{ object.name }}
-                        </li>
-                    {% endif %}
+
                     <li class="breadcrumb-item active" aria-current="page">
-                        Checkout
+                        {{ object.name }}
                     </li>
                 </ol>
             </nav>
         </div>
-        <div class="page-header__title"><h1>Checkout</h1></div>
     </div>
 </div>

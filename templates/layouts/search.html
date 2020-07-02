@@ -1,18 +1,17 @@
-{% extends "shop/index.html" %}
-{% block slideshow %}{% endblock slideshow %}
+<div class="row">
+    <div class="col-12">
+        <div class="block">
+            <div class="products-view">
+                {% include "layouts/option.html" %}
 
-{% block content %}
-    {% block breadcrumb %}
-    {% include "layouts/breadcrumb.html" %}    
-    {% endblock breadcrumb %}
+                <div class="products-view__list products-list" data-layout="grid-4-full" data-with-features="false">
+                    <div class="products-list__body">
+                        {% include "shop/products/product_list_item.html" %}
+                    </div>
+                </div>
 
-    {% if query %}
-        <hgroup class="mb-3 border-bottom text-center">
-            <h5 class="text-muted small m-0">
-                <strong>{{ products.count }}</strong>
-                résultat(s) pour la recherche de
-                <strong class="text-muted">{{ query }}</strong>
-            </h5>
-        </hgroup>
-    {% endif %}
-{% endblock content %}
+                {% include "layouts/paginate.html" %}
+            </div>
+        </div>
+    </div>
+</div>

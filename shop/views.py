@@ -9,7 +9,8 @@ from shop.models import ProductModel, CategoryModel
 @require_http_methods(["GET"])
 def search(request):
     category = CategoryModel.objects.all()
-    products = ProductModel.objects.filter(available=True)
+    products = ProductModel.objects.filter(
+        available=True).prefetch_related('category')
     try:
         q = request.GET.get('q')
     except:
@@ -24,7 +25,7 @@ def search(request):
         return redirect('shop:search')
 
     context = {'category': category, 'products': products, 'query': q}
-    template = 'layouts/search.html'
+    template = 'shop/category/category_list.html'
     return render(request, template, context)
 
 
@@ -54,17 +55,20 @@ class ProductDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        category = CategoryModel.objects.all()
+        context['category'] = category
         return context
 
 
-# CATEGORY ALL
-class CategoryListView(ListView):
+# PRODUCT ALL
+class ProductListView(ListView):
     model = ProductModel
     template_name = 'shop/category/category_list.html'
     paginate_by = 30
 
     def get_queryset(self):
-        return ProductModel.objects.order_by('-price')
+        return ProductModel.objects.filter(
+            available=True).order_by('-price')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -73,6 +77,20 @@ class CategoryListView(ListView):
             available=True).prefetch_related('category')
         context['category'] = category
         context['products'] = products
-        print(products)
+        context['page_title'] = 'tous les produits'
+        return context
+
+
+# CATEGORY ALL
+class CategoryListView(ProductListView):
+    model = CategoryModel
+    template_name = 'shop/category/category_list.html'
+    paginate_by = 30
+
+    def get_queryset(self):
+        return CategoryModel.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         context['page_title'] = 'toutes les catégories'
         return context
