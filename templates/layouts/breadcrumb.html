@@ -21,11 +21,17 @@
                         <svg class="breadcrumb-arrow" width="6px" height="9px"><use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#arrow-rounded-right-6x9"></use>
                         </svg>
                     </li>
+                    {% if object %}
+                        <li class="breadcrumb-item active" aria-current="page">
+                            {{ object.name }}
+                        </li>
+                    {% endif %}
                     <li class="breadcrumb-item active" aria-current="page">
-                        {{ object.name }}
+                        Checkout
                     </li>
                 </ol>
             </nav>
         </div>
+        <div class="page-header__title"><h1>Checkout</h1></div>
     </div>
 </div>

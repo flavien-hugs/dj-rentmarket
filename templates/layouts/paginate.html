@@ -1,0 +1,57 @@
+{% if is_paginated %}
+    <div class="products-view__pagination py-5">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+                <li class="page-item">
+                    <a class="page-link page-link--with-arrow" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                        <svg class="page-link__arrow page-link__arrow--left" aria-hidden="true" width="8px" height="13px">
+                            <use xlink:href="{{ STATIC_PREFIX }}img/svg/sprite.svg#arrow-rounded-left-8x13"></use>
+                        </svg>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link page-link--with-arrow" aria-label="Previous">
+                        <svg class="page-link__arrow page-link__arrow--left" aria-hidden="true" width="8px" height="13px">
+                            <use xlink:href="{{ STATIC_PREFIX }}img/svg/sprite.svg#arrow-rounded-left-8x13"></use>
+                        </svg>
+                    </a>
+                </li>
+            {% endif %}
+
+
+            {% for object in page_obj.paginator.page_range %}
+                {% if object == page_obj.number %}
+                    <li class="page-item active">
+                        <a class="page-link" href="?page={{ object }}">{{ object }}<span class="sr-only">(current)</span></a>
+                    </li>
+                {% else %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ object }}">{{ object }}
+                        </a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <li class="page-item">
+                    <a class="page-link page-link--with-arrow" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                        <svg class="page-link__arrow page-link__arrow--right" aria-hidden="true" width="8px" height="13px">
+                            <use xlink:href="{{ STATIC_PREFIX }}img/svg/sprite.svg#arrow-rounded-right-8x13"></use>
+                        </svg>
+                    </a>
+                </li>
+            {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link page-link--with-arrow" aria-label="Next">
+                        <svg class="page-link__arrow page-link__arrow--right" aria-hidden="true" width="8px" height="13px">
+                            <use xlink:href="{{ STATIC_PREFIX }}img/svg/sprite.svg#arrow-rounded-right-8x13"></use>
+                        </svg>
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+
+
+{% endif %}

@@ -1,3 +1,4 @@
+{% load static %} {% get_static_prefix as STATIC_PREFIX %}
 <header class="site__header d-lg-none">
     <div class="mobile-header mobile-header--sticky mobile-header--stuck">
         <div class="mobile-header__panel">
@@ -18,8 +19,8 @@
                     </a>
 
                     <div class="mobile-header__search">
-                        <form class="mobile-header__search-form" action="#">
-                            <input class="mobile-header__search-input" name="search" placeholder="Search over 10,000 products" aria-label="Site search" type="text" autocomplete="off">
+                        <form role="search" class="mobile-header__search-form" action="{% url "shop:search" %}">
+                            <input class="mobile-header__search-input" name="q" placeholder="Search over 10,000 products" aria-label="search" type="search" autocomplete="off">
                             <button class="mobile-header__search-button mobile-header__search-button--submit" type="submit">
                                 <svg width="20px" height="20px">
                                     <use xlink:href="{{ STATIC_PREFIX }}img/svg/sprite.svg#search-20">

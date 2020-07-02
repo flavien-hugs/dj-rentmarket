@@ -1,0 +1,288 @@
+{% extends "shop/index.html" %}
+
+
+{% block slideshow %}{% endblock slideshow %}
+
+{% block content %}
+    {% block breadcrumb %}
+    {% include "layouts/breadcrumb.html" %}    
+    {% endblock breadcrumb %}
+
+    <div class="checkout block">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 mb-3">
+                    <div class="alert alert-lg alert-primary">
+                        Client de retour ? <a href="{% url "accounts:login" %}">
+                            Cliquez ici pour vous connecter
+                        </a>
+                    </div>
+                </div>
+
+
+                <form class="row" method="post" novalidate>
+                    {% csrf_token %}
+
+                    <div class="col-12 col-lg-6 col-xl-7">
+                        <div class="card mb-lg-0">
+                            <div class="card-body">
+                                <h3 class="card-title">Détails de la facturation</h3>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="{{ form.first_name.id_for_label }}">
+                                        {{ form.first_name.label }}</label>
+
+                                        <input type="text" name='{{ form.first_name.name }}' class="form-control" id="{{ form.first_name.id_for_label }}" placeholder="Votre {{ form.first_name.label }}">
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="{{ form.last_name.id_for_label }}">
+                                        {{ form.last_name.label }}</label>
+
+                                        <input name="{{ form.last_name.name }}" type="text" class="form-control" id="{{ form.last_name.id_for_label }}" placeholder="Votre {{ form.last_name.label }}">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ form.company.id_for_label }}">
+                                        {{ form.company.label }}
+                                    </label>
+                                    <input name="{{ form.company.name }}" type="text" class="form-control" id="{{ form.company.id_for_label }}" placeholder="Votre {{ form.company.label }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ form.country.id_for_label }}">
+                                        {{ form.country.label }}
+                                    </label>
+                                    {{ form.country }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ form.address.id_for_label }}">
+                                        {{ form.address.label }}
+                                    </label>
+                                    <input name="{{ form.address.name }}" type="text" class="form-control" id="{{ form.address.id_for_label }}" placeholder="{{ form.address.label }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ form.apartement.id_for_label }}">
+                                        {{ form.apartement.label }}
+                                    </label>
+                                    <input name="{{ form.apartement.name }}" type="text" class="form-control" id="{{ form.apartement.id_for_label }}" placeholder="Numéro de logement">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ form.city.id_for_label }}">
+                                        {{ form.city.label }}
+                                    </label>
+                                    <input name="{{ form.city.name }}" type="text" class="form-control" id="{{ form.city.id_for_label }}" placeholder="{{ form.city.label }}">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ form.zipcode.id_for_label }}">
+                                        {{ form.zipcode.label }}
+                                    </label>
+                                    <input name="{{ form.zipcode.name }}" type="text" class="form-control" id="{{ form.zipcode.id_for_label }}" placeholder="{{ form.zipcode.label }}">
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="{{ form.email.id_for_label }}">
+                                        {{ form.email.label }}</label>
+
+                                        <input type="text" name='{{ form.email.name }}' class="form-control" id="{{ form.email.id_for_label }}" placeholder="Adresse email">
+                                    </div>
+
+                                    <div class="form-group col-md-6">
+                                        <label for="{{ form.phone.id_for_label }}">
+                                        {{ form.phone.label }}</label>
+
+                                        <input name="{{ form.phone.name }}" type="text" class="form-control" id="{{ form.phone.id_for_label }}" placeholder="Numéro de téléphone">
+                                    </div>
+                                </div>
+
+                                <div class="card-divider"></div>
+
+                                <div class="card-body">
+                                    <h3>Shipping Details</h3>
+
+                                    <div class="form-group">
+                                        <div class="form-check">
+                                            <span class="form-check-input input_check">
+                                                <span class="input-check__body">
+                                                    <input type="checkbox" class="input-check__input"id="checkout-different-address">
+                                                    <span class="input-check__box"></span>
+                                                    <svg class="input-check__icon" width="9px" height="7px">
+                                                        <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#check-9x7"></use>
+                                                    </svg>
+                                                </span>
+                                            </span>
+
+                                            <label class="form-check-label" for="checkout-different-address">Ship to a different address ?</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="{{ form.note.id_for_label }}">
+                                            {{ form.note.label }}
+                                        </label>
+                                        <textarea class="form-control" name="{{ form.note.name }}" id="{{ form.note.id_for_label }}" rows="4"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-6 col-xl-5 mt-4 mt-lg-0">
+                        <div class="card mb-0">
+                            <div class="card-body">
+                                <h3 class="card-title">Votre commande</h3>
+                                <table class="checkout__totals">
+                                    <thead class="checkout__totals-header">
+                                        <tr>
+                                            <th>Produit</th>
+                                            <th>Total</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody class="checkout__totals-products">
+                                        {% for obj in location %}
+                                        {% with product=obj.product %}
+                                        <tr>
+                                            <td>{{ product.name|safe }}</td>
+                                            <td>{{ product.price|safe }} Fr CFA</td>
+                                        </tr>
+                                        {% endwith %}
+                                        {% endfor %}
+                                    </tbody>
+
+                                    <tbody class="checkout__totals-subtotals">
+                                        <tr>
+                                            <th>Sous total</th>
+                                            <td>{{ location.get_total_price|safe }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Store Credit</th>
+                                            <td>$-20.00</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Shipping</th>
+                                            <td>$25.00</td>
+                                        </tr>
+                                    </tbody>
+
+                                    <tfoot class="checkout__totals-footer">
+                                        <tr>
+                                            <th>Total (FR CFA)</th>
+                                            <td>{{ location.get_total_price|safe }}</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+
+                                <div class="payment-methods">
+                                    <ul class="payment-methods__list">
+                                        <li class="payment-methods__item payment-methods__item--active">
+                                            <label class="payment-methods__item-header">
+                                                <span class="payment-methods__item-radio input-radio">
+                                                    <span class="input-radio__body">
+                                                        <input class="input-radio__input" name="checkout_payment_method" type="radio" checked="checked">
+                                                        <span class="input-radio__circle"></span>
+                                                    </span>
+                                                </span>
+                                                <span class="payment-methods__item-title">
+                                                Virement bancaire</span>
+                                            </label>
+
+                                            <div class="payment-methods__item-container">
+                                                <div class="payment-methods__item-description text-muted">Effectuez votre paiement directement sur notre compte bancaire. Veuillez utiliser votre numéro de commande comme référence de paiement. Votre commande ne sera pas expédiée tant que les fonds n'auront pas été débloqués sur notre compte. 
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="payment-methods__item">
+                                            <label class="payment-methods__item-header">
+                                                <span class="payment-methods__item-radio input-radio">
+                                                    <span class="input-radio__body">
+                                                        <input class="input-radio__input" name="checkout_payment_method" type="radio">
+                                                        <span class="input-radio__circle">
+                                                        </span>
+                                                    </span>
+                                                </span>
+
+                                                <span class="payment-methods__item-title">Paiements par chèque
+                                                </span>
+                                            </label>
+
+                                            <div class="payment-methods__item-container">
+                                                <div class="payment-methods__item-description text-muted">
+                                                    Veuillez envoyer un chèque au nom du magasin, à la rue du magasin, à la ville du magasin, à l'État ou au comté du magasin, au code postal du magasin.
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="payment-methods__item">
+                                            <label class="payment-methods__item-header">
+                                                <span class="payment-methods__item-radio input-radio">
+                                                    <span class="input-radio__body">
+                                                        <input class="input-radio__input" name="checkout_payment_method" type="radio">
+                                                        <span class="input-radio__circle"></span>
+                                                    </span>
+                                                </span>
+
+                                                <span class="payment-methods__item-title">Paiement à la livraison</span>
+                                            </label>
+
+                                            <div class="payment-methods__item-container">
+                                                <div class="payment-methods__item-description text-muted">Payez en espèces à la livraison.
+                                                </div>
+                                            </div>
+                                        </li>
+
+                                        <li class="payment-methods__item">
+                                            <label class="payment-methods__item-header">
+                                                <span class="payment-methods__item-radio input-radio">
+                                                    <span class="input-radio__body">
+                                                        <input class="input-radio__input" name="checkout_payment_method" type="radio">
+                                                        <span class="input-radio__circle"></span>
+                                                    </span>
+                                                </span>
+                                                <span class="payment-methods__item-title">PayPal</span>
+                                            </label>
+                                            <div class="payment-methods__item-container">
+                                                <div class="payment-methods__item-description text-muted">Payez via PayPal ; vous pouvez payer avec votre carte de crédit si vous n'avez pas de compte PayPal.
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="checkout__agree form-group">
+                                    <div class="form-check">
+                                        <span class="form-check-input input-check">
+                                            <span class="input-check__body">
+                                                <input class="input-check__input" type="checkbox" id="checkout-terms">
+                                                <span class="input-check__box"></span>
+                                                <svg class="input-check__icon" width="9px" height="7px">
+                                                    <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#check-9x7"></use>
+                                                </svg>
+                                            </span>
+                                        </span>
+
+                                        <label class="form-check-label" for="checkout-terms">J'ai lu et j'accepte le site web
+                                            <a target="_blank" href="terms-and-conditions.html">modalités et conditions</a>*
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary btn-xl btn-block">Passer la commande</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+
+{% endblock content %}

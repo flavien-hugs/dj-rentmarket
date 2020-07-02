@@ -87,7 +87,7 @@
                                 <thead class="cart__totals-header">
                                     <tr>
                                         <th>Sous-total</th>
-                                        <td>{{ location.get_total_price|floatformat:0|safe }} Fr CFA</td>
+                                        <td>{{ location.get_total_price|safe }} Fr CFA</td>
                                     </tr>
                                 </thead>
                                 <tbody class="cart__totals-body">
@@ -104,11 +104,11 @@
                                 <tfoot class="cart__totals-footer">
                                     <tr>
                                         <th>Total</th>
-                                        <td>{{ product.get_total_price }}</td>
+                                        <td>{{ location.get_total_price|safe  }}</td>
                                     </tr>
                                 </tfoot>
                             </table>
-                            <a class="btn btn-primary btn-xl btn-block cart__checkout-button" href="#">Procéder à la location</a>
+                            <a class="btn btn-primary btn-xl btn-block cart__checkout-button" href="{% url "orders:create" %}">Procéder à la location</a>
                         </div>
                     </div>
                 </div>

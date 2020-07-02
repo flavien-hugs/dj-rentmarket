@@ -1,0 +1,18 @@
+{% extends "shop/index.html" %}
+{% block slideshow %}{% endblock slideshow %}
+
+{% block content %}
+    {% block breadcrumb %}
+    {% include "layouts/breadcrumb.html" %}    
+    {% endblock breadcrumb %}
+
+    {% if query %}
+        <hgroup class="mb-3 border-bottom text-center">
+            <h5 class="text-muted small m-0">
+                <strong>{{ products.count }}</strong>
+                résultat(s) pour la recherche de
+                <strong class="text-muted">{{ query }}</strong>
+            </h5>
+        </hgroup>
+    {% endif %}
+{% endblock content %}

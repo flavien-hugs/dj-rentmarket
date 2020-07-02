@@ -1,6 +1,5 @@
 import datetime
 from django import template
-from django.shortcuts import redirect, get_object_or_404
 
 from ..models import ProductModel
 
