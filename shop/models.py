@@ -10,7 +10,7 @@ def rename(instance, filename):
     if ext not in ['.jpg', '.png', '.jpeg']:
         raise NameError('Format interdit')
     new_filename = "{}-{}".format(instance.slug, ext)
-    return 'home'.join(['img/product/', new_filename])
+    return '/'.join(['img/product/', new_filename])
 
 
 class CategoryModel(models.Model):
