@@ -8,7 +8,7 @@ app_name = 'shop'
 urlpatterns = [
     # url product
     path('search/', search, name="search"),
-    path('produit/', ProductListView.as_view(), name='all_product'),
+    path('product/', ProductListView.as_view(), name='all_product'),
     path('product/detail/<slug>/',
         ProductDetailView.as_view(), name="produit_detail"),
     # url category

@@ -10,7 +10,7 @@ def rename(instance, filename):
     if ext not in ['.jpg', '.png', '.jpeg']:
         raise NameError('Format interdit')
     new_filename = "{}-{}".format(instance.slug, ext)
-    return '/'.join(['img/product/', new_filename])
+    return 'home'.join(['img/product/', new_filename])
 
 
 class CategoryModel(models.Model):
@@ -24,7 +24,7 @@ class CategoryModel(models.Model):
         verbose_name_plural = 'categories'
 
     def __str__(self):
-        return self.name
+        return str(self.name)
 
     def get_absolute_url(self):
         return reverse('shop:detail_category', kwargs={'slug': str(self.slug)})
