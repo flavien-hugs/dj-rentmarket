@@ -9,7 +9,7 @@ from shop.views import HomeListView
 admin.autodiscover()
 
 urlpatterns = [
-    path('', HomeListView.as_view(), name="home"),
+    path('', HomeListView.as_view(), name='home'),
     path('shop/', include('shop.urls', namespace='shop')),
     path('customer/', include('accounts.urls', namespace='accounts')),
     path('location/', include('location.urls', namespace='location')),
