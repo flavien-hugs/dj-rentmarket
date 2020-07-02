@@ -9,7 +9,7 @@ def rename(instance, filename):
     f, ext = os.path.splitext(filename)
     if ext not in ['.jpg', '.png', '.jpeg']:
         raise NameError('Format interdit')
-    new_filename = "{}-{}".format(instance.slug, ext)
+    new_filename = "{}-{}".format(instance.id, ext)
     return '/'.join(['img/product/', new_filename])
 
 
