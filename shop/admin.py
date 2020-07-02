@@ -1,12 +1,33 @@
+# -*- coding: utf-8 -*-
+
 from django.contrib import admin
+from .models import CategoryModel, ProductModel
 
-from shop.models import ProductModel, CategoryModel
+
+@admin.register(CategoryModel)
+class CategoryModelAdmin(admin.ModelAdmin):
+    """ Admin View for CategorieAdmin """
+    list_display = ('name',)
+    list_display_links = ('name',)
+    list_per_page = 20
+    ordering = ['name']
+    search_fields = ['name']
+    prepopulated_fields = {'slug': ('name',)}
 
 
-# Register your models here.
-admin.site.site_header = "RentMarket Admin"
-admin.site.site_title = "RentMarketAdmin Portal"
-admin.site.index_title = "RentMarket Researcher Portal"
+@admin.register(ProductModel)
+class ProductModelAdmin(admin.ModelAdmin):
+    """ Admin View for ProduitAdmin """
+    model = ProductModel
+    date_hierarchy = 'updated'
+    list_display = ('name', 'price', 'available', 'rent_date', 'pub_date')
+    list_display_links = ('name',)
+    list_filter = ['available', 'rent_date', 'pub_date']
+    list_editable = ['price', 'available']
+    search_fields = ['name', 'price']
+    prepopulated_fields = {'slug': ('name',)}
 
-admin.site.register(ProductModel)
-admin.site.register(CategoryModel)
+    def clean_date(self):
+        if self.cleaned_data['rent_date'] <= self.cleaned_data['pub_date']:
+            raise forms.ValidationError('Rent Date not inferieur for Pub date.')
+        return self.cleaned_data['rent_date']

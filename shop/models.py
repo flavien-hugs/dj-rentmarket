@@ -9,8 +9,8 @@ def rename(instance, filename):
     f, ext = os.path.splitext(filename)
     if ext not in ['.jpg', '.png', '.jpeg']:
         raise NameError('Format interdit')
-    new_filename = "{}-{}".format(instance.id, ext)
-    return '/'.join(['img/product/', new_filename])
+    new_filename = "{}{}".format(instance.slug, ext)
+    return 'home'.join(['img/product/', new_filename])
 
 
 class CategoryModel(models.Model):
@@ -36,6 +36,12 @@ class ImageModel(models.Model):
     img3 = models.ImageField('Image_3', upload_to=rename, blank=True)
     img4 = models.ImageField('Image_4', upload_to=rename, blank=True)
     img5 = models.ImageField('Image_5', upload_to=rename, blank=True)
+
+    class Meta:
+        verbose_name = 'Image de description'
+
+    def __str__(self):
+        return self.img1
 
 
 # Create your models here.
