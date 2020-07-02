@@ -24,7 +24,7 @@ class CategoryModel(models.Model):
         verbose_name_plural = 'categories'
 
     def __str__(self):
-        return str(self.name)
+        return self.name
 
     def get_absolute_url(self):
         return reverse('shop:detail_category', kwargs={'slug': str(self.slug)})
@@ -43,7 +43,7 @@ class ProductModel(ImageModel):
     category = models.ManyToManyField(
         CategoryModel, verbose_name='categorie')
     name = models.CharField('Nom', max_length=200, db_index=True)
-    slug = models.SlugField('Url', max_length=200, db_index=True)
+    slug = models.SlugField('Url', max_length=200, unique=True, db_index=True)
     desc = models.TextField('Description', blank=True)
     price = models.DecimalField('Prix de location', max_digits=10, decimal_places=2)
     available = models.BooleanField('Disponible', default=True)
