@@ -13,9 +13,12 @@ DATABASES['default'] = dj_database_url.config()
 INSTALLED_APPS += ['whitenoise.runserver_nostatic']
 
 # 'django.middleware.security.SecurityMiddleware',
-MIDDLEWARE += ['whitenoise.middleware.WhiteNoiseMiddleware']
+MIDDLEWARE += [
+    'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware'
+]
 
-ALLOWED_HOSTS = ['rentmk.herokuapp.com']
+ALLOWED_HOSTS = ['rentmkt.herokuapp.com']
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 USE_X_FORWARDED_HOST = True
 SECURE_BROWSER_XSS_FILTER = True

@@ -1,5 +1,6 @@
-.git/*
+__pycache__
 *.pyc
 *.sqlite3
-__pycache__/*
-*.sqlite3
+.idea/*
+.git/*
+media/*
