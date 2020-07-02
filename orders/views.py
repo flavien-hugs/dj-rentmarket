@@ -20,7 +20,7 @@ def create_order(request):
                     price=item['price'])
             location.clear_session()
             request.session['id_order'] = order.id
-            return redirect(reverse('shop:home'))
+            return redirect(reverse('home'))
     else:
         form = OrdersForm()
 

@@ -45,7 +45,7 @@ class ProductModel(ImageModel):
     name = models.CharField('Nom', max_length=200, db_index=True)
     slug = models.SlugField('Url', max_length=200, db_index=True)
     desc = models.TextField('Description', blank=True)
-    price = models.DecimalField('Prix', max_digits=10, decimal_places=2)
+    price = models.DecimalField('Prix de location', max_digits=10, decimal_places=2)
     available = models.BooleanField('Disponible', default=True)
     rent_date = models.DateField('Date mise en location', default=timezone.now)
     pub_date = models.DateField('Date ajout', default=timezone.now)
