@@ -40,9 +40,6 @@ class ImageModel(models.Model):
     class Meta:
         verbose_name = 'Image de description'
 
-    def __str__(self):
-        return self.img1
-
 
 # Create your models here.
 class ProductModel(ImageModel):
