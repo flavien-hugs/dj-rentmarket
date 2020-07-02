@@ -20,7 +20,7 @@ def show_latest_product(count=20):
 def show_featured_product(count=20):
     featured_product = ProductModel.objects.filter(
         available=True, pub_date__isnull=False
-        ).order_by('pub_date')[:count]
+        ).order_by('-pub_date')[:count]
     context = {'featured_product': featured_product}
     return context
 
