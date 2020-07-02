@@ -15,7 +15,10 @@
             </div>
             <div class="product-card__image">
                 <a href="{{ obj.get_absolute_url }}">
-                    <img src="{{ obj.img1.url }}" alt="{{ obj.name }}">
+                    <img src="{% if obj.img1 %}
+                        {{ obj.img1.url }}
+                        {% else %} {{ STATIC_PREFIX }}img/products/product-16-1.jpg
+                    {% endif %}" alt="{{ obj.name }}">
                 </a>
             </div>
 
@@ -143,8 +146,10 @@
                     <div class="product-card__availability">Disponible:
                         <span class="text-success">Oui</span>
                     </div>
-                    <div class="product-card__prices">$
-                    {{ obj.price }}</div>
+
+                    <div class="product-card__prices">
+                    {{ obj.price|safe }} FR CFA</div>
+
                     <div class="product-card__buttons">
                         <button class="btn btn-primary product-card__addtocart" type="button">Louer</button>
                         <button class="btn btn-secondary product-card__addtocart product-card__addtocart--list" type="button">Louer</button>

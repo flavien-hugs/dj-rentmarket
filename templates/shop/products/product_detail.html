@@ -28,19 +28,24 @@
                                     <div class="product-gallery__featured">
                                         <div class="owl-carousel" id="product-image">
                                             <a href="{{ object.img2.url }}" target="_blank">
-                                                <img src="{{ object.img2.url }}" alt="{{ object.name }}">
+                                                <img src="{% if object.img2 %} {{ object.img2.url }}
+                                                {% else %} {{ STATIC_PREFIX }}img/products/product-16-2.jpg {% endif %}" alt="{{ object.name }}">
                                             </a>
 
                                             <a href="{{ object.img3.url }}" target="_blank">
-                                                <img src="{{ object.img3.url }}" alt="{{ object.name }}">
+                                                <img src="{% if object.img3 %} {{ object.img3.url }}
+                                                {% else %} {{ STATIC_PREFIX }}img/products/product-16-3.jpg {% endif %}" alt="{{ object.name }}">
                                             </a>
 
                                             <a href="{{ object.img4.url }}" target="_blank">
-                                                <img src="{{ object.img4.url }}" alt="{{ object.name }}">
+
+                                                <img src="{% if object.img4 %} {{ object.img4.url }}
+                                                {% else %} {{ STATIC_PREFIX }}img/products/product-16-4.jpg {% endif %}" alt="{{ object.name }}">
                                             </a>
 
                                             <a href="{{ object.img5.url }}" target="_blank">
-                                                <img src="{{ object.img5.url }}" alt="">
+                                                <img src="{% if object.img5 %} {{ object.img5.url }}
+                                                {% else %} {{ STATIC_PREFIX }}img/products/product-16-5.jpg {% endif %}" alt="{{ object.name }}">
                                             </a>
                                         </div>
                                     </div>
@@ -48,19 +53,23 @@
                                     <div class="product-gallery__carousel">
                                         <div class="owl-carousel" id="product-carousel">
                                             <a class="product-gallery__carousel-item">
-                                                <img class="product-gallery__carousel-image" src="{{ object.img2.url }}" alt="{{ object.name }}">
+                                                <img src="{% if object.img2 %} {{ object.img2.url }}
+                                                {% else %} {{ STATIC_PREFIX }}img/products/product-16-5.jpg {% endif %}" alt="{{ object.name }}">
                                             </a>
 
                                             <a class="product-gallery__carousel-item">
-                                                <img class="product-gallery__carousel-image" src="{{ object.img3.url }}" alt="{{ object.name }}">
+                                                <img src="{% if object.img3 %} {{ object.img3.url }}
+                                                {% else %} {{ STATIC_PREFIX }}img/products/product-16-5.jpg {% endif %}" alt="{{ object.name }}">
                                             </a>
 
                                             <a class="product-gallery__carousel-item">
-                                                <img class="product-gallery__carousel-image" src="{{ object.img4.url }}" alt="{{ object.name }}">
+                                                <img src="{% if object.img4 %} {{ object.img4.url }}
+                                                {% else %} {{ STATIC_PREFIX }}img/products/product-16-5.jpg {% endif %}" alt="{{ object.name }}">
                                             </a>
 
                                             <a class="product-gallery__carousel-item">
-                                                <img class="product-gallery__carousel-image" src="{{ object.img5.url }}" alt="{{ object.name }}">
+                                                <img src="{% if object.img5 %} {{ object.img5.url }}
+                                                {% else %} {{ STATIC_PREFIX }}img/products/product-16-5.jpg {% endif %}" alt="{{ object.name }}">
                                             </a>
                                         </div>
                                     </div>
