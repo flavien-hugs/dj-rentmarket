@@ -1,4 +1,3 @@
-{% load static %} {% get_static_prefix as STATIC_PREFIX %}
 {% for obj in products %}
 <div class="products-list__item">
     <div class="product-card">
@@ -15,8 +14,8 @@
         </div>
 
         <div class="product-card__image">
-            <a href="{{ obj.get_absolute_url }}">
-                <img src="{{ obj.img1.url }}" alt="{{ obj.name }}">
+            <a title="{{ obj.name }}" href="{{ obj.get_absolute_url }}">
+                <img src="{{ STATIC_PREFIX }}img/products/product-16-1.jpg" alt="{{ obj.name }}">
             </a>
         </div>
 

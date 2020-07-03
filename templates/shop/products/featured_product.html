@@ -1,4 +1,3 @@
-{% load static %} {% get_static_prefix as STATIC_PREFIX %}
 {% for obj in featured_product %}
 <div class="block-products-carousel__column">
     <div class="block-products-carousel__cell">
@@ -14,17 +13,14 @@
                 <div class="product-card__badge product-card__badge--new">New</div>
             </div>
             <div class="product-card__image">
-                <a href="{{ obj.get_absolute_url }}">
-                    <img src="{% if obj.img1 %}
-                        {{ obj.img1.url }}
-                        {% else %} {{ STATIC_PREFIX }}img/products/product-16-1.jpg
-                    {% endif %}" alt="{{ obj.name }}">
+                <a title="{{ obj.name }}" href="{{ obj.get_absolute_url }}">
+                    <img src="{{ STATIC_PREFIX }}img/products/product-16-1.jpg" alt="{{ obj.name }}">
                 </a>
             </div>
 
             <div class="product-card__info">
                 <div class="product-card__name">
-                    <a href="{{ obj.get_absolute_url }}">
+                    <a title="{{ obj.name }}" href="{{ obj.get_absolute_url }}">
                         {{ obj.name|safe }}
                     </a>
                 </div>
