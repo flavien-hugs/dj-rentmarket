@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 # core/production.py
 
+import django_heroku
 import dj_database_url
 from core.settings import *
 
 DEBUG = TEMPLATE_DEBUG = False
 
 # Parse database configuration from $DATABASE_URL
-DATABASES['default'] = dj_database_url.config()
+# Change 'default' database configuration with $DATABASE_URL.
+DATABASES['DATABASE_URL'].update(
+    dj_database_url.config(conn_max_age=500, ssl_require=True))
 
 # APPLICATION DEFINITION
 INSTALLED_APPS += ['whitenoise.runserver_nostatic']
@@ -34,3 +37,6 @@ CSRF_COOKIE_SECURE = True
 # Simplified static file serving.
 # https://warehouse.python.org/project/whitenoise/
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())
