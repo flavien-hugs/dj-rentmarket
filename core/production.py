@@ -9,7 +9,7 @@ DEBUG = TEMPLATE_DEBUG = False
 
 # Parse database configuration from $DATABASE_URL
 # Change 'default' database configuration with $DATABASE_URL.
-DATABASES['DATABASE_URL'].update(
+DATABASES['default'].update(
     dj_database_url.config(conn_max_age=500, ssl_require=True))
 
 # APPLICATION DEFINITION
