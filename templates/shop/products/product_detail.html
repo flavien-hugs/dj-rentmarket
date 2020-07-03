@@ -27,6 +27,11 @@
                                 <div class="product-gallery">
                                     <div class="product-gallery__featured">
                                         <div class="owl-carousel" id="product-image">
+
+                                            <a title="{{ object.name }}" href="{{ object.img1.url }}" target="_blank">
+                                                <img src="{{ STATIC_PREFIX }}img/products/product-16-1.jpg" alt="{{ object.name }}">
+                                            </a>
+
                                             <a title="{{ object.name }}" href="{{ object.img2.url }}" target="_blank">
                                                 <img src="{{ STATIC_PREFIX }}img/products/product-16-2.jpg" alt="{{ object.name }}">
                                             </a>
@@ -38,17 +43,16 @@
                                             <a title="{{ object.name }}" href="{{ object.img4.url }}" target="_blank">
                                                 <img src="{{ STATIC_PREFIX }}img/products/product-16-4.jpg" alt="{{ object.name }}">
                                             </a>
-
-                                            <a title="{{ object.name }}" href="{{ object.img5.url }}" target="_blank">
-                                                <img src="{{ STATIC_PREFIX }}img/products/product-16-5.jpg" alt="{{ object.name }}">
-                                            </a>
                                         </div>
                                     </div>
 
                                     <div class="product-gallery__carousel">
                                         <div class="owl-carousel" id="product-carousel">
-                                            <a class="product-gallery__carousel-item">
-                                                <a title="{{ object.name }}" href="{{ object.img5.url }}" target="_blank">
+                                            <a title="{{ object.name }}" class="product-gallery__carousel-item">
+                                                <img src="{{ STATIC_PREFIX }}img/products/product-16-1.jpg" alt="{{ object.name }}">
+                                            </a>
+
+                                            <a title="{{ object.name }}" class="product-gallery__carousel-item">
                                                 <img src="{{ STATIC_PREFIX }}img/products/product-16-2.jpg" alt="{{ object.name }}">
                                             </a>
 
@@ -58,10 +62,6 @@
 
                                             <a title="{{ object.name }}" class="product-gallery__carousel-item">
                                                 <img src="{{ STATIC_PREFIX }}img/products/product-16-4.jpg" alt="{{ object.name }}">
-                                            </a>
-
-                                            <a title="{{ object.name }}" class="product-gallery__carousel-item">
-                                                <img src="{{ STATIC_PREFIX }}img/products/product-16-5.jpg" alt="{{ object.name }}">
                                             </a>
                                         </div>
                                     </div>

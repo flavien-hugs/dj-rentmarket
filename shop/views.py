@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.views.generic import ListView, DetailView
 from django.views.decorators.http import require_http_methods
 
-from shop.models import ProductModel, CategoryModel
+from shop.models import ProductModel, CategoryModel, ImageModel
 
 
 @require_http_methods(["GET"])
@@ -56,7 +56,9 @@ class ProductDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         category = CategoryModel.objects.all()
+        images = ImageModel.objects.all()
         context['category'] = category
+        context['images'] = images
         return context
 
 
