@@ -4,6 +4,7 @@ verify_ssl = true
 
 [packages]
 argon2-cffi="*"
+Brotli="*"
 Django="*"
 django-widget-tweaks="*"
 django-heroku="*"
