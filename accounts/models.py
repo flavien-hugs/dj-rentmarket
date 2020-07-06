@@ -52,7 +52,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     def get_full_name(self):
-        return '{} {}'.format(self.first_name, self.last_name)
+        return '{} {}'.format(self.first_name, self.last_name.upper())
 
     def get_short_name(self):
         return self.last_name

@@ -14,7 +14,7 @@ class UserAdmin(BaseUserAdmin):
 
     form = UserChangeForm
     add_form = UserCreationForm
-
+    date_hierarchy = 'date_joined'
     list_display = (
         'first_name', 'email', 'country',
         'phone_number', 'date_joined', 'is_active')
