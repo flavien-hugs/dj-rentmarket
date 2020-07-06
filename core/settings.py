@@ -34,8 +34,11 @@ SITE_NAME = 'Rent Market'
 LOCATION_SESSION_ID = 'cartsession'
 USE_THOUSAND_SEPARATOR = True
 THOUSAND_SEPARATOR = ' '
-# Application definition
 
+# USER MODEL
+AUTH_USER_MODEL = 'accounts.User'
+
+# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',

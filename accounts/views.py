@@ -1,9 +1,9 @@
 from django.contrib import messages
-from django.contrib.auth import login
 from django.views.generic import UpdateView
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy, reverse
+from django.contrib.auth import login, authenticate
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
@@ -13,41 +13,16 @@ from accounts.forms import SignUpForm, UserInfoUpdateForm
 
 
 def signup(request):
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR')
-
-    device_type = ""
-    browser_type = ""
-    browser_version = ""
-    os_type = ""
-    os_version = ""
-
-    if request.user_agent.is_mobile:
-        device_type = 'Mobile'
-    if request.user_agent.is_tablet:
-        device_type = 'Tablet'
-    if request.user_agent.is_pc:
-        device_type = 'PC'
-    if request.user_agent.is_touch_capable:
-        device_type = 'touch capable'
-    if request.user_agent.is_bot:
-        device_type = 'bot'
-
-    os_type = request.user_agent.os.family
-    os_version = request.user_agent.os.version_string
-    browser_type = request.user_agent.browser.family
-    browser_version = request.user_agent.browser.version_string
-
-    device_family = request.user_agent.device.family
 
     form = SignUpForm()
+
     if request.method == 'POST':
-        form = SignUpForm(data=request.POST or None)
+        form = SignUpForm(data=request.POST)
         if form.is_valid():
             user = form.save()
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(
+                request, email=user.email, password=raw_password)
             login(request, user)
             messages.success(
                 request, 'Super ! Votre compte a été créé avec succès !')
@@ -55,16 +30,7 @@ def signup(request):
         else:
             print(form.errors)
 
-    context = {
-        'form': form,
-        "ip": ip,
-        "device_type": device_type,
-        "browser_type": browser_type,
-        "browser_version": browser_version,
-        "os_type": os_type,
-        "os_version": os_version,
-        "device_family": device_family
-    }
+    context = {'form': form}
     template = 'accounts/signup.html'
     return render(request, template, context)
 

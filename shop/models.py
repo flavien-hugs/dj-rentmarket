@@ -1,9 +1,9 @@
 import os
 from django.db import models
 from django.urls import reverse
+from django.conf import settings
 from django.utils import timezone
 from django.utils.text import slugify
-from django.contrib.auth.models import User
 
 
 def product(instance, filename):
@@ -85,7 +85,8 @@ class ProductModel(ImageModel):
     LABEL = (('N', 'New'),('S', 'Sale'),)
 
     user = models.ForeignKey(
-        User, related_name='utilisateur', on_delete=models.CASCADE, blank=True)
+        settings.AUTH_USER_MODEL,
+        related_name='utilisateur', on_delete=models.CASCADE, blank=True)
     category = models.ForeignKey(
         CategoryModel, on_delete=models.CASCADE,
         verbose_name='sous-catégorie')
@@ -134,10 +135,7 @@ class ProductModel(ImageModel):
 
 
 class WishListModel(models.Model):
-    wishlist = models.ForeignKey(
-        ProductModel, on_delete=models.CASCADE)
-    user = models.ForeignKey(
-        User, null=True, on_delete=models.SET_NULL)
+    wishlist = models.ForeignKey(ProductModel, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Liste de souhaits'
