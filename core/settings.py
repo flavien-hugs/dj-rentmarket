@@ -44,12 +44,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+
     # 'cloudinary_storage',
     # 'cloudinary',
 
     'widget_tweaks',
     'django_countries',
     'phonenumber_field',
+    'phonenumbers',
     'django_user_agents',
 
     'accounts.apps.AccountsConfig',
