@@ -1,4 +1,5 @@
 import os
+from decouple import config
 from django.core.exceptions import ImproperlyConfigured
 
 
@@ -43,12 +44,20 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    # 'cloudinary_storage',
+    # 'cloudinary',
+
     'widget_tweaks',
     'django_countries',
+    'phonenumber_field',
+    'django_user_agents',
+
     'accounts.apps.AccountsConfig',
     'shop.apps.ShopConfig',
     'location.apps.LocationConfig',
     'orders.apps.OrdersConfig',
+    'subscription.apps.SubscriptionConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -59,6 +68,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django_user_agents.middleware.UserAgentMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -76,7 +86,8 @@ TEMPLATES = [
                 'django.template.context_processors.i18n',
                 'django.template.context_processors.csrf',
                 'django.contrib.messages.context_processors.messages',
-                'location.context_processors.location',
+                'core.context_processors.location',
+                'core.context_processors.category',
             ],
 
             'debug': DEBUG,
@@ -139,6 +150,7 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 STATICFILES_FINDERS = [
@@ -146,10 +158,26 @@ STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
 
-STATICFILES_FINDERS = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-]
-
 LOGIN_URL = 'accounts:login'
-LOGIN_REDIRECT_URL = LOGOUT_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
+LOGIN_REDIRECT_URL = 'dashboard:dashboard'
+
+# Cloudinary settings for Django. Add to your settings file.
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': config('CLOUD_NAME'),
+    'API_KEY': config('API_KEY'),
+    'API_SECRET': config('API_SECRET'),
+}
+
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = config('EMAIL_PORT', cast=int)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
+
+PHONENUMBER_DEFAULT_REGION = "CI"
+PHONENUMBER_DB_FORMAT = "INTERNATIONAL"
+
+# Name of cache backend to cache user agents. If it not specified default
+# cache alias will be used. Set to `None` to disable caching.
+USER_AGENTS_CACHE = 'default'

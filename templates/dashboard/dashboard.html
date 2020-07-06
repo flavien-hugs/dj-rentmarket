@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+
+
+
+{% block desktop %}
+    {% include "includes/menu/header.html" %}
+{% endblock desktop %}
+
+{% block slideshow %}{% endblock slideshow %}
+
+{% block content %}
+    <div class="block">
+        <div class="container">
+            <div class="row justify-content-end">
+                {% if messages %}
+                    <div class="col-6 float-right">
+                        {% for message in messages %}
+                            <div class="alert {% if message.tags %} alert-{{ message.tags }} {% endif %} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button class="close" type="button" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="row">
+                <div class="col-md-4 d-flex">
+                    <div class="card flex-grow-1 mb-md-0">
+                        <div class="card-body">
+                            <h3 class="card-title">Information Client</h3>
+                            <div>
+                                <div class="form-group">
+                                    <label class="font-weight-bold">Nom &amp; Prénoms :</label> Mr/Mme/Mlle {{ request.user.username|upper }} <br>
+
+                                    <label class="font-weight-bold">
+                                    Email :</label>
+                                    {{ request.user.email }} <br>
+                                </div>
+
+                                <div class="form-group">
+                                    <a href="{% url 'accounts:update' %}" class="btn btn-primary btn-md btn-block">
+                                    Modifier mon compte</a>
+                                </div>
+
+                                <div class="form-group">
+                                    <a href="{% url 'accounts:delete' user.id %}" class="btn btn-primary btn-md btn-block">
+                                    Supprimer mon compte</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card-divider"></div>
+
+                        <div class="card-body">
+                            <h3 class="card-title">Information Commande</h3>
+                            <div>
+                                <div class="form-group">
+                                    <label class="font-weight-bold">Total Commande :</label>
+                                    {{ total_orders|length }} commande <br>
+
+                                    <label class="font-weight-bold">Commandes délivrées :</label>
+                                    {{ total_orders|length }} commande <br>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-8 d-flex mt-4 mt-md-0">
+                    <div class="card flex-grow-1 mb-md-0">
+                        <div class="card-body">
+
+                            {% if object %}
+
+                                <h3 class="card-title">Produits en location</h3>
+
+                                <div class="py-2">
+                                    <table class="table table-sm">
+                                        <tr class="small text-capitalize">
+                                            <th>produit</th>
+                                            <th>prix</th>
+                                            <th>disponible</th>
+                                            <th>mise en location</th>
+                                            <th>ajouter le</th>
+                                            <th>Vues</th>
+                                            <th class="cart-table__column cart-table__column--remove"></th>
+                                        </tr>
+
+                                        {% for obj in object_list %}
+                                        <tr>
+                                            <td data-title="Produit">
+                                                <a href="{{ obj.get_absolute_url }}">{{ obj.name|truncatewords:6|safe }}</a>
+                                            </td>
+
+                                            <td data-title="Prix">{{ obj.price|floatformat:0|safe }}</td>
+
+                                            <td data-title="Disponibilité">
+                                                {% if obj.available %}
+                                                oui{% else %}non{% endif %}
+                                            </td>
+
+                                            <td data-title="Mise en ligne">{{ obj.pub_date }}</td>
+
+                                            <td data-title="Date de location">{{ obj.rent_date }}</td>
+
+                                            <td data-title="Nombre de vues">{{ obj.views|length }}</td>
+
+                                            <td class="cart-table__column cart-table__column--remove">
+                                                <a href="{% url 'dashboard:delete_product' obj.pk %}" type="button" class="btn btn-light btn-sm btn-svg-icon">
+                                                    <svg width="12px" height="12px">
+                                                        <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#cross-12"></use>
+                                                    </svg>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </table>
+                                </div>
+
+                            {% else %}
+                                <h3 class="card-title">Aucun produit en location</h3>
+                            {% endif %}
+
+                            <a href="{% url 'dashboard:add_product' %}" class="btn btn-primary btn-md text-uppercase">ajouter un produit</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

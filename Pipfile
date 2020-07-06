@@ -3,6 +3,7 @@ url = "https://pypi.python.org/simple"
 verify_ssl = true
 
 [packages]
+six="*"
 argon2-cffi="*"
 Brotli="*"
 Django="*"
@@ -13,6 +14,12 @@ gunicorn="*"
 pillow="*"
 whitenoise="*"
 django-countries="*"
+python-decouple="*"
+django-phonenumber-field="*"
+django-user-agents="*"
+pyyaml="*"
+ua-parser="*"
+user-agents="*"
 
 [requires]
 python_version = "3.8.3"

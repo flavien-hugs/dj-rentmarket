@@ -1,0 +1,117 @@
+{% extends "base" %}
+
+{% block content %}
+
+    {% block breadcrumb %}
+        {% include "layouts/breadcrumb.html" %}    
+    {% endblock breadcrumb %}
+
+    <div class="block">
+        <div class="container">
+            <div class="table-responsive">
+                <table class="compare-table">
+                    <tbody>
+                        <tr>
+                            <th>Product</th>
+                            <td>
+                                <a class="compare-table__product-link" href="#">
+                                    <div class="compare-table__product-image">
+                                        <img src="{{ STATIC_PREFIX }}img/products/product-1.jpg" alt="">
+                                    </div>
+
+                                    <div class="compare-table__product-name">Electric Planer Brandix KL370090G 300 Watts</div>
+                                </a>
+                            </td>
+
+                            <td>
+                                <a class="compare-table__product-link" href="product.html">
+                                    <div class="compare-table__product-image">
+                                        <img src="{{ STATIC_PREFIX }}img/products/product-2.jpg" alt="">
+                                    </div>
+
+                                    <div class="compare-table__product-name">Undefined Tool IRadix DPS3000SY 2700 Watts</div>
+                                </a>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Rating</th>
+                            <td>
+                                <div class="compare-table__product-rating">
+                                    {% include "layouts/rating.html" %}
+                                </div>
+
+                                <div class="compare-table__product-rating-legend">7 Reviews</div>
+                            </td>
+
+                            <td>
+                                <div class="compare-table__product-rating">
+                                    {% include "layouts/rating.html" %}
+                                </div>
+                                <div class="compare-table__product-rating-legend">7 Reviews</div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Availability</th>
+                            <td><span class="compare-table__product-badge badge badge-success">In Stock</span>
+                            </td>
+
+                            <td><span class="compare-table__product-badge badge badge-success">In Stock</span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>Price</th>
+                            <td>$749.00</td>
+                            <td>$1,019.00</td>
+                        </tr>
+
+                        <tr>
+                            <th>Add To Cart</th>
+                            <td><button class="btn btn-primary">Add To Cart</button>
+                            </td>
+
+                            <td><button class="btn btn-primary">Add To Cart</button>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th>SKU</th>
+                            <td>83690/32</td>
+                            <td>83590/15</td>
+
+                        <tr>
+                            <th>Weight</th>
+                            <td>15 Kg</td>
+                            <td>7 Kg</td>
+                        </tr>
+
+                        <tr>
+                            <th>Color</th>
+                            <td>Red</td>
+                            <td>Brown</td>
+                        </tr>
+
+                        <tr>
+                            <th>Material</th>
+                            <td>Wood</td>
+                            <td>Plastic</td>
+                        </tr>
+
+                        <tr>
+                            <th></th>
+                            <td>
+                                <button class="btn btn-secondary btn-sm">Remove</button>
+                            </td>
+
+                            <td>
+                                <button class="btn btn-secondary btn-sm">Remove</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

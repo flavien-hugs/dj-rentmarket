@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="block">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-xl-5 col-lg-6 col-md-8">
+            <div class="card flex-grow-1 mb-md-0 mt-5">
+              <div class="card-body">
+                <h3 class="card-title text-uppercase text-center">Voulez-vous supprimer ce produit ?</h3>
+                <em class="text-success font-italic">
+                "{{ object.name|title|safe }}"</em>
+
+                <p class="font-italic text-muted mb-1">Voulez-vous supprimer ce produit "{{ object|title|safe }}" ?</p>
+
+                <form method="post" novalidate>
+                    {% csrf_token %}
+                    <button class="shadow-none btn btn-sm btn-danger text-uppercase" type="submit">valider</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+{% endblock content %}

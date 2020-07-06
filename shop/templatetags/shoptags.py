@@ -1,6 +1,6 @@
 from django import template
 
-from ..models import ProductModel
+from shop.models import ProductModel, ReviewModel
 
 register = template.Library()
 
@@ -15,7 +15,7 @@ def show_latest_product(count=20):
     return context
 
 
-@register.inclusion_tag('shop/products/featured_product.html')
+@register.inclusion_tag('shop/products/featured/featured_product.html')
 def show_featured_product(count=20):
     featured_product = ProductModel.objects.filter(
         available=True, pub_date__isnull=False
@@ -30,3 +30,19 @@ def show_similar_product(count=20):
     product_similar = product.prefetch_related('category')[:count]
     context = {'product_similar': product_similar}
     return context
+
+
+@register.inclusion_tag('shop/review/review_list.html')
+def show_review_list(count):
+    review_list = ReviewModel.objects.order_by('-date')[:count]
+    context = {'review_list': review_list}
+    return context
+
+
+@register.simple_tag(takes_context=True)
+def departments_opened(context, name):
+
+    if context['request'].resolver_match.url_name == name:
+        return 'departments--opened departments--fixed'
+
+    return ''

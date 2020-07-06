@@ -10,7 +10,7 @@ from orders.models import ItemOrderModel
 def create_order(request):
     location = Location(request)
     if request.method == 'POST':
-        form = OrdersForm(request.POST)
+        form = OrdersForm(request.POST or None)
         if form.is_valid():
             order = form.save()
             for item in location:
@@ -18,8 +18,10 @@ def create_order(request):
                     order=order,
                     product=item['product'],
                     price=item['price'])
+
             location.clear_session()
             request.session['id_order'] = order.id
+
             return redirect(reverse('home'))
     else:
         form = OrdersForm()

@@ -13,7 +13,7 @@
         <div class="shop-layout shop-layout--sidebar--start">
             <div class="shop-layout__sidebar">
                 <div class="block block-sidebar">
-                    {% include "shop/products/category.html" %}
+                    {% include "shop/category/sidebar_category.html" %}
                     {% show_latest_product 15 %}
                 </div>
             </div>
@@ -71,124 +71,27 @@
                             <!-- .product__info -->
                             <div class="product__info">
                                 <div class="product__wishlist-compare">
-                                    <button type="button" class="btn btn-sm btn-light btn-svg-icon" data-toggle="tooltip" data-placement="right" title="Liker">
+                                    <a href="{% url "shop:wishlist" %}" class="btn btn-sm btn-light btn-svg-icon" data-toggle="tooltip" data-placement="right" title="Ajouter à la liste à souhait">
                                         <svg width="16px" height="16px">
                                             <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#wishlist-16"></use>
                                         </svg>
-                                    </button>
-                                    <button type="button" class="btn btn-sm btn-light btn-svg-icon" data-toggle="tooltip" data-placement="right" title="Comparer">
+                                    </a>
+
+                                    <a href="{% url "shop:compare" %}" class="btn btn-sm btn-light btn-svg-icon" data-toggle="tooltip" data-placement="right" title="Comparer">
                                         <svg width="16px" height="16px">
                                             <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#compare-16"></use>
                                         </svg>
-                                    </button>
+                                    </a>
                                 </div>
 
                                 <h1 class="product__name">
                                 {{ object.name|safe }}</h1>
                                 <div class="product__rating">
-                                    <!-- reviews --> 
+                                    <!-- reviews rating -->
                                     <div class="product__rating-stars">
-                                        <div class="rating">
-                                            <div class="rating__body">
-                                                <svg class="rating__star rating__star--active" width="13px" height="12px">
-                                                    <g class="rating__fill">
-                                                        <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#star-normal">
-                                                        </use>
-                                                    </g>
-
-                                                    <g class="rating__stroke">
-                                                        <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#star-normal-stroke"></use>
-                                                    </g>
-                                                </svg>
-
-                                                <div class="rating__star rating__star--only-edge rating__star--active">
-                                                    <div class="rating__fill">
-                                                        <div class="fake-svg-icon"></div>
-                                                    </div>
-                                                    <div class="rating__stroke">
-                                                        <div class="fake-svg-icon"></div>
-                                                    </div>
-                                                </div>
-                                                <svg class="rating__star rating__star--active" width="13px" height="12px">
-                                                    <g class="rating__fill">
-                                                        <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#star-normal"></use>
-                                                    </g>
-                                                    <g class="rating__stroke"><use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#star-normal-stroke">
-                                                    </use></g>
-                                                </svg>
-
-                                                <div class="rating__star rating__star--only-edge rating__star--active">
-                                                    <div class="rating__fill">
-                                                        <div class="fake-svg-icon"></div>
-                                                    </div>
-                                                    <div class="rating__stroke">
-                                                        <div class="fake-svg-icon">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <svg class="rating__star rating__star--active" width="13px" height="12px">
-                                                    <g class="rating__fill">
-                                                        <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#star-normal"></use>
-                                                    </g>
-                                                    <g class="rating__stroke">
-                                                        <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#star-normal-stroke">
-                                                        </use>
-                                                    </g>
-                                                </svg>
-                                                <div class="rating__star rating__star--only-edge rating__star--active">
-                                                    <div class="rating__fill">
-                                                        <div class="fake-svg-icon"></div>
-                                                    </div>
-
-                                                    <div class="rating__stroke">
-                                                        <div class="fake-svg-icon">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <svg class="rating__star rating__star--active" width="13px" height="12px">
-                                                    <g class="rating__fill">
-                                                        <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#star-normal"></use>
-                                                    </g>
-
-                                                    <g class="rating__stroke">
-                                                        <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#star-normal-stroke"></use>
-                                                    </g>
-                                                </svg>
-
-                                                <div class="rating__star rating__star--only-edge rating__star--active">
-                                                    <div class="rating__fill">
-                                                        <div class="fake-svg-icon">
-                                                        </div>
-                                                    </div>
-                                                    <div class="rating__stroke">
-                                                        <div class="fake-svg-icon">
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                                <svg class="rating__star rating__star--active" width="13px" height="12px">
-                                                    <g class="rating__fill">
-                                                        <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#star-normal"></use>
-                                                    </g>
-                                                    <g class="rating__stroke">
-                                                        <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#star-normal-stroke"></use>
-                                                    </g>
-                                                </svg>
-
-                                                <div class="rating__star rating__star--only-edge rating__star--active">
-                                                    <div class="rating__fill">
-                                                        <div class="fake-svg-icon"></div>
-                                                    </div>
-                                                    <div class="rating__stroke">
-                                                        <div class="fake-svg-icon">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div><!-- end reviews --> 
+                                        {% include "layouts/rating.html" %}
+                                    </div>
+                                    <!-- end reviews rating --> 
 
                                     <div class="product__rating-legend">
                                         <a href="#">7 Reviews</a>
@@ -228,31 +131,18 @@
                                 <!-- .product__options -->
                                 <form class="product__options">
                                     <div class="form-group product__option">
-                                         <!-- <label class="product__option-label" for="product-quantity">
-                                            Quantity
-                                        </label> -->
                                         <div class="product__actions">
-                                            <!-- <div class="product__actions-item">
-                                                <div class="input-number product__quantity">
-                                                    <input id="product-quantity" class="input-number__input form-control form-control-lg" type="number" min="1" value="1">
-                                                    <div class="input-number__add">
-                                                    </div>
-                                                    <div class="input-number__sub">
-                                                    </div>
-                                                </div>
-                                            </div> -->
-
                                             <div class="product__actions-item product__actions-item--addtocart">
                                                 <a href="{% url "location:add" object.id %}" class="btn btn-primary btn-lg">Louer</a>
                                             </div>
 
                                             <div class="product__actions-item product__actions-item--wishlist">
-                                                <button type="button" class="btn btn-secondary btn-svg-icon btn-lg" data-toggle="tooltip" title="Wishlist">
+                                                <a id="wish{{ object.id }}{{ object.user }}" type="button" class="btn btn-secondary btn-svg-icon btn-lg whishlist" data-toggle="tooltip" title="Ajouter à la liste de souhait" data-wish="{{ object.id }}">
                                                     <svg width="16px" height="16px">
                                                         <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#wishlist-16">
                                                         </use>
                                                     </svg>
-                                                </button>
+                                                </a>
                                             </div>
 
                                             <div class="product__actions-item product__actions-item--compare">
@@ -299,7 +189,8 @@
                                 <div class="spec">
                                     <h5 class="spec__header">Spécification</h5>
                                     <div class="spec__section">
-                                        <h4 class="spec__section-title">Général</h4>
+                                        <h4 class="spec__section-title">Général
+                                        </h4>
                                         <div class="spec__row">
                                             <div class="spec__name">Material</div>
                                             <div class="spec__value">Aluminium, Plastic</div>
@@ -315,6 +206,7 @@
                                             </div>
                                             <div class="spec__value">18 V</div>
                                         </div>
+
                                         <div class="spec__row">
                                             <div class="spec__name">Battery Type</div>
                                             <div class="spec__value">Li-lon</div>
@@ -337,22 +229,26 @@
                                     </div>
 
                                     <div class="spec__section">
-                                        <h class="spec__section-title">Dimensions</h4>
+                                        <h4 class="spec__section-title">Dimensions</h4>
                                         <div class="spec__row">
                                             <div class="spec__name">Length</div>
-                                            <div class="spec__value">99 mm</div>
+                                            <div class="spec__value">
+                                            99 mm</div>
                                         </div>
                                         <div class="spec__row">
-                                            <div class="spec__name">Width</div>
-                                            <div class="spec__value">207 mm</div>
+                                            <div class="spec__name">
+                                            Width</div>
+                                            <div class="spec__value">
+                                            207 mm</div>
                                         </div>
                                         <div class="spec__row">
                                             <div class="spec__name">Height</div>
                                             <div class="spec__value">208 mm</div>
                                         </div>
                                     </div>
+
                                     <div class="spec__disclaimer">
-                                        Information on technical characteristics, the delivery set, the country of manufacture and the appearance of the goods is for reference only and is based on the latest information available at the time of publication
+                                        Information on technical characteristics, the delivery set, the country of manufacture and the appearance of the goods is for reference onl
                                     </div>
                                 </div>
                             </div>
@@ -372,3 +268,23 @@
         </div>
     </div>
 {% endblock content %}
+
+
+{% block js %}
+    {% url "shop:addwish" as addwish %}
+    <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajaxy/1.6.1/scripts/jquery.ajaxy.min.js"></script>
+    <script type='text/javascript'>
+        $('.whishlist').click(function(){
+            var wish;
+            wish = $(this).attr('data-wish');
+            $.ajax({
+                type:"GET",
+                url: "{{ addwish }}",
+                data:{ add: wish },
+                success: function(data){
+                    $('#wish + wish').remove();
+                }
+            })
+        });
+    </script>
+{% endblock js %}

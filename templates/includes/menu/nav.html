@@ -23,20 +23,20 @@
             <ul class="mobile-links mobile-links--level--0" data-collapse data-collapse-opened-class="mobile-links__item--open">
                 <li class="mobile-links__item" data-collapse-item>
                     <div class="mobile-links__item-title">
-                        <a href="{% url "home" %}" class="mobile-links__item-link">Home
+                        <a href="{% url "home" %}" class="mobile-links__item-link">Accueil
                         </a>
                     </div>
                 </li>
 
                 <li class="mobile-links__item" data-collapse-item>
                     <div class="mobile-links__item-title">
-                        <a href="#" class="mobile-links__item-link">Categories</a>
+                        <a title="Catégories" href="{% url "shop:all_category" %}" class="mobile-links__item-link">Catégories</a>
                     </div>
                 </li>
 
                 <li class="mobile-links__item" data-collapse-item>
                     <div class="mobile-links__item-title">
-                        <a href="#" class="mobile-links__item-link">Shop
+                        <a title="Produits" href="{% url "shop:all_product" %}" class="mobile-links__item-link">Produits
                         </a>
                     </div>
                 </li>

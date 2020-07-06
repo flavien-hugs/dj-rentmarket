@@ -7,7 +7,7 @@ from location.location import Location
 # Create your views here.*
 def addLocation(request, product):
     location = Location(request)
-    product = get_object_or_404(ProductModel, id=product)
+    product = get_object_or_404(ProductModel, id=product, available=True)
     location.add(product=product)
 
     return redirect('location:detail')
@@ -15,8 +15,10 @@ def addLocation(request, product):
 
 def removeLocation(request, product):
     location = Location(request)
-    product = get_object_or_404(ProductModel, id=product)
+
+    product = get_object_or_404(ProductModel, id=product, available=True)
     location.remove(product)
+
     return redirect('location:detail')
 
 

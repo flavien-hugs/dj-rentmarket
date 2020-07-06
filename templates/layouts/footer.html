@@ -5,8 +5,7 @@
                 <div class="row">
                     <div class="col-12 col-md-6 col-lg-4">
                         <div class="site-footer__widget footer-contacts">
-                            <h5 class="footer-contacts__title">
-                            Contact Us</h5>
+                            <h5 class="footer-contacts__title">Contactez-nous</h5>
                             <div class="footer-contacts__text">
                                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer in feugiat lorem. Pellentque ac placerat tellus.
                             </div>
@@ -31,30 +30,27 @@
 
                     <div class="col-6 col-md-3 col-lg-2">
                         <div class="site-footer__widget footer-links">
-                            <h5 class="footer-links__title">Information</h5>
+                            <h5 class="footer-links__title">Informations</h5>
                             <ul class="footer-links__list">
+
                                 <li class="footer-links__item">
-                                    <a href="#" class="footer-links__link">About Us</a>
+                                    <a title="À propos de nous" href="{% url "about" %}" class="footer-links__link">À propos de nous</a>
                                 </li>
 
                                 <li class="footer-links__item">
-                                    <a href="#" class="footer-links__link">Delivery Information</a>
+                                    <a title="Contactez-nous" href="{% url "contact" %}" class="footer-links__link">Contactez-nous</a>
                                 </li>
 
                                 <li class="footer-links__item">
-                                    <a href="#" class="footer-links__link">Privacy Policy</a>
+                                    <a title="Informations sur la livraison" href="#" class="footer-links__link">Informations sur la livraison</a>
                                 </li>
 
                                 <li class="footer-links__item">
-                                    <a href="#" class="footer-links__link">Brands</a>
+                                    <a title="Politique de confidentialité" href="{% url "cgu" %}" class="footer-links__link">Politique de confidentialité</a>
                                 </li>
 
                                 <li class="footer-links__item">
-                                    <a href="#" class="footer-links__link">Contact Us</a>
-                                </li>
-
-                                <li class="footer-links__item">
-                                    <a href="#" class="footer-links__link">Returns</a>
+                                    <a title="Plan du site" href="#" class="footer-links__link">Site Map</a>
                                 </li>
                             </ul>
                         </div>
@@ -62,25 +58,18 @@
 
                     <div class="col-6 col-md-3 col-lg-2">
                         <div class="site-footer__widget footer-links">
-                            <h5 class="footer-links__title">My Account</h5>
+                            <h5 class="footer-links__title">Mon Compte</h5>
                             <ul class="footer-links__list">
                                 <li class="footer-links__item">
-                                    <a href="#" class="footer-links__link">Store Location</a>
+                                    <a title="historique des commandes" href="#" class="footer-links__link">Historique des commandes</a>
                                 </li>
+
                                 <li class="footer-links__item">
-                                    <a href="#" class="footer-links__link">Order History</a>
+                                    <a title="Liste de souhaits" href="{% url "shop:wishlist" %}" class="footer-links__link">Liste de souhaits</a>
                                 </li>
+
                                 <li class="footer-links__item">
-                                    <a href="#" class="footer-links__link">Wish List</a>
-                                </li>
-                                <li class="footer-links__item">
-                                    <a href="#" class="footer-links__link">Newsletter</a>
-                                </li>
-                                <li class="footer-links__item">
-                                    <a href="#" class="footer-links__link">Specials</a>
-                                </li>
-                                <li class="footer-links__item">
-                                    <a href="#" class="footer-links__link">Affiliate</a>
+                                    <a title="Affiliate" href="#" class="footer-links__link">Affiliate</a>
                                 </li>
                             </ul>
                         </div>
@@ -92,13 +81,14 @@
                             <div class="footer-newsletter__text">
                                 Praesent pellentesque volutpat ex, vitae auctor lorem pulvinar mollis felis at lacinia.
                             </div>
+
                             <form action="#" class="footer-newsletter__form">
                                 <label class="sr-only" for="footer-newsletter-address">Email Address</label>
                                 <input type="text" class="footer-newsletter__form-input form-control" id="footer-newsletter-address" placeholder="Email Address...">
                                 <button class="footer-newsletter__form-button btn btn-primary">Subscribe</button>
                             </form>
 
-                            <div class="footer-newsletter__text footer-newsletter__text--social">Follow us on social networks</div>
+                            <div class="footer-newsletter__text footer-newsletter__text--social">Suivez-nous sur les réseaux sociaux</div>
 
                             <ul class="footer-newsletter__social-links">
                                 <li class="footer-newsletter__social-link footer-newsletter__social-link--facebook">
@@ -123,7 +113,8 @@
             </div>
             <div class="site-footer__bottom">
                 <div class="site-footer__copyright">&copy; Copyright
-                    <script>document.write(new Date().getFullYear());
+                    <script>
+                    document.write(new Date().getFullYear());
                     </script>
                     <a href="{% url "home" %}" title="RentMarket"> RentMarket</a> &mdash; Bêta test &mdash; V.0.0.1
                 </div>

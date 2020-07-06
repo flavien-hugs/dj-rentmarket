@@ -1,8 +1,8 @@
 from django.urls import path
-
+from django.views.generic import TemplateView
 from shop.views import (
-    search, ProductListView,
-    ProductDetailView, CategoryListView)
+    search, ProductListView, ProductDetailView,
+    CategoryListView, wishlist, addReview)
 
 app_name = 'shop'
 urlpatterns = [
@@ -15,4 +15,15 @@ urlpatterns = [
     path('category/', CategoryListView.as_view(), name='all_category'),
     path('category/<slug>/', CategoryListView.as_view(),
         name='detail_category'),
+
+    # URL wishlist
+    path('addwish/<int:product_id>/', wishlist, name='addwish'),
+    path('wishlist/', TemplateView.as_view(
+        template_name='shop/wishlist.html'), name='wishlist'),
+    # URL compare
+    path('compare/', TemplateView.as_view(
+        template_name='shop/compare.html'), name='compare'),
+
+    # url review
+    path('review/<slug>/', addReview, name='add_review'),
 ]

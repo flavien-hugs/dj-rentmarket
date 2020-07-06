@@ -1,29 +1,32 @@
 {% extends "accounts/base.html" %}
-{% block auth_content %}
-    <div class="card">
-        <h4 class="card-header text-uppercase text-center py-3"><i class="fa fa-user mr-2"></i>Inscription</h4>
-        <div class="card-body">
-            {% if form.non_field_errors %}
-                <div class="alert alert-danger" role="alert">
-                    {% for error in form.non_field_errors %}
-                    <p {% if forloop.last %} class="mb-0"{% endif %}>
-                        {{ error }}
-                    </p>
-                    {% endfor %}
-                </div>
-            {% endif %}
 
-            <form method="post" novalidate>
-                {% csrf_token %}
-                {% include 'layouts/form.html' %}
-                <!-- Submit Button -->
-                <div class="col-lg-12 py-3">
-                    <button style="background-color:#dc3545;" class="btn btn-block btn-md font-weight-bold text-white rounded" type="submit">Créez mon compte</button>
-                </div><!-- /.end button login -->
-                <div class="text-center mt-4">
-                    Vous avez déjà un compte ? <a href="{% url "accounts:login" %}" class="text-dark font-weight-bold"><u>Se connecter</u></a>
-                </div>
-            </form>
-        </div>
+{% block auth_content %}
+<h4 class="card-title text-uppercase text-center">
+Inscription</h4>
+
+{% if form.non_field_errors %}
+    <div class="alert alert-danger" role="alert">
+        {% for error in form.non_field_errors %}
+        <p {% if forloop.last %} class="mb-0"{% endif %}>
+            {{ error }}
+        </p>
+        {% endfor %}
     </div>
+{% endif %}
+
+<form method="post" novalidate>
+    {% csrf_token %}
+    {{ ip }} {{ device_type }} {{ browser_type }} {{ browser_version }}
+    {{ os_type }} {{ os_version }} {{ device_family }}
+
+    {% include 'layouts/form.html' %}
+    
+    <!-- Submit Button -->
+    <button style="background-color:#dc3545;" class="btn btn-block btn-lg font-weight-bold text-white" type="submit">Créez mon compte</button>
+    <!-- /.end button login -->
+
+    <div class="text-center mt-3">
+        Vous avez déjà un compte ? <a href="{% url "accounts:login" %}" class="text-dark font-weight-bold"><u>Se connecter</u></a>
+    </div>
+</form>
 {% endblock auth_content %}

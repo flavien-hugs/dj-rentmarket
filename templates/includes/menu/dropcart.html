@@ -1,0 +1,55 @@
+{% load humanize %}
+
+<div class="dropcart">
+    {% if location.poduct %}
+        {% for obj in location %}
+            {% with n=obj.product %}
+                <div class="dropcart__products-list">
+                    <div class="dropcart__product">
+                        <div class="dropcart__product-image">
+                            <a href="{{ n.get_absolute_url }}">
+                                <img src="{{ n.img1.url }}" alt="{{ n.name }}">
+                            </a>
+                        </div>
+                        <div class="dropcart__product-info">
+                            <div class="dropcart__product-name">
+                                <a href="{{ n.get_absolute_url }}">{{ n.name|truncatewords:8|safe }}</a>
+                            </div>
+                            <div class="dropcart__product-meta">
+                                <span class="dropcart__product-price">
+                                    {{ n.price|intcomma|safe }} Fr CFA
+                                </span>
+                            </div>
+                        </div>
+                        <a href="{% url "location:remove" n.id %}" type="button" class="dropcart__product-remove btn btn-light btn-sm btn-svg-icon">
+                            <svg width="10px" height="10px">
+                                <use xlink:href="{{ STATIC_PREFIX }}img/svg/sprite.svg#cross-10"></use>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            {% endwith %}
+        {% endfor %}
+
+        <div class="dropcart__totals">
+            <table>
+                <tr>
+                    <th>Total</th>
+                    <td>{{ location.get_total_price|safe }} Fr CFA</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="dropcart__buttons">
+            <a class="btn btn-secondary" href="{% url "location:detail" %}">Voir mon panier</a>
+            <a class="btn btn-primary" href="#">Louer</a>
+        </div>
+
+    {% else %}
+        <div class="dropcart__products-list">
+            <div class="dropcart__product text-center">
+                Votre panier est vide.
+            </div>
+        </div>
+    {% endif %}
+</div>

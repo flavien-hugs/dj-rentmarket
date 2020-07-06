@@ -1,0 +1,17 @@
+{% extends "accounts/base.html" %}
+
+
+{% block auth_content %}
+
+  <h3 class="card-title text-uppercase text-center">
+    Modifier Information
+  </h3>
+  <form method="post" novalidate>
+    {% csrf_token %}
+    {% include 'layouts/form.html' %}
+
+    <button type="submit" class="btn btn-block btn-lg btn-success font-weight-bold text-white">Enregistrer les modifications
+    </button>
+  </form>
+ 
+{% endblock auth_content %}

@@ -1,0 +1,45 @@
+{% load widget_tweaks %}
+
+<div class="form-group">
+   <label for="{{ form.category.id_for_label }}">
+   Catégorie du produit</label>
+   {{ form.category|add_class:'form-control custom-select shadow-none' }}
+</div>
+
+<div class="form-row">
+    <div class="form-group col-md-8">
+       <label for="{{ form.name.id_for_label }}">Nom du produit</label>
+       {{ form.name|add_class:'form-control shadow-none'|attr:"placeholder:Saisir le nom du produit"|attr:"onfocus:this.placeholder=''"|attr:"onblur:this.placeholder='Saisir le nom du produit'" }}
+    </div>
+
+    <div class="form-group col-md-4">
+        <label for="{{ form.label.id_for_label }}">Label</label>
+        {{ form.label|add_class:'form-control custom-select shadow-none' }}
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="{{ form.slug.id_for_label }}">Lien du produit : </label>
+    {{ form.slug|add_class:'form-control shadow-none'|attr:"placeholder:Saisir l'URL du produit"|attr:"onfocus:this.placeholder=''"|attr:"onblur:this.placeholder='l\'URL du produit'" }}
+</div>
+
+<div class="form-group">
+    <label for="{{ form.price.id_for_label }}">Prix du produit</label>
+    {{ form.price|add_class:'form-control shadow-none'|attr:"placeholder:Saisir le prix du produit"|attr:"onfocus:this.placeholder=''"|attr:"onblur:this.placeholder='Saisir le prix du produit'" }}
+</div>
+
+<div class="form-group">
+    <div class="form-check">
+        {{ form.available|add_class:'form-check-input shadow-none' }}
+        <label class="form-check-label" for="{{ form.available.id_for_label }}">
+            Ce produit est disponible ?
+        </label>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="{{ form.keywords.id_for_label }}">
+        Mots clés
+    </label>
+    {{ form.keywords|add_class:'form-control shadow-none'|attr:"placeholder:Saisir des mots clés séparés de virgule"|attr:"onfocus:this.placeholder=''"|attr:"onblur:this.placeholder='Saisir des mots clés séparés de virgule'" }}
+</div>

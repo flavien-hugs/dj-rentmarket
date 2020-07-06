@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+    {% block breadcrumb %}
+        {% include "layouts/breadcrumb.html" %}    
+    {% endblock breadcrumb %}
+
+    <div class="checkout block">
+        <div class="container">
+            <div class="row">
+                <form class="row" method="POST"  enctype="multipart/form-data" novalidate>
+                    {% csrf_token %}
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {% for error in form.non_field_errors %}
+                            <p {% if forloop.last %} class="mb-0"{% endif %}>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="col-12 col-lg-6 col-xl-7">
+                        <div class="card mb-lg-0">
+                            <div class="card-body">
+                                <h3 class="card-title">Ajout de nouveau produit</h3>
+                                {% include 'dashboard/product_form_1.html' %}
+                            </div>
+                        </div> 
+                    </div>
+
+                    <div class="col-12 col-lg-6 col-xl-5 mt-4 mt-lg-0">
+                        <div class="card mb-0">
+                            <div class="card-body">
+                                {% include 'dashboard/product_form_2.html' %}
+                            </div>
+                        </div> 
+                    </div>
+
+                    {% if form.non_field_errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {% for error in form.non_field_errors %}
+                            <p {% if forloop.last %} class="mb-0"{% endif %}>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    <div class="col-6">
+                        <button type="submit" value="Ajouter" class="btn btn-md font-weight-bold text-white btn-success">Ajouter</button>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

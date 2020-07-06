@@ -1,22 +1,21 @@
 from django import forms
-from django.forms import TextInput
 
 from orders.models import OrdersModel
 from django_countries.fields import CountryField
+from phonenumber_field.formfields import PhoneNumberField
 
 
 class OrdersForm(forms.ModelForm):
     country = CountryField(blank_label='selectionner votre pays').formfield()
     country.widget.attrs.update({'class': 'form-control'})
+    phone_number = PhoneNumberField(label='Numéro de téléphone')
+    note = forms.CharField(required=False, widget=forms.Textarea)
+    note.widget.attrs.update({'class': 'form-control'})
 
     class Meta:
         model = OrdersModel
         fields = [
             'first_name', 'last_name', 'company', 'country',
             'address', 'apartement', 'city', 'zipcode', 'email',
-            'phone', 'note'
+            'phone_number', 'note'
         ]
-
-        widgets = {
-            'note': TextInput(attrs={'class': 'form-control'}),
-        }
