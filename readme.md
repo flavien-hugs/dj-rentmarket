@@ -7,13 +7,6 @@
 Cette application permet aux utilisateurs de pouvoir mettre en location leurs produits en location via l'application afin de les rentabiliser et aussi louer d'autres produits.
 
 
-## CONTRIBUTEURS
-
-Merci aux contributeurs:
-
-    Guy Jo (@chatbot-io)
-
-
 Cette plateforme a été développé et testé avec [python 3.6](https://www.python.org)
 et [Django3](https://www.djangoproject.com) version LTS.
 
