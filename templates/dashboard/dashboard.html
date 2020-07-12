@@ -63,14 +63,14 @@
                         <div class="card-divider"></div>
 
                         <div class="card-body">
-                            <h3 class="card-title">Information Commande</h3>
+                            <h3 class="card-title">Commande</h3>
                             <div>
                                 <div class="form-group">
-                                    <label class="font-weight-bold">Total Commande :</label>
-                                    {{ total_orders|length }} commande <br>
+                                    <label class="font-weight-bold">
+                                    Nombre de produits en location : {{ count_products }}</label>
+                                    <br>
 
-                                    <label class="font-weight-bold">Commandes délivrées :</label>
-                                    {{ total_orders|length }} commande <br>
+                                    <label class="font-weight-bold">Nombre de Commande : {{ count_orders }} </label>
                                 </div>
                             </div>
                         </div>
@@ -81,8 +81,6 @@
                     <div class="card flex-grow-1 mb-md-0">
                         <div class="card-body">
 
-                            {% if object %}
-
                                 <h3 class="card-title">Produits en location</h3>
 
                                 <div class="py-2">
@@ -91,8 +89,7 @@
                                             <th>produit</th>
                                             <th>prix</th>
                                             <th>disponible</th>
-                                            <th>mise en location</th>
-                                            <th>ajouter le</th>
+                                            <th>Ajouter le</th>
                                             <th>Vues</th>
                                             <th class="cart-table__column cart-table__column--remove"></th>
                                         </tr>
@@ -110,11 +107,11 @@
                                                 oui{% else %}non{% endif %}
                                             </td>
 
-                                            <td data-title="Mise en ligne">{{ obj.pub_date }}</td>
+                                            <td data-title="Date de location">{{ obj.rent_date|date }}</td>
 
-                                            <td data-title="Date de location">{{ obj.rent_date }}</td>
-
-                                            <td data-title="Nombre de vues">{{ obj.views|length }}</td>
+                                            <td data-title="Nombre de vues">
+                                                {{ obj.views|length }}
+                                            </td>
 
                                             <td class="cart-table__column cart-table__column--remove">
                                                 <a href="{% url 'dashboard:delete_product' obj.pk %}" type="button" class="btn btn-light btn-sm btn-svg-icon">
@@ -127,10 +124,6 @@
                                         {% endfor %}
                                     </table>
                                 </div>
-
-                            {% else %}
-                                <h3 class="card-title">Aucun produit en location</h3>
-                            {% endif %}
 
                             <a href="{% url 'dashboard:add_product' %}" class="btn btn-primary btn-md text-uppercase">ajouter un produit</a>
                         </div>

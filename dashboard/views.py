@@ -1,53 +1,40 @@
 from django.urls import reverse_lazy
-from django.views.generic.list import ListView
-from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import(
     LoginRequiredMixin, PermissionRequiredMixin)
 
 from shop.models import ProductModel
-# from orders.models import OrdersModel
+from orders.models import OrdersModel
 
 
 class UserMixin(object):
     def get_queryset(self):
-        queryset = super(UserMixin, self).get_queryset()
+        queryset = super().get_queryset()
         return queryset.filter(user=self.request.user)
 
 
 class UserEditeMixin(object):
     def form_valid(self, form):
         form.instance.user = self.request.user
-        return super(UserEditeMixin, self).form_valid(form)
+        return super().form_valid(form)
 
 
-class UserProductMixin(UserMixin, LoginRequiredMixin):
+class UserProductMixin(LoginRequiredMixin, UserMixin, UserEditeMixin):
     model = ProductModel
-    fields = [
-        'category', 'name', 'slug', 'label', 'desc', 'img1', 'img2',
-        'img3', 'img4', 'img5', 'price', 'available',
-        'rent_date', 'keywords']
-
+    fields = '__all__'
     success_url = reverse_lazy('dashboard:dashboard')
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     orders = OrdersModel.objects.all().count()
-
-    #     context['user'] = self.request.user
-    #     context['total_orders'] = orders
-    #     return context
-
-    # def get_queryset(self):
-    #     queryset = super().get_queryset()
-    #     return queryset.order_by(
-    #         '-pub_date').filter(products__in=[self.request.user])
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        products = ProductModel.objects.all().count()
+        orders = OrdersModel.objects.all().count()
+        context['count_products'] = products
+        context['count_orders'] = orders
+        return context
 
 
 class UserProductEditMixin(UserProductMixin, UserEditeMixin):
-    fields = [
-        'category', 'name', 'slug', 'label', 'desc', 'img1', 'img2',
-        'img3', 'img4', 'img5', 'price', 'available',
-        'rent_date', 'keywords']
+    fields = '__all__'
     success_url = reverse_lazy('dashboard:dashboard')
     template_name = 'dashboard/dashboard_product_form.html'
 
@@ -68,25 +55,3 @@ class ProductDeleteView(PermissionRequiredMixin, UserProductEditMixin, DeleteVie
     template_name = 'dashboard/delete_product.html'
     success_url = reverse_lazy('dashboard:dashboard')
     permission_required = 'product.delete_product'
-
-
-# def createProduct(request):
-#     form = ProductModelModelForm(instance=request.user)
-#     if request.method == 'POST':
-#         form = ProductModelModelForm(request.POST, request.FILES)
-#         if form.is_valid():
-#             form.save()
-#             return redirect('dashboard:dashboard')
-#     else:
-#         form = ProductModelModelForm()
-
-#     context = {'form': form}
-#     template = 'dashboard/dashboard_product_form.html'
-#     return render(request, template, context)
-
-
-# # HOME CREATE DELETE ORDER
-# def deleteProduct(request, product):
-#     product = get_object_or_404(ProductModel, id=product)
-#     product.delete()
-#     return redirect('dashboard:dashboard')

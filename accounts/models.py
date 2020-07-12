@@ -41,8 +41,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     country = CountryField()
     city = models.CharField('Ville', max_length=50)
     phone_number = PhoneNumberField('Téléphone', null=True)
-    date_joined = models.DateField(
-        'date joined', auto_now_add=timezone.now, editable=False)
+    joined = models.DateField('date joined', auto_now_add=timezone.now)
     is_active = models.BooleanField(default=True)
     admin = models.BooleanField(default=False)
     staff = models.BooleanField(default=False)

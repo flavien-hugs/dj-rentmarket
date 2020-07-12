@@ -6,11 +6,11 @@ from orders.models import ItemOrderModel
 
 
 # Create your views here.
-
 def create_order(request):
     location = Location(request)
+    form = OrdersForm()
     if request.method == 'POST':
-        form = OrdersForm(request.POST or None)
+        form = OrdersForm(request.POST)
         if form.is_valid():
             order = form.save()
             for item in location:
@@ -19,13 +19,15 @@ def create_order(request):
                     product=item['product'],
                     price=item['price'])
 
+            # clear location
             location.clear_session()
-            request.session['id_order'] = order.id
 
+            # set the order in the session
+            request.session['order_id'] = order.id
+
+            # redirect for home
             return redirect(reverse('home'))
-    else:
-        form = OrdersForm()
 
-    context = {'location': location, 'form': form}
+    context = {'form': form}
     template = 'orders/orders_create.html'
     return render(request, template, context)

@@ -1,5 +1,5 @@
 {% extends "shop/index.html" %}
-
+{% load widget_tweaks %}
 
 {% block slideshow %}{% endblock slideshow %}
 
@@ -27,19 +27,30 @@
                         <div class="card mb-lg-0">
                             <div class="card-body">
                                 <h3 class="card-title">Détails de la facturation</h3>
+
+                                {% if form.non_field_errors %}
+                                <div class="alert alert-danger" role="alert">
+                                    {% for error in form.non_field_errors %}
+                                      <p {% if forloop.last %}class="mb-0"{% endif %}>
+                                        {{ error }}
+                                      </p>
+                                    {% endfor %}
+                                </div>
+                                {% endif %}
+
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
                                         <label for="{{ form.first_name.id_for_label }}">
                                         {{ form.first_name.label }}</label>
 
-                                        <input type="text" name='{{ form.first_name.name }}' class="form-control" id="{{ form.first_name.id_for_label }}" placeholder="Votre {{ form.first_name.label }}">
+                                        {{ form.first_name|add_class:'form-control shadow-none'|attr:"placeholder:Votre Nom"|attr:"onfocus:this.placeholder=''"|attr:"onblur:this.placeholder='Votre nom'" }}
                                     </div>
 
                                     <div class="form-group col-md-6">
                                         <label for="{{ form.last_name.id_for_label }}">
                                         {{ form.last_name.label }}</label>
 
-                                        <input name="{{ form.last_name.name }}" type="text" class="form-control" id="{{ form.last_name.id_for_label }}" placeholder="Votre {{ form.last_name.label }}">
+                                        {{ form.last_name|add_class:'form-control shadow-none'|attr:"placeholder:Votre Prénom"|attr:"onfocus:this.placeholder=''"|attr:"onblur:this.placeholder='Votre Prénom'" }}
                                     </div>
                                 </div>
 
@@ -47,42 +58,45 @@
                                     <label for="{{ form.company.id_for_label }}">
                                         {{ form.company.label }}
                                     </label>
-                                    <input name="{{ form.company.name }}" type="text" class="form-control" id="{{ form.company.id_for_label }}" placeholder="Votre {{ form.company.label }}">
+
+                                    {{ form.company|add_class:'form-control shadow-none'|attr:"placeholder:Votre Entreprise"|attr:"onfocus:this.placeholder=''"|attr:"onblur:this.placeholder='Votre Entreprise'" }}
                                 </div>
 
                                 <div class="form-group">
                                     <label for="{{ form.country.id_for_label }}">
-                                        {{ form.country.label }}
+                                        Pays de résidence
                                     </label>
-                                    {{ form.country }}
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="{{ form.address.id_for_label }}">
-                                        {{ form.address.label }}
-                                    </label>
-                                    <input name="{{ form.address.name }}" type="text" class="form-control" id="{{ form.address.id_for_label }}" placeholder="{{ form.address.label }}">
-                                </div>
-
-                                <div class="form-group">
-                                    <label for="{{ form.apartement.id_for_label }}">
-                                        {{ form.apartement.label }}
-                                    </label>
-                                    <input name="{{ form.apartement.name }}" type="text" class="form-control" id="{{ form.apartement.id_for_label }}" placeholder="Numéro de logement">
+                                    {{ form.country|add_class:'custom-select shadow-none' }}
                                 </div>
 
                                 <div class="form-group">
                                     <label for="{{ form.city.id_for_label }}">
                                         {{ form.city.label }}
                                     </label>
-                                    <input name="{{ form.city.name }}" type="text" class="form-control" id="{{ form.city.id_for_label }}" placeholder="{{ form.city.label }}">
+                                    {{ form.city|add_class:'form-control shadow-none'|attr:"placeholder:Ville"|attr:"onfocus:this.placeholder=''"|attr:"onblur:this.placeholder='Ville'" }}
                                 </div>
+
+                                <div class="form-group">
+                                    <label for="{{ form.address.id_for_label }}">
+                                        {{ form.address.label }}
+                                    </label>
+
+                                    {{ form.address|add_class:'form-control shadow-none'|attr:"placeholder:Adresse de livraison"|attr:"onfocus:this.placeholder=''"|attr:"onblur:this.placeholder='Adresse de livraison'" }}
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="{{ form.apartement.id_for_label }}">
+                                        Appartement
+                                    </label>
+                                    {{ form.apartement|add_class:'form-control shadow-none'|attr:"placeholder:Appartement"|attr:"onfocus:this.placeholder=''"|attr:"onblur:this.placeholder='Appartement'" }}
+                                </div>
+
 
                                 <div class="form-group">
                                     <label for="{{ form.zipcode.id_for_label }}">
                                         {{ form.zipcode.label }}
                                     </label>
-                                    <input name="{{ form.zipcode.name }}" type="text" class="form-control" id="{{ form.zipcode.id_for_label }}" placeholder="{{ form.zipcode.label }}">
+                                    {{ form.zipcode|add_class:'form-control shadow-none'|attr:"placeholder:Code ZIP"|attr:"onfocus:this.placeholder=''"|attr:"onblur:this.placeholder='Code ZIP'" }}
                                 </div>
 
                                 <div class="form-row">
@@ -90,14 +104,14 @@
                                         <label for="{{ form.email.id_for_label }}">
                                         {{ form.email.label }}</label>
 
-                                        <input type="text" name='{{ form.email.name }}' class="form-control" id="{{ form.email.id_for_label }}" placeholder="Adresse email">
+                                        {{ form.email|add_class:'form-control shadow-none'|attr:"placeholder:Adresse email"|attr:"onfocus:this.placeholder=''"|attr:"onblur:this.placeholder='Adresse email'" }}
                                     </div>
 
                                     <div class="form-group col-md-6">
-                                        <label for="{{ form.phone.id_for_label }}">
-                                        {{ form.phone.label }}</label>
+                                        <label for="{{ form.phone_number.id_for_label }}">
+                                        {{ form.phone_number.label }}</label>
 
-                                        <input name="{{ form.phone.name }}" type="text" class="form-control" id="{{ form.phone.id_for_label }}" placeholder="Numéro de téléphone">
+                                        {{ form.phone_number|add_class:'form-control shadow-none'|attr:"placeholder:Numéro de téléphone"|attr:"onfocus:this.placeholder=''"|attr:"onblur:this.placeholder='Numéro de téléphone'" }}
                                     </div>
                                 </div>
 
@@ -126,7 +140,7 @@
                                         <label for="{{ form.note.id_for_label }}">
                                             {{ form.note.label }}
                                         </label>
-                                        <textarea class="form-control" name="{{ form.note.name }}" id="{{ form.note.id_for_label }}" rows="4"></textarea>
+                                        {{ form.note|add_class:'form-control shadow-none'|attr:"placeholder:Numéro de téléphone"|attr:"onfocus:this.placeholder=''"|attr:"onblur:this.placeholder='Un mot sur le produit ?'" }}
                                     </div>
                                 </div>
                             </div>
@@ -269,7 +283,7 @@
                                         </span>
 
                                         <label class="form-check-label" for="checkout-terms">J'ai lu et j'accepte le site web
-                                            <a target="_blank" href="terms-and-conditions.html">modalités et conditions</a>*
+                                            <a target="_blank" href="{% url "cgu" %}">modalités et conditions</a>*
                                         </label>
                                     </div>
                                 </div>

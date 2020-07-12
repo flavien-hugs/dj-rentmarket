@@ -14,17 +14,17 @@ class UserAdmin(BaseUserAdmin):
 
     form = UserChangeForm
     add_form = UserCreationForm
-    date_hierarchy = 'date_joined'
+    date_hierarchy = 'joined'
     list_display = (
-        'first_name', 'email', 'country',
-        'phone_number', 'date_joined', 'is_active')
-    list_filter = ('date_joined',)
+        'first_name', 'last_name', 'email', 'country',
+        'phone_number', 'joined', 'is_active')
+    list_filter = ('joined',)
 
     fieldsets = (
         (None, {'fields': ('email', 'password')}),
         ('personal info', {'fields': (
-            'first_name', 'phone_number', 'country',
-            'city', 'date_joined', 'is_active')}),
+            'first_name', 'last_name', 'phone_number', 'country',
+            'city', 'is_active')}),
         ('permissions', {'fields': ('admin',)}),)
 
     add_fieldsets = (
