@@ -4,6 +4,20 @@
 {% block content %}
     <div class="block">
       <div class="container">
+        {% if messages %}
+          <div class="alert alert-success messages">
+            {% for message in messages %}
+              <span{% if message.tags %} class='{{ message.tags }}' {% endif %} class"alert-dismissible fade show" role="alert">
+                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
+                  {{ message }}<br/>
+
+                <button class="close" type="button" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </span>
+            {% endfor %}
+          </div>
+        {% endif %}
         <div class="row justify-content-center">
           <div class="col-xl-5 col-lg-6 col-md-8">
             <div class="card flex-grow-1 mb-md-0 mt-5">

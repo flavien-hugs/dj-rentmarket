@@ -1,9 +1,11 @@
 {% load widget_tweaks %}
 
 <div class="form-group">
-   <label for="{{ form.category.id_for_label }}">
-   Catégorie du produit</label>
-   {{ form.category|add_class:'form-control custom-select shadow-none' }}
+    <label for="{{ form.category.id_for_label }}">
+    Catégorie du produit</label>
+    <select name="{{ form.category.name }}" id="{{ form.category.id_for_label }}" class="form-control custom-select shadow-none">
+       {% for c in form.category %}{{ c }}{% endfor %}
+    </select>
 </div>
 
 <div class="form-row">

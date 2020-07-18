@@ -7,7 +7,14 @@
         {% include "includes/meta.html" %}
         {% include "includes/css.html" %}
         {% block css %}{% endblock css %}
-        <title>Akwaba sur RentMarket</title>
+        <title>
+            {% block title %}
+                {% if page_title %}
+                    {{ page_title }} &smid;
+                {% endif %}
+                RentMarket
+            {% endblock title %}
+        </title>
     </head>
 
     <body class="d-flex flex-column">

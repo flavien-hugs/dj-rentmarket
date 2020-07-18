@@ -12,7 +12,9 @@ urlpatterns = [
     path('shop/', include('shop.urls', namespace='shop')),
     path('customer/', include('accounts.urls', namespace='accounts')),
     path('location/', include('location.urls', namespace='location')),
+    path('address/', include('address.urls', namespace='address')),
     path('order/', include('orders.urls', namespace='orders')),
+    path('payment/', include('payment.urls', namespace='payment')),
     path('dashboard/', include('dashboard.urls', namespace='dashboard')),
     path('subscribe/', include('subscription.urls', namespace='subscribe')),
     path('faq/', TemplateView.as_view(

@@ -21,6 +21,7 @@ django-user-agents="*"
 pyyaml="*"
 ua-parser="*"
 user-agents="*"
+stripe='*'
 
 [requires]
 python_version = "3.8.3"

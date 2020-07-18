@@ -1,29 +1,24 @@
 from django.contrib import messages
 from django.shortcuts import render
+from django.core.mail import send_mail
+from django.http import HttpResponse, JsonResponse
 
 from subscription.forms import SubscribeForm
 from subscription.models import SubscribeModel
-from subscription.emails import send_multiple_email
-
-
-# Create your views here.
 
 
 def subscribeView(request):
-    form = SubscribeForm()
-    if request.method == 'POST':
-        form = SubscribeForm(data=request.POST or None)
-        if form.is_valid():
-            form = form.save(commit=False)
-            if SubscribeModel.objects.filter(email=form.email).exists():
-                messages.warning(
-                    request, "your Email is already exists in our database")
-            else:
-                form.save()
-                messages.warning(
-                    request, 'your email is already added to our database')
-                send_multiple_email(form.email)
+    form = SubscribeForm(request.POST or None)
+    if form.is_valid():
+        if request.is_ajax():
+            return JsonResponse({'message': 'Thank you for your submission'})
 
-    context = {'form': form}
+    if form.errors:
+        errors = form.errors.as_json()
+        if request.is_ajax():
+            return HttpResponse(
+                errors, status=400,
+                contont_type='application/json')
+    context = {'form': form, 'title': 'Contact-Us'}
     template = "newsletter/subscribe.html"
     return render(request, template, context)

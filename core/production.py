@@ -10,7 +10,9 @@ DEBUG = TEMPLATE_DEBUG = False
 # Parse database configuration from $DATABASE_URL
 # Change 'default' database configuration with $DATABASE_URL.
 DATABASES['default'].update(
-    dj_database_url.config(conn_max_age=500, ssl_require=True))
+    dj_database_url.config(
+        conn_max_age=500,
+        ssl_require=True))
 
 # APPLICATION DEFINITION
 INSTALLED_APPS += ['whitenoise.runserver_nostatic']
@@ -22,6 +24,7 @@ MIDDLEWARE += [
 ]
 
 ALLOWED_HOSTS = ['rentmkt.herokuapp.com']
+HOST_SCHEME = "https://"
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 USE_X_FORWARDED_HOST = True
 SECURE_BROWSER_XSS_FILTER = True

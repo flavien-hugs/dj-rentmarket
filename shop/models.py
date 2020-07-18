@@ -1,17 +1,15 @@
 import os
 from django.db import models
+from django.db.models import Q
 from django.urls import reverse
-from django.conf import settings
 from django.utils import timezone
 from django.utils.text import slugify
+from django.db.models.signals import pre_save
+from django.contrib.auth import get_user_model
 
+from core.utils import unique_slug_generator
 
-def product(instance, filename):
-    f, ext = os.path.splitext(filename)
-    if ext not in ['.jpg', '.png', '.jpeg']:
-        raise NameError('Format interdit')
-    new_filename = "{}{}".format(instance.slug, ext)
-    return '/'.join(['img/product/', new_filename])
+User = get_user_model()
 
 
 def category(instance, filename):
@@ -69,29 +67,94 @@ class CategoryModel(models.Model):
         return reverse('shop:detail_category', kwargs={'slug': str(self.slug)})
 
 
+# PRODUCT STRUCTURE MODEL
+def product_image_upload(instance, filename):
+    f, ext = os.path.splitext(filename)
+    if ext not in ['.jpg', '.png', '.jpeg']:
+        raise NameError('Format interdit')
+    new_filename = "{}{}".format(instance.slug, ext)
+    return '/'.join(['img/product/', new_filename])
+
+
 class ImageModel(models.Model):
-    img1 = models.ImageField('Image_1', upload_to=product, blank=True)
-    img2 = models.ImageField('Image_2', upload_to=product, blank=True)
-    img3 = models.ImageField('Image_3', upload_to=product, blank=True)
-    img4 = models.ImageField('Image_4', upload_to=product, blank=True)
-    img5 = models.ImageField('Image_5', upload_to=product, blank=True)
+    img1 = models.ImageField(
+        'Image_1', upload_to=product_image_upload, blank=True)
+    img2 = models.ImageField(
+        'Image_2', upload_to=product_image_upload, blank=True)
+    img3 = models.ImageField(
+        'Image_3', upload_to=product_image_upload, blank=True)
+    img4 = models.ImageField(
+        'Image_4', upload_to=product_image_upload, blank=True)
+    img5 = models.ImageField(
+        'Image_5', upload_to=product_image_upload, blank=True)
 
     class Meta:
         verbose_name = 'Image de description'
 
+    # delet the image from file system
+    def delete(self, *args, **kwargs):
+        if self.img1 and self.img2 and self.img3 and self.img4 and self.img5:
+            self.img1.delete()
+            self.img2.delete()
+            self.img3.delete()
+            self.img4.delete()
+            self.img5.delete()
+        super().delete(*args, **kwargs)
 
-# Create your models here.
+
+class ProductModelQuerySet(models.query.QuerySet):
+    def available(self):
+        return self.filter(available=True)
+
+    def featured(self):
+        return self.filter(featured=True, available=True)
+
+    def search(self, query):
+        lookups = (
+            Q(name__icontains=query) |
+            Q(category__name__icontains=query) |
+            Q(desc__icontains=query) |
+            Q(price__icontains=query) |
+            Q(keywords__icontains=query) |
+            Q(label__icontains=query))
+
+        return self.filter(lookups).distinct()
+
+
+class ProductModelManager(models.Manager):
+    def get_queryset(self):
+        return ProductModelQuerySet(self.model, using=self._db)
+
+    def get_available(self, *args, **kwargs):
+        return self.get_queryset().available()
+
+    def get_product_by_id(self, id):
+        qs = self.get_queryset().filter(id=id)
+        if qs.count() == 1:
+            return qs.first()
+        return None
+
+    def featured(self):
+        return self.get_queryset().featured()
+
+    def search(self, query):
+        return self.get_queryset().available().search(query)
+
+    def get_related(self, instance):
+        products = self.get_queryset().filter(
+            category__in=instance.category.all())
+        related = (products).exclude(id=instance.id)
+        return related
+
+
 class ProductModel(ImageModel):
     LABEL = (('N', 'New'),('S', 'Sale'),)
-
-    user = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        related_name='utilisateur', on_delete=models.CASCADE, blank=True)
-    category = models.ForeignKey(
-        CategoryModel, on_delete=models.CASCADE,
-        verbose_name='sous-catégorie')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
+    category = models.ManyToManyField(
+        CategoryModel, verbose_name='sous-catégorie')
     name = models.CharField('Nom', max_length=200, db_index=True)
     label = models.CharField(choices=LABEL, max_length=1, blank=True)
+    featured = models.BooleanField('En vedette', default=False)
     slug = models.SlugField(max_length=200, unique=True, db_index=True)
     desc = models.TextField('Description', blank=True)
     price = models.DecimalField(
@@ -104,13 +167,17 @@ class ProductModel(ImageModel):
     updated = models.DateField('Date mise à jour', auto_now_add=timezone.now)
     views = models.PositiveIntegerField('Nombre de vues', default=0)
 
+    objects = ProductModelManager()
+
     class Meta:
         ordering = ('price', '-pub_date',)
         verbose_name = 'produit'
         verbose_name_plural = 'produits'
 
     def __str__(self):
-        return "{} ({})".format(self.name, self.category)
+        return "%s (%s)" % (
+            self.name, ", ".join(
+                cat.name for cat in self.category.all()),)
 
     def save(self):
         if not self.slug:
@@ -133,12 +200,30 @@ class ProductModel(ImageModel):
         return reverse(
             'dashboard:product_update', kwargs={'slug': str(self.slug)})
 
+    def delete_from_location(self):
+        pass
+
+
+def product_pre_save_receiver(sender, instance, *args, **kwargs):
+    if not instance.slug:
+        instance.slug = unique_slug_generator(instance)
+
+pre_save.connect(product_pre_save_receiver, sender=ProductModel)
+
+
+def image_upload_to_featured(instance, filename):
+    f, ext = os.path.splitext(filename)
+    if ext not in ['.jpg', '.png', '.jpeg']:
+        raise NameError('Format interdit')
+    new_filename = "{}{}".format(instance.product.slug, ext)
+    return '/'.join(['img/product/', new_filename])
+
 
 class WishListModel(models.Model):
     wishlist = models.ForeignKey(ProductModel, on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name = 'Liste de souhaits'
+        verbose_name = 'Liste de souhait'
 
     def __str__(self):
         return self.wishlist
@@ -161,6 +246,5 @@ class ReviewModel(models.Model):
         return '{} étoile(s)'.format(self.rating)
 
     def get_lastest_review(self):
-        return ReviewModel.objects.filter(
-            product__review=self).order_by(
+        return ReviewModel.objects.filter(product__review=self).order_by(
             '-date').first()

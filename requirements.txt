@@ -32,6 +32,7 @@ requests==2.24.0
 six==1.15.0
 sqlparse==0.3.1
 static3==0.7.0
+stripe==2.48.0
 ua-parser==0.10.0
 urllib3==1.25.9
 user-agents==2.1

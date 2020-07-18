@@ -1,0 +1,17 @@
+{% extends "accounts/base.html" %}
+{% block auth_content %}
+    <h4 class="card-title text-uppercase text-center">
+        {% if key %}
+            Activation Error. Please try again.
+        {% else %}
+            Re-activate your Email Below.
+        {% endif %}
+    </h4>
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {% include 'layouts/form.html' %}
+
+        <button style="background-color:#dc3545;" class="btn btn-block btn-lg font-weight-bold text-white" type="submit">Resend Activation</button>
+    </form>
+{% endblock auth_content %}

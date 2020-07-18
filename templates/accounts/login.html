@@ -2,7 +2,7 @@
 
 {% block auth_content %}
 <h4 class="card-title text-uppercase text-center">
-  </i> se connexion
+  se connexion
 </h4>
 
 {% if form.non_field_errors %}
@@ -15,9 +15,12 @@
   </div>
 {% endif %}
 
-<form method="post" novalidate>
+<form method="post" action='{% if action_url %}{{ action_url }}{% else %}{% url "accounts:login" %}{% endif %}' novalidate>
   {% csrf_token %}
-  <input type="hidden" name="next" value="{{ next }}">
+  {% if next_url %}
+    <input type="hidden" name="next" value="{{ next_url }}">
+  {% endif %}
+  
   {% include 'layouts/form.html' %}
   
   <button style="background-color:#dc3545;" class="btn btn-block btn-lg font-weight-bold text-white" type="submit">Se connecter</button><!-- /.end button login -->

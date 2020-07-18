@@ -1,19 +1,34 @@
 from django.urls import path
 from django.contrib.auth.views import (
-    LoginView, LogoutView, PasswordResetView,
+    LogoutView, PasswordResetView,
     PasswordResetDoneView, PasswordResetConfirmView,
     PasswordResetCompleteView, PasswordChangeView,
     PasswordChangeDoneView)
-from accounts.views import signup, AccountUpdateView, deleteAccount
+
+
+from accounts.views import(
+    UserHomeView, AccountEmailActivateView, LoginView,
+    SignUpView, GuestSignUpView, AccountUpdateView, deleteAccount)
 
 app_name = 'accounts'
 urlpatterns = [
-    path('acount/signup/', signup, name='signup'),
-    path('acount/login/', LoginView.as_view(
-        template_name='accounts/login.html'), name='login'),
-    path('acount/logout/', LogoutView.as_view(), name='logout'),
-    path('acount/ompte/', AccountUpdateView.as_view(), name='update'),
-    path('acount/compte/<int:pk>/delete', deleteAccount, name='delete'),
+    path('account/', UserHomeView.as_view(), name='account'),
+    path('account/signup/', SignUpView.as_view(), name='signup'),
+    path('account/login/', LoginView.as_view(), name='login'),
+    path('account/logout/', LogoutView.as_view(), name='logout'),
+    path('account/update/', AccountUpdateView.as_view(), name='update'),
+    path('account/signup/guest/', GuestSignUpView.as_view(), name='guest'),
+
+    path(
+        'account/email/confirm/<key>/',
+        AccountEmailActivateView.as_view(),
+        name='email-activate'),
+    path(
+        'account/email/resend-activation/',
+        AccountEmailActivateView.as_view(),
+        name='resend-activation'),
+
+    path('account/compte/<int:pk>/delete/', deleteAccount, name='delete'),
     path('account/reset/', PasswordResetView.as_view(
         template_name='accounts/password_reset.html',
         email_template_name='accounts/password_reset_email.html',

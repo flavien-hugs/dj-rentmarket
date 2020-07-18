@@ -126,14 +126,21 @@
                                     Disponibilité:
                                     <span class="text-success">Oui</span>
                                 </div>
-                                <div class="product__prices">{{ object.price|floatformat:0|safe }} Fr CFA</div>
+                                <div class="product__prices">
+                                {{ object.price|floatformat:0|safe }}</div>
 
                                 <!-- .product__options -->
-                                <form class="product__options">
+                                <form class="product__options" method='POST' action="{% url "location:update" %}" data-endpoint="{% url "location:update" %}" {% if request.user.is_authenticated %}data-user='unsta'{% endif %}>
+                                    {% csrf_token %}
+                                    <input type='hidden' name='product_id' value='{{ object.id }}'>
                                     <div class="form-group product__option">
                                         <div class="product__actions">
-                                            <div class="product__actions-item product__actions-item--addtocart">
-                                                <a href="{% url "location:add" object.id %}" class="btn btn-primary btn-lg">Louer</a>
+                                            <div class="product__actions-item product__actions-item--addtocart submit">
+                                                {% if object in location.product.get_available %}
+                                                    <button type="submit" class="btn btn-primary btn-lg">Delete ?</button>
+                                                {% else %}
+                                                    <button type="submit" class="btn btn-primary btn-lg">Louer</button>
+                                                {% endif %}
                                             </div>
 
                                             <div class="product__actions-item product__actions-item--wishlist">
@@ -268,23 +275,3 @@
         </div>
     </div>
 {% endblock content %}
-
-
-{% block js %}
-    {% url "shop:addwish" as addwish %}
-    <script type='text/javascript' src="https://cdnjs.cloudflare.com/ajax/libs/jquery-ajaxy/1.6.1/scripts/jquery.ajaxy.min.js"></script>
-    <script type='text/javascript'>
-        $('.whishlist').click(function(){
-            var wish;
-            wish = $(this).attr('data-wish');
-            $.ajax({
-                type:"GET",
-                url: "{{ addwish }}",
-                data:{ add: wish },
-                success: function(data){
-                    $('#wish + wish').remove();
-                }
-            })
-        });
-    </script>
-{% endblock js %}

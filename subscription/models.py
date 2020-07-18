@@ -4,9 +4,11 @@ from django.utils import timezone
 
 class SubscribeModel(models.Model):
     email = models.EmailField('email', max_length=200, unique=True)
-    status = models.CharField('status', max_length=64, blank=True)
-    created_date = models.DateTimeField(
-        'date', blank=True, auto_now_add=timezone.now)
+    name = models.CharField('Nom', max_length=120, blank=True, null=True)
+    timestamp = models.DateTimeField(
+        auto_now_add=timezone.now, auto_now=False)
+    created = models.DateTimeField(
+        'date', auto_now=timezone.now, auto_now_add=False)
 
     class Meta:
         verbose_name = 'Newsletter'

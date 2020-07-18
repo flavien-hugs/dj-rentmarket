@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load humanize %}
+{% load shoptags humanize %}
 
 
 {% block desktop %}
@@ -51,6 +51,12 @@
                                 <div class="form-group">
                                     <a href="{% url 'accounts:update' %}" class="btn btn-primary btn-md btn-block">
                                     Modifier mon compte</a>
+                                </div>
+
+                                <div class="form-group">
+                                    <a class="btn btn-primary btn-success btn-block" href="https://web.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">
+                                        Partager sur facebook
+                                    </a>
                                 </div>
 
                                 <div class="form-group">
@@ -110,7 +116,7 @@
                                             <td data-title="Date de location">{{ obj.rent_date|date }}</td>
 
                                             <td data-title="Nombre de vues">
-                                                {{ obj.views|length }}
+                                                {{ obj.views }}
                                             </td>
 
                                             <td class="cart-table__column cart-table__column--remove">

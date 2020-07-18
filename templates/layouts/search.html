@@ -1,4 +1,10 @@
 <div class="row">
+    {% if query %}
+        <div class='col-12'>
+            Results for <b>{{ query }}</b> <hr/>
+        </div>
+    {% endif %}
+
     <div class="col-12">
         <div class="block">
             <div class="products-view">
@@ -6,7 +12,9 @@
 
                 <div class="products-view__list products-list" data-layout="grid-4-full" data-with-features="false">
                     <div class="products-list__body">
-                        {% include "shop/products/product_list_item.html" %}
+                        {% for obj in object_list %}
+                        {% include "shop/products/snippets/card.html" with obj=obj %}
+                        {% endfor %}
                     </div>
                 </div>
 

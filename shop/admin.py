@@ -1,13 +1,19 @@
 from django.contrib import admin
+
 from shop.models import (
     MainCategoryModel, CategoryModel,
     ProductModel, ReviewModel, WishListModel)
 from orders.models import OrdersModel
 
+from analytics.models import ObjectViewedModel
+
 
 admin.site.site_header = "Rent Market"
 admin.site.site_title = "Rent Market Admin Portal"
 admin.site.index_title = "Welcome to Rent Market Researcher Portal"
+
+
+admin.site.register(ObjectViewedModel)
 
 
 @admin.register(WishListModel)
@@ -50,7 +56,7 @@ class CategoryModelAdmin(admin.ModelAdmin):
 class ProductModelAdmin(admin.ModelAdmin):
     model = ProductModel
     date_hierarchy = 'updated'
-    list_display = ('user', 'name', 'price', 'available', 'rent_date', 'pub_date')
+    list_display = ('user', 'name', 'price', 'available', 'featured', 'rent_date', 'pub_date')
     list_display_links = ('name',)
     list_filter = ['available', 'label', 'rent_date', 'pub_date', 'keywords']
     list_editable = ['price', 'available']

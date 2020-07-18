@@ -21,7 +21,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = get_env_variable('SECRET_KEY', 'zb9g!qw2vat#pfkd16*ylu2b+*&mcf42#1)%qfr_4@6*f72heo')
+SECRET_KEY = get_env_variable(
+    'SECRET_KEY', 'zb9g!qw2vat#pfkd16*ylu2b+*&mcf42#1)%qfr_4@6*f72heo')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = TEMPLATE_DEBUG = True
@@ -34,6 +35,10 @@ SITE_NAME = 'Rent Market'
 LOCATION_SESSION_ID = 'cartsession'
 USE_THOUSAND_SEPARATOR = True
 THOUSAND_SEPARATOR = ' '
+# BASE_URL = ''
+
+MANAGERS = (('flavien hugs', "admin@pm.me"),)
+ADMINS = MANAGERS
 
 # USER MODEL
 AUTH_USER_MODEL = 'accounts.User'
@@ -60,8 +65,12 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'shop.apps.ShopConfig',
     'location.apps.LocationConfig',
+    'address.apps.AddressConfig',
     'orders.apps.OrdersConfig',
+    'payment.apps.PaymentConfig',
     'subscription.apps.SubscriptionConfig',
+
+    'analytics.apps.AnalyticsConfig',
 
 ]
 
@@ -91,6 +100,7 @@ TEMPLATES = [
                 'django.template.context_processors.i18n',
                 'django.template.context_processors.csrf',
                 'django.contrib.messages.context_processors.messages',
+
                 'core.context_processors.location',
                 'core.context_processors.category',
             ],
@@ -164,8 +174,11 @@ STATICFILES_FINDERS = [
 ]
 
 LOGIN_URL = 'accounts:login'
-LOGOUT_REDIRECT_URL = 'home'
 LOGIN_REDIRECT_URL = 'dashboard:dashboard'
+LOGOUT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
+FORCE_SESSION_TO_ONE = False
+FORCE_INACTIVE_USER_ENDSESSION = False
 
 # Cloudinary settings for Django. Add to your settings file.
 CLOUDINARY_STORAGE = {
@@ -179,6 +192,8 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = config('EMAIL_PORT', cast=int)
 EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
+DEFAULT_FROM_EMAIL = 'RentMarket <flavienhugs@gmail.com>'
+BASE_URL = '127.0.0.1:8000'
 
 PHONENUMBER_DEFAULT_REGION = "CI"
 PHONENUMBER_DB_FORMAT = "INTERNATIONAL"
@@ -186,3 +201,19 @@ PHONENUMBER_DB_FORMAT = "INTERNATIONAL"
 # Name of cache backend to cache user agents. If it not specified default
 # cache alias will be used. Set to `None` to disable caching.
 USER_AGENTS_CACHE = 'default'
+
+
+# STRIPE PAYMENT
+STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
+STRIPE_PUB_KEY = config('STRIPE_PUB_KEY')
+
+
+CORS_REPLACE_HTTPS_REFERER = False
+HOST_SCHEME = "http://"
+SECURE_PROXY_SSL_HEADER = None
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+SECURE_HSTS_SECONDS = None
+SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+SECURE_FRAME_DENY = False

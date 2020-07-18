@@ -1,5 +1,7 @@
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import(
+    ListView, CreateView,
+    UpdateView, DeleteView)
 from django.contrib.auth.mixins import(
     LoginRequiredMixin, PermissionRequiredMixin)
 
@@ -12,6 +14,9 @@ class UserMixin(object):
         queryset = super().get_queryset()
         return queryset.filter(user=self.request.user)
 
+    def get_object(self):
+        return self.request.user
+
 
 class UserEditeMixin(object):
     def form_valid(self, form):
@@ -23,6 +28,9 @@ class UserProductMixin(LoginRequiredMixin, UserMixin, UserEditeMixin):
     model = ProductModel
     fields = '__all__'
     success_url = reverse_lazy('dashboard:dashboard')
+
+    def get_object(self):
+        return self.request.user
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

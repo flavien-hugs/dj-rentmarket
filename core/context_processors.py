@@ -1,9 +1,10 @@
-from location.location import Location
+from location.models import LocationModel
 from shop.models import CategoryModel, ProductModel
 
 
 def location(request):
-    return {'location': Location(request)}
+    location_item, new_obj = LocationModel.objects.new_or_get(request)
+    return {"location": location_item}
 
 
 def category(request):
@@ -14,12 +15,6 @@ def category(request):
 
 
 def get_info_ur(request):
-
-    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
-    if x_forwarded_for:
-        ip = x_forwarded_for.split(',')[0]
-    else:
-        ip = request.META.get('REMOTE_ADDR')
 
     device_type = ""
     browser_type = ""
@@ -46,7 +41,6 @@ def get_info_ur(request):
     device_family = request.user_agent.device.family
 
     context = {
-        "ip": ip,
         "device_type": device_type,
         "browser_type": browser_type,
         "browser_version": browser_version,

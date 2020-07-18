@@ -1,0 +1,84 @@
+<div class="products-list__item">
+    <div class="product-card">
+        <button class="product-card__quickview" type="button">
+            <svg width="16px" height="16px">
+                <use xlink:href="{{ STATIC_PREFIX }}img/svg/sprite.svg#quickview-16"></use>
+            </svg>
+            <span class="fake-svg-icon"></span>
+        </button>
+
+        <div class="product-card__badges-list">
+            <div class="product-card__badge product-card__badge--new">
+            New</div>
+        </div>
+
+        <div class="product-card__image">
+            <a title="{{ obj.name }}" href="{{ obj.get_absolute_url }}">
+                <img src="{{ STATIC_PREFIX }}img/products/product-16-1.jpg" alt="{{ obj.name }}">
+            </a>
+        </div>
+
+        <div class="product-card__info">
+            <div class="product-card__name">
+                <a href="{{ obj.get_absolute_url }}">
+                    {{ obj.name|safe }}
+                </a>
+            </div>
+
+            <div class="product-card__rating">
+                {% include "layouts/rating.html" %}
+                <div class="product-card__rating-legend">9 Reviews</div>
+            </div>
+
+            <ul class="product-card__features-list">
+                <li>Speed: 750 RPM</li>
+                <li>Power Source: Cordless-Electric</li>
+                <li>Battery Cell Type: Lithium</li>
+                <li>Voltage: 20 Volts</li>
+                <li>Battery Capacity: 2 Ah</li>
+            </ul>
+        </div>
+
+        <div class="product-card__actions">
+            <div class="product-card__availability">Disponible:
+                <span class="text-success">Oui</span>
+            </div>
+
+            <div class="product-card__prices">
+                {{ obj.price|floatformat:0|safe }} FR CFA
+            </div>
+
+            <div class="product-card__buttons">
+                {% if obj in location.product.get_available %}
+                    <a href="{% url "location:update" %}" class="btn btn-primary product-card__addtocart" type="button">Delete ?</a>
+
+                    <a href="{% url "location:update" %}" class="btn btn-secondary product-card__addtocart product-card__addtocart--list" type="button">Delete ?</a>
+
+                {% else %}
+
+                    <a href="{% url "location:update" %}" class="btn btn-primary product-card__addtocart" type="button">Louer</a>
+
+                    <a href="{% url "location:update" %}" class="btn btn-secondary product-card__addtocart product-card__addtocart--list" type="button">Louer</a>
+                {% endif %}
+
+                <button class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist" type="button">
+                    <svg width="16px" height="16px">
+                        <use xlink:href="{{ STATIC_PREFIX }}img/svg/sprite.svg#wishlist-16"></use>
+                    </svg>
+
+                    <span class="fake-svg-icon fake-svg-icon--wishlist-16">
+                    </span>
+                </button>
+
+                <button class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__compare" type="button">
+                    <svg width="16px" height="16px">
+                        <use xlink:href="{{ STATIC_PREFIX }}img/svg/sprite.svg#compare-16"></use>
+                    </svg>
+
+                    <span class="fake-svg-icon fake-svg-icon--compare-16">
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

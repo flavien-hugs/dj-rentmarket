@@ -820,7 +820,6 @@
         $('[data-toggle="tooltip"]').tooltip({trigger: 'hover'});
     });
 
-
     /*
     // layout switcher
     */
@@ -836,5 +835,71 @@
             productsList.attr('data-layout', $(this).attr('data-layout'));
             productsList.attr('data-with-features', $(this).attr('data-with-features'));
         });
+    });
+
+    /*
+    // Contact Form
+    */
+
+    var contactForm = $('.contact-form');
+    var contactFormMethod = contactForm.attr('method');
+    var contactFormEndPoint = contactForm.attr('action');
+
+    function displaySubmitting(submitBtn, defaultText, doSubmit){
+      if (doSubmit){
+        submitBtn.addClass("disabled")
+        submitBtn.html("<i class='fa fa-spin fa-spinner'></i> Sending...")
+      } else {
+        submitBtn.removeClass("disabled")
+        submitBtn.html(defaultText)
+      }
+      
+    }
+
+    contactForm.submit(function(event){
+        event.preventDefault();
+        var contactFormSubmitBtn = contactForm.find("[type='submit']");
+        var contactFormSubmitBtnTxt = contactFormSubmitBtn.text();
+
+
+        var contactFormData = contactForm.serialize();
+        var thisForm = $(this);
+        displaySubmitting(contactFormSubmitBtn, "", true);
+        $.ajax({
+            method: contactFormMethod,
+            url: contactFormEndpoint,
+            data:contactFormData,
+        success: function(data){
+            contactForm[0].reset()
+            $.alert({
+                title: "Success!",
+                content: data.message,
+                theme: "modern",
+            })
+            setTimeout(function(){
+                displaySubmitting(contactFormSubmitBtn,
+                contactFormSubmitBtnTxt, false)
+            }, 500)
+        },
+        error: function(error){
+            console.log(error.responseJSON)
+            var jsonData = error.responseJSON;
+            var msg = "";
+
+            $.each(jsonData, function(key, value){
+                msg += key + ": " + value[0].message + "<br/>"
+            })
+
+            $.alert({
+                title: "Oops!",
+                content: msg,
+                theme: "modern",
+            });
+
+            setTimeout(function(){
+                displaySubmitting(contactFormSubmitBtn, contactFormSubmitBtnTxt, false)
+            }, 500)
+        }
+      })
     });
 })(jQuery);
