@@ -1,14 +1,14 @@
 {% load static %}{% get_static_prefix as STATIC_PREFIX %}
-{% load shoptags %}
-<div class="block-sidebar__item">
+{% load humanize %}
+<div class="block-sidebar__item d-none d-lg-block">
     <div class="widget-products widget">
-        <h4 class="widget__title">Produits récents</h4>
+        <h4 class="widget__title">Latest Products</h4>
         <div class="widget-products__list">
             {% for obj in latest_product %}
                 <div class="widget-products__item">
                     <div class="widget-products__image">
                         <a title="{{ obj.name }}" href="{{ obj.get_absolute_url }}">
-                            <img src="{{ STATIC_PREFIX }}img/products/product-16-1.jpg" alt="{{ obj.name }}">
+                            <img src="{{ obj.img1.url }}" alt="{{ obj.name }}">
                         </a>
                     </div>
 
@@ -20,7 +20,7 @@
                         </div>
 
                         <div class="widget-products__prices">
-                            {{ obj.price|safe }} FR CFA
+                            {{ obj.price|intcomma }}
                         </div>
                     </div>
                 </div>

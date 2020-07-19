@@ -1,5 +1,5 @@
-import random
 from django import template
+
 from shop.models import ProductModel, ReviewModel
 
 register = template.Library()
@@ -8,9 +8,8 @@ register = template.Library()
 @register.inclusion_tag('shop/products/sidebar_latest_product.html')
 def show_latest_product(count=20):
     latest_product = ProductModel.objects.filter(
-        available=True,
-        pub_date__isnull=False,
-        ).order_by('-pub_date')[:count]
+        available=True, pub_date__isnull=False,
+        ).order_by('-pub_date').distinct()[:count]
     context = {'latest_product': latest_product}
     return context
 
@@ -20,16 +19,6 @@ def show_featured_product(count=100):
     featured_product = ProductModel.objects.featured().filter(
        pub_date__isnull=False).order_by('-pub_date')[:count]
     context = {'featured': featured_product}
-    return context
-
-
-@register.inclusion_tag('shop/products/similar_product.html')
-def show_similar_product(self, count=20):
-    product = ProductModel.objects.get_available()
-    product_similar = sorted(
-        (product).prefetch_related('category').distinct()[:count],
-        key = lambda x: random.random())
-    context = {'product_similar': product_similar}
     return context
 
 

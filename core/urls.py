@@ -4,11 +4,11 @@ from django.conf.urls.static import static
 from django.views.generic import TemplateView
 from django.urls import path, include
 
-from shop.views import HomeListView
-
 
 urlpatterns = [
-    path('', HomeListView.as_view(), name='home'),
+    path('', TemplateView.as_view(
+        template_name='shop/index.html'), name='home'),
+
     path('shop/', include('shop.urls', namespace='shop')),
     path('customer/', include('accounts.urls', namespace='accounts')),
     path('location/', include('location.urls', namespace='location')),

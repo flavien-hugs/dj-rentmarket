@@ -11,6 +11,7 @@ from core.utils import unique_slug_generator
 
 User = get_user_model()
 
+LABEL = (('N', 'New'),('S', 'Sale'),)
 
 def category(instance, filename):
     f, ext = os.path.splitext(filename)
@@ -22,8 +23,8 @@ def category(instance, filename):
 
 class MainCategoryModel(models.Model):
     name = models.CharField(
-        'catégorie principale', max_length=200, unique=True, default=1)
-    slug = models.SlugField(max_length=200, unique=True)
+        'catégorie principale', max_length=200, unique=True, db_index=True)
+    slug = models.SlugField(max_length=200, unique=True, db_index=True)
     img = models.ImageField('Image de description', upload_to=category)
 
     def __str__(self):
@@ -32,18 +33,19 @@ class MainCategoryModel(models.Model):
     class Meta:
         ordering = ('name',)
         verbose_name = 'catégorie principale'
-        verbose_name_plural = 'catégories principales'
 
     def save(self):
         if not self.slug:
             self.slug = slugify(self.name)
-        return super(MainCategoryModel, self).save()
+        return super().save()
+
+    def get_absolute_url(self):
+        return reverse('shop:detail_category', kwargs={'slug': str(self.slug)})
 
 
 class CategoryModel(models.Model):
     category = models.ForeignKey(
-        MainCategoryModel, verbose_name='catégorie principale',
-        on_delete=models.CASCADE)
+        MainCategoryModel, on_delete=models.CASCADE)
     name = models.CharField('sous-categorie', max_length=200, db_index=True)
     slug = models.SlugField(max_length=200, unique=True, db_index=True)
     keywords = models.CharField(
@@ -53,7 +55,6 @@ class CategoryModel(models.Model):
     class Meta:
         ordering = ('name',)
         verbose_name = 'catégorie'
-        verbose_name_plural = 'catégories'
 
     def __str__(self):
         return '{} ({})'.format(self.category, self.name)
@@ -65,6 +66,11 @@ class CategoryModel(models.Model):
 
     def get_absolute_url(self):
         return reverse('shop:detail_category', kwargs={'slug': str(self.slug)})
+
+    @property
+    def count_product(self):
+        return ProductModel.objects.filter(
+            category__name=self).count()
 
 
 # PRODUCT STRUCTURE MODEL
@@ -141,14 +147,13 @@ class ProductModelManager(models.Manager):
         return self.get_queryset().available().search(query)
 
     def get_related(self, instance):
-        products = self.get_queryset().filter(
+        product = self.get_queryset().filter(
             category__in=instance.category.all())
-        related = (products).exclude(id=instance.id)
+        related = (product).exclude(id=instance.id)
         return related
 
 
 class ProductModel(ImageModel):
-    LABEL = (('N', 'New'),('S', 'Sale'),)
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
     category = models.ManyToManyField(
         CategoryModel, verbose_name='sous-catégorie')

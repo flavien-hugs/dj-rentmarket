@@ -1,0 +1,8 @@
+{% load shoptags %}
+
+<div class="shop-layout__sidebar">
+    <div class="block block-sidebar">
+        {% include "shop/category/sidebar_category.html" %}
+        {% show_latest_product 15 %}
+    </div>
+</div>

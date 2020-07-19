@@ -1,17 +1,23 @@
+import random
 from location.models import LocationModel
-from shop.models import CategoryModel, ProductModel
+from shop.models import MainCategoryModel, CategoryModel
 
 
 def location(request):
-    location_item, new_obj = LocationModel.objects.new_or_get(request)
-    return {"location": location_item}
+    location_obj, new_obj = LocationModel.objects.new_or_get(request)
+    return {'location': location_obj}
 
 
 def category(request):
-    nav = CategoryModel.objects.all()
-    popular = ProductModel.objects.filter(available=True)
+    category = CategoryModel.objects.all()
+    mcategory = sorted(
+        MainCategoryModel.objects.all()[:6],
+        key=lambda x: random.random())
 
-    return {'nav': nav, 'popular': popular}
+    return {
+        'category': category,
+        'main_category': mcategory
+    }
 
 
 def get_info_ur(request):

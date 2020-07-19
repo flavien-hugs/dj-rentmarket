@@ -1,3 +1,4 @@
+{% load humanize %}
 <div class="products-list__item">
     <div class="product-card">
         <button class="product-card__quickview" type="button">
@@ -40,12 +41,14 @@
         </div>
 
         <div class="product-card__actions">
-            <div class="product-card__availability">Disponible:
-                <span class="text-success">Oui</span>
+            <div class="product-card__availability">
+                Available:
+                <span class="text-success">
+                {{ obj.available|yesno:"Yes,No" }}</span>
             </div>
 
             <div class="product-card__prices">
-                {{ obj.price|floatformat:0|safe }} FR CFA
+                {{ obj.price|intcomma }}
             </div>
 
             <div class="product-card__buttons">

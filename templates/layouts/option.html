@@ -23,5 +23,15 @@
                 </div>
             </div>
         </div>
+
+        <div class="view-options__legend">
+            {% if query %}
+                    results were found for the search for
+                    <em class="font-weight-bolder">{{ query }}</em>
+            {% else %}
+                {{ nb_product }} products</div>
+            {% endif %}
+        <div class="view-options__divider">
+        </div>
     </div>
 </div>

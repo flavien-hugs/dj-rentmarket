@@ -3,7 +3,6 @@ import random
 import string
 import datetime
 from django.db import models
-from django.urls import reverse
 from django.utils import timezone
 from django.db.models import Count, Sum, Avg
 from django.db.models.signals import pre_save, post_save

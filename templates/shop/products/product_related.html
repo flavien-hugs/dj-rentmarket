@@ -1,0 +1,29 @@
+<div class="block block-products-carousel" data-layout="grid-4-sm">
+    <div class="block-header">
+        <h3 class="block-header__title">Related Products</h3>
+        <div class="block-header__divider"></div>
+
+        <div class="block-header__arrows-list">
+            <button class="block-header__arrow block-header__arrow--left" type="button">
+                <svg width="7px" height="11px">
+                    <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#arrow-rounded-left-7x11"></use>
+                </svg>
+            </button>
+
+            <button class="block-header__arrow block-header__arrow--right" type="button">
+                <svg width="7px" height="11px">
+                    <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#arrow-rounded-right-7x11"></use>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <div class="block-products-carousel__slider">
+        <div class="block-products-carousel__preloader"></div>
+        <div class="owl-carousel">
+            {% for obj in related_product %}
+            {% include "shop/products/snippets/carousel.html" with instance=obj %}
+            {% endfor %}
+        </div>
+    </div>
+</div>

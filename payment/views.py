@@ -1,15 +1,13 @@
-from django.conf import settings
 from django.utils.http import is_safe_url
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
 
 import stripe
+from decouple import config
 from payment.models import PaymentModel, CardModel
 
-STRIPE_SECRET_KEY = getattr(
-    settings, "STRIPE_SECRET_KEY", "sk_test_cu1lQmcg1OLffhLvYrSCp5XE")
-STRIPE_PUB_KEY = getattr(
-    settings, "STRIPE_PUB_KEY", 'pk_test_PrV61avxnHaWIYZEeiYTTVMZ')
+STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
+STRIPE_PUB_KEY = config('STRIPE_PUB_KEY')
 stripe.api_key = STRIPE_SECRET_KEY
 
 
@@ -40,8 +38,7 @@ def payment_method_createview(request):
                 status_code=401)
         token = request.POST.get("token")
         if token is not None:
-            new_card_obj = CardModel.objects.add_new(
-                payment, token)
+            new_card_obj = CardModel.objects.add_new(payment, token)
         return JsonResponse(
             {"message": "Success! Your card was added."})
     return HttpResponse("error", status_code=401)

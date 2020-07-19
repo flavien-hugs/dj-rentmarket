@@ -1,0 +1,69 @@
+<div class="block-products-carousel__column">
+    <div class="block-products-carousel__cell">
+        <div class="product-card">
+            <button class="product-card__quickview" type="button">
+                <svg width="16px" height="16px">
+                    <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#quickview-16">
+                    </use>
+                </svg>
+                <span class="fake-svg-icon"></span>
+            </button>
+
+            <div class="product-card__badges-list">
+                <div class="product-card__badge product-card__badge--new">New
+                </div>
+            </div>
+
+            <div class="product-card__image">
+                <a title="{{ instance.name }}" href="{{ instance.get_absolute_url }}">
+                    <img src="{{ instance.img1.url }}" alt="{{ instance.name }}">
+                </a>
+            </div>
+
+            <div class="product-card__info">
+                <div class="product-card__name">
+                    <a title="{{ instance.name }}" href="{{ instance.get_absolute_url }}">{{ instance.name|safe }}
+                    </a>
+                </div>
+
+                <div class="product-card__rating">
+                    {% include "layouts/rating.html" %}
+                    <div class="product-card__rating-legend">9 Reviews
+                    </div>
+                </div>
+                <ul class="product-card__features-list">
+                    <li>Speed: 750 RPM</li>
+                    <li>Power Source: Cordless-Electric</li>
+                    <li>Battery Cell Type: Lithium</li>
+                    <li>Voltage: 20 Volts</li>
+                    <li>Battery Capacity: 2 Ah</li>
+                </ul>
+            </div>
+
+            <div class="product-card__actions">
+                <div class="product-card__availability">Availability:
+                    <span class="text-success">In Stock</span>
+                </div>
+                <div class="product-card__prices">{{ instance.price|floatformat:0|safe }}</div>
+
+                <div class="product-card__buttons">
+                    <button class="btn btn-primary product-card__addtocart" type="button">Add To Cart
+                    </button> 
+                    <button class="btn btn-secondary product-card__addtocart product-card__addtocart--list" type="button">Add To Cart</button>
+                    <button class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist" type="button">
+                        <svg width="16px" height="16px">
+                            <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#wishlist-16"></use>
+                        </svg>
+                        <span class="fake-svg-icon fake-svg-icon--wishlist-16"></span>
+                    </button>
+                    <button class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__compare" type="button">
+                        <svg width="16px" height="16px">
+                            <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#compare-16"></use>
+                        </svg>
+                        <span class="fake-svg-icon fake-svg-icon--compare-16"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

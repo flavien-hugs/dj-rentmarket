@@ -1,8 +1,14 @@
-<p>Hello,</p>
+<p>Hello {{ full_name }},</p>
 
-<p>Please activate your account for {{ email }} by clicking the link below:</p>
+<p>Merci de vous être inscrit à RentMarket ! <br>
 
-<p><a href='{{ path }}'>{{ path }}</a></p>
-<p>Once you activate, you can login!</p>
-<p>Thank you,</p>
-<p>RentMarket</p>
+Veuillez cliquer sur ce <a target="_blank" href="{{ path }}">lien</a> pour confirmer votre adresse électronique. Cela signifie que vous pourrez réinitialiser votre mot de passe si vous l'oubliez plus tard.</p> <br>
+
+<p>
+    Si vous ne pouvez pas cliquer sur le lien depuis votre programme de messagerie, veuillez copier cette URL et la coller dans votre navigateur web :
+
+    <a target="_blank" href='{{ path }}'>{{ path }}</a> 
+</p>
+
+<p>Merci,</p>
+<p>L'équipe de RentMarket.</p>

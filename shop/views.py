@@ -1,10 +1,10 @@
+import random
 from django.urls import reverse
 from django.utils import timezone
 from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DetailView
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import Http404, HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect
 
 from shop.forms import ReviewForm
 from shop.models import (
@@ -15,20 +15,6 @@ from location.models import LocationModel
 from analytics.mixins import ObjectViewMixin
 
 
-# HOME
-class HomeListView(ListView):
-    model = ProductModel
-    template_name = 'shop/index.html'
-
-    def get_queryset(self):
-        queryset = ProductModel.objects.get_available()[:3]
-        return queryset
-
-    def get_context_data(self, **kwargs):
-        kwargs['page_title'] = 'Accueil'
-        return super().get_context_data(**kwargs)
-
-
 # SEARCHVIEW
 class SearchView(ListView):
     template_name = 'shop/products/product_list.html'
@@ -36,8 +22,8 @@ class SearchView(ListView):
 
     def get_context_data(self, **kwargs):
         kwargs['query'] = self.request.GET.get('q')
-        kwargs['page_title'] = 'Results search for : {}'.format(
-            kwargs['query'])
+        kwargs['page_title'] = 'Results were found for\
+            the search for : {}'.format(kwargs['query'])
         return super().get_context_data(**kwargs)
 
     def get_queryset(self):
@@ -51,82 +37,78 @@ class SearchView(ListView):
 
 # PRODUCT ALL
 class ProductListView(ListView):
-    model = ProductModel
+    queryset = ProductModel.objects.get_available()
     template_name = 'shop/products/product_list.html'
     paginate_by = 30
 
     def get_context_data(self, *args, **kwargs):
         kwargs['category'] = CategoryModel.objects.all()
-        kwargs['products'] = self.get_queryset().prefetch_related('category')
-        kwargs['page_title'] = 'Tous les produits'
+        kwargs['nb_product'] = len(self.get_queryset())
         return super().get_context_data(*args, **kwargs)
-
-    def get_queryset(self, *args, **kwargs):
-        request = self.request
-        return ProductModel.objects.get_available()
 
 
 # DETAIL PRODUIT
 class ProductDetailView(ObjectViewMixin, DetailView):
+    model = ProductModel
     template_name = 'shop/products/product_detail.html'
 
-    def get_queryset(self, *args, **kwargs):
-        request = self.request
-        return ProductModel.objects.get_available()
-
-    def get_context_data(self, *args, **kwargs):
+    def get_context_data(self, **kwargs):
         kwargs['form'] = ReviewForm()
         kwargs['category'] = CategoryModel.objects.all()
-        return super().get_context_data(*args, **kwargs)
+        kwargs['page_title'] = self.object.name
+        kwargs['related_product'] = sorted(
+            ProductModel.objects.get_related(
+                instance=self.get_object())[:25],
+            key=lambda x: random.random())
 
-        try:
-            instance = ProductModel.objects.get(
-                slug=slug, available=True)
-        except ProductModel.DoesNotExist:
-            raise Http404("Not found..")
-        except ProductModel.MultipleObjectsReturned:
-            qs = ProductModel.objects.filter(
-                slug=slug, available=True)
-            instance = qs.first()
-        except:
-            raise Http404("Uhhmmm")
-        return instance
-
-
-class UserHistoryView(LoginRequiredMixin, ListView):
-    template_name = "shop/products/user.history.html"
-
-    def get_context_data(self, *args, **kwargs):
-        location_obj, new_obj = LocationModel.objects.new_or_get(self.request)
+        location_obj, new_obj = LocationModel.objects.new_or_get(
+            self.request)
         kwargs['location'] = location_obj
-        return super().get_context_data(*args, **kwargs)
+        print(location_obj)
 
-    def get_queryset(self, *args, **kwargs):
-        request = self.request
-        views = request.user.objectviewed_set.by_model(
-            ProductModel, model_queryset=False)
-        return views
+        if self.request.user.is_authenticated:
+            kwargs['history_product'] = self.request.user\
+                .objectviewedmodel_set.by_model(
+                ProductModel, model_queryset=False)
+            print(kwargs['history_product'])
+        return super().get_context_data(**kwargs)
+
+
+# class UserHistoryView(LoginRequiredMixin, ListView):
+#     template_name = "shop/products/product_history.html"
+
+#     def get_context_data(self, **kwargs):
+#         location_obj, new_obj = LocationModel.objects.new_or_get(
+#             self.request)
+#         kwargs['location'] = location_obj
+#         return super().get_context_data(**kwargs)
+
+#     def get_queryset(self, **kwargs):
+#         views = self.request.user.objectviewedmodel_set.by_model(
+#             ProductModel, model_queryset=False)
+#         return views
 
 
 # CATEGORY ALL
-class CategoryListView(ProductListView):
-    model = CategoryModel
+class CategoryListView(ListView):
     queryset = CategoryModel.objects.all()
+    paginate_by = 30
     template_name = 'shop/products/product_list.html'
 
     def get_context_data(self, **kwargs):
-        kwargs['page_title'] = 'toutes les catégories'
+        kwargs['object_list'] = ProductModel.objects.get_available(
+            ).prefetch_related('category')
         return super().get_context_data(**kwargs)
 
 
 # DETAIL CATEGORY
 class CategoryDetailView(DetailView):
-    model = CategoryModel
+    queryset = CategoryModel.objects.all()
 
     def get_context_data(self, **kwargs):
-        self.obj = self.get_object()
-        self.product_set = self.obj.productmodel_set.all()
-        kwargs["product"] = self.product_set
+        self.product_set = self.get_object().get_queryset().all()
+        kwargs['category'] = self.product_set
+        kwargs['page_title'] = self.object.name
         return super().get_context_data(**kwargs)
 
 

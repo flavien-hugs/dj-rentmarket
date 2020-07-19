@@ -1,5 +1,4 @@
 {% extends "shop/index.html" %}
-{% load shoptags %}
 {% load static %} {% get_static_prefix as STATIC_PREFIX %}
 
 {% block slideshow %}{% endblock slideshow %}
@@ -11,12 +10,7 @@
 
     <div class="container">
         <div class="shop-layout shop-layout--sidebar--start">
-            <div class="shop-layout__sidebar">
-                <div class="block block-sidebar">
-                    {% include "shop/category/sidebar_category.html" %}
-                    {% show_latest_product 15 %}
-                </div>
-            </div>
+            {% include "layouts/sidebar.html" %}
 
             <div class="shop-layout__content">
                 <div class="block">
@@ -269,8 +263,12 @@
                     </div>
                 </div>
                 <!-- .block-related-products-carousel -->
-                {% show_similar_product 15 %}
+                {% include "shop/products/product_related.html" %}
                 <!-- end block-related-products-carousel -->
+
+                <!-- .block-history-products-carousel -->
+                {% include "shop/products/product_history.html" %}
+                <!-- end block-history-related-products-carousel -->
             </div>    
         </div>
     </div>

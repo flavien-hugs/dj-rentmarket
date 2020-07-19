@@ -15,10 +15,10 @@ class LocationManager(models.Manager):
             new_obj = False
             location_obj = qs.first()
             if request.user.is_authenticated and location_obj.user is None:
-                location_obj.user = self.request.user
+                location_obj.user = request.user
                 location_obj.save()
         else:
-            location_obj = LocationModel.objects.new(user=self.request.user)
+            location_obj = LocationModel.objects.new(user=request.user)
             new_obj = True
             request.session['location_id'] = location_obj.id
         return location_obj, new_obj
@@ -32,7 +32,8 @@ class LocationManager(models.Manager):
 
 
 class LocationModel(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
+    user = models.ForeignKey(
+        User, on_delete=models.SET_NULL, blank=True, null=True)
     product = models.ManyToManyField(ProductModel, blank=True)
     total = models.DecimalField(default=0.00, max_digits=100, decimal_places=2)
     updated = models.DateTimeField(auto_now=True)

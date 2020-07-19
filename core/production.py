@@ -23,7 +23,7 @@ MIDDLEWARE += [
     'whitenoise.middleware.WhiteNoiseMiddleware'
 ]
 
-ALLOWED_HOSTS = ['rentmkt.herokuapp.com']
+ALLOWED_HOSTS = ['.pythonanywhere.com']
 HOST_SCHEME = "https://"
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 USE_X_FORWARDED_HOST = True

@@ -1,8 +1,8 @@
-from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
 import stripe
+from decouple import config
 from shop.models import ProductModel
 from orders.models import OrdersModel
 from payment.models import PaymentModel
@@ -11,13 +11,8 @@ from location.models import LocationModel
 from address.forms import AddressCheckoutForm
 from accounts.forms import LoginForm, GuestEmailForm
 
-STRIPE_SECRET_KEY = getattr(
-    settings, "STRIPE_SECRET_KEY",
-    "sk_test_cu1lQmcg1OLffhLvYrSCp5XE")
-
-STRIPE_PUB_KEY = getattr(
-    settings, "STRIPE_PUB_KEY",
-    'pk_test_PrV61avxnHaWIYZEeiYTTVMZ')
+STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
+STRIPE_PUB_KEY = config('STRIPE_PUB_KEY')
 stripe.api_key = STRIPE_SECRET_KEY
 
 
@@ -41,8 +36,7 @@ def location_detail_api_view(request):
 
 
 def location_home(request):
-    location_obj, new_obj = LocationModel.objects.new_or_get(request)
-    context = {"location": location_obj, 'page_title': 'location'}
+    context = {'page_title': 'Location'}
     return render(request, "location/location_detail.html", context)
 
 

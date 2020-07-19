@@ -19,14 +19,13 @@ FORCE_INACTIVE_USER_ENDSESSION = getattr(
 
 
 class ObjectViewedQuerySet(models.query.QuerySet):
-    def get_model(self, model_class, model_queryset=False):
+    def by_model(self, model_class, model_queryset=False):
         content_type = ContentType.objects.get_for_model(model_class)
         queryset = self.filter(content_type=content_type)
 
         if model_queryset:
-            ids_viewed = [qs.object_id for qs in queryset]
-            return model_class.objects.filter(
-                pk__in=ids_viewed)
+            ids = [qs.object_id for qs in queryset]
+            return model_class.objects.filter(pk__in=ids)
         return queryset
 
 
@@ -34,9 +33,9 @@ class ObjectViewedManager(models.Manager):
     def get_queryset(self):
         return ObjectViewedQuerySet(self.model, using=self._db)
 
-    def get_model(self, model_class, model_queryset=False):
-        return self.get_queryset().get_model(
-            model_class, model_class=model_queryset)
+    def by_model(self, model_class, model_queryset=False):
+        return self.get_queryset().by_model(
+            model_class, model_queryset=model_queryset)
 
 
 class ObjectViewedModel(models.Model):
@@ -65,10 +64,8 @@ def object_viewed_receiver(sender, instance, request, *args, **kwargs):
     content_type = ContentType.objects.get_for_model(sender)
     user = None
     try:
-        if request.user.is_authenticated():
+        if request.user.is_authenticated() or None:
             user = request.user
-        else:
-            None
     except:
         pass
 

@@ -12,25 +12,26 @@
                         </svg>
                     </li>
 
-                    <li class="breadcrumb-item">
-                        categorie 
-                        {% for cat in category %}
-                            {{ cat.count|pluralize:"s" }}  
+                    {% if object.category.exists %}  
+                        <li class="breadcrumb-item">
+                            categor{{ category.count|pluralize:"y,ies" }}:  
+                            {% for cat in category %}
                                 <a href="{{ cat.get_absolute_url }}">
-                                    : {{ cat.name|safe }}
-                                    {% if not forloop.last %}, {% endif %}
+                                    {{ cat.name|safe }}{% if not forloop.last %}&smid;{% endif %}
                                 </a>
-                            {% if not forloop.last %}
                                 <svg class="breadcrumb-arrow" width="6px" height="9px">
                                     <use xlink:href="{{ STATIC_PREFIX }}img/svg/sprite.svg#arrow-rounded-right-6x9"></use>
                                 </svg>
-                            {% endif %}
-                        {% endfor %}
-                    </li>
+                            {% endfor %}
+                        </li>
 
-                    <li class="breadcrumb-item active" aria-current="page">
-                        {{ object.name }}
-                    </li>
+                        <li class="breadcrumb-item active" aria-current="page">{{ object.name|truncatewords:25|safe }}
+                        </li>
+                    {% else %}
+                        <li class="breadcrumb-item active" aria-current="page">
+                            {{ page_title }}
+                        </li>
+                    {% endif %}
                 </ol>
             </nav>
         </div>
