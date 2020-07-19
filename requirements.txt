@@ -8,7 +8,6 @@ chardet==3.0.4
 cloudinary==1.21.1
 dj-database-url==0.5.0
 dj-static==0.0.6
-Django==3.0.8
 django-countries==6.1.2
 django-heroku==0.3.1
 django-phonenumber-field==4.0.0
