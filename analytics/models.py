@@ -1,5 +1,6 @@
 from django.db import models
 from django.conf import settings
+from django.dispatch import receiver
 from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save
 from django.contrib.sessions.models import Session
@@ -134,7 +135,6 @@ def user_logged_in_receiver(sender, instance, request, *args, **kwargs):
             user=user,
             ip_address=ip_address,
             session_key=session_key)
-
 
 user_logged_in.connect(user_logged_in_receiver)
 
