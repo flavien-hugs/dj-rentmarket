@@ -3,8 +3,6 @@ from django.urls import reverse_lazy, reverse
 from django.utils.safestring import mark_safe
 from django.contrib.auth import get_user_model
 from django.views.generic.edit import FormMixin
-from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import(
     DetailView, FormView, UpdateView, View, CreateView)
@@ -22,7 +20,7 @@ User = get_user_model()
 
 
 class UserHomeView(LoginRequiredMixin, DetailView):
-    template_name = 'accounts/account_detail.html'
+    template_name = 'accounts/home.html'
 
     def get_object(self):
         return self.request.user
@@ -38,18 +36,18 @@ class AccountEmailActivateView(FormMixin, View):
         if key is not None:
             q = EmailActivationModel.objects.filter(
                 key__iexact=key)
-            confirmed = q.confirmed()
+            cqs = q.confirmed()
 
-            if confirmed.count() == 1:
-                obj = confirmed.first()
+            if cqs.count() == 1:
+                obj = cqs.first()
                 obj.activate()
                 messages.success(
                     request,
                     "Your email has been confirmed. Please login.")
                 return redirect('accounts:login')
             else:
-                activated = q.filter(activated=True)
-                if activated.exists():
+                aqc = q.filter(activated=True)
+                if aqc.exists():
                     reset_link = reverse('accounts:password_reset')
                     msg = """Your email has already been confirmed
                     Do you need to <a href="{link}">reset your password</a>?
@@ -62,7 +60,6 @@ class AccountEmailActivateView(FormMixin, View):
         return render(request, template, context)
 
     def post(self, request, *args, **kwargs):
-        # create form to receive an email
         form = self.get_form()
         if form.is_valid():
             return self.form_valid(form)
@@ -71,14 +68,12 @@ class AccountEmailActivateView(FormMixin, View):
 
     def form_valid(self, form):
         msg = """Activation link sent, please check your email."""
-        request = self.request
-        messages.success(request, msg)
+        messages.success(self.request, msg)
         email = form.cleaned_data.get("email")
         obj = EmailActivationModel.objects.email_exists(email).first()
-        user = obj.user 
         new_activation = EmailActivationModel.objects.create(
-            user=user, email=email)
-        new_activation.send_activation()
+            user=obj.user, email=email)
+        new_activation.send_token_activation()
         return super().form_valid(form)
 
     def form_invalid(self, form):
@@ -89,7 +84,7 @@ class AccountEmailActivateView(FormMixin, View):
 
 class GuestSignUpView(NextUrlMixin, RequestFormAttachMixin, CreateView):
     form_class = GuestEmailForm
-    default_next = '/account/signup/'
+    default_next = reverse_lazy('accounts:signup')
 
     def get_success_url(self):
         return self.get_next_url()
@@ -100,8 +95,9 @@ class GuestSignUpView(NextUrlMixin, RequestFormAttachMixin, CreateView):
 
 class LoginView(NextUrlMixin, RequestFormAttachMixin, FormView):
     form_class = LoginForm
-    success_url = default_next = reverse_lazy('dashboard:dashboard')
+    success_url = reverse_lazy('dashboard:dashboard')
     template_name = 'accounts/login.html'
+    default_next = reverse_lazy('dashboard:dashboard')
 
     def form_valid(self, form):
         next_path = self.get_next_url()
@@ -114,7 +110,6 @@ class SignUpView(CreateView):
     success_url = reverse_lazy('accounts:login')
 
 
-@method_decorator(login_required, name='dispatch')
 class AccountUpdateView(LoginRequiredMixin, UpdateView):
     form_class = UserInfoUpdateForm
     template_name = "accounts/update.html"
@@ -122,10 +117,6 @@ class AccountUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_object(self):
         return self.request.user
-
-    def get_context_data(self, *args, **kwargs):
-        kwargs['title'] = 'Change Your Account Details'
-        return super().get_context_data(*args, **kwargs)
 
 
 def deleteAccount(request, pk):

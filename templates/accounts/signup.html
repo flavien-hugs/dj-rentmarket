@@ -16,8 +16,6 @@ Inscription</h4>
 
 <form method="post" novalidate>
     {% csrf_token %}
-    {{ ip }} {{ device_type }} {{ browser_type }} {{ browser_version }}
-    {{ os_type }} {{ os_version }} {{ device_family }}
 
     {% include 'layouts/form.html' %}
     

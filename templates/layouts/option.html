@@ -1,3 +1,4 @@
+{% load humanize %}
 <div class="products-view__options">
     <div class="view-options">
         <div class="view-options__layout">
@@ -29,7 +30,7 @@
                     results were found for the search for
                     <em class="font-weight-bolder">{{ query }}</em>
             {% else %}
-                {{ nb_product }} products</div>
+                {{ object.count }} product{{ object.count|pluralize|intcomma }}</div>
             {% endif %}
         <div class="view-options__divider">
         </div>

@@ -1,0 +1,36 @@
+{% load widget_tweaks %}
+
+{% if address_qs.exists %}
+  {% if address_qs.non_field_errors %}
+    <div class="alert alert-danger" role="alert">
+      {% for error in address_qs.non_field_errors %}
+        <p {% if forloop.last %}class="mb-0"{% endif %}>
+          {{ error }}
+        </p>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <form method="post" action='{{ action_url }}' novalidate>
+    {% csrf_token %}
+
+    {% if next_url %}
+      <input type='hidden' name='next' value='{{ next_url }}'>
+    {% endif %}
+
+    {% if address_type %}
+      <input type='hidden' name='address_type' value='{{ address_type }}'>
+    {% endif %}
+
+    {% for address in address_qs %}
+      <div class="form-group">
+        <label class="form-check-label" for='address-{{ address.id }}'>
+            <input id='address-{{ address.id }}' type='radio' name='shipping_address' value='{{ address.id }}'>
+            {{ address.get_address }}
+        </label><br/>
+      </div>
+    {% endfor %}
+    
+    <button style="background-color:#dc3545;" class="btn btn-block btn-lg font-weight-bold text-white" type="submit">Use Address</button><!-- /.end button login -->
+  </form>
+{% endif %}

@@ -9,6 +9,7 @@ from django.db.models.signals import pre_save, post_save
 
 
 from shop.models import ProductModel
+from address.models import AddressModel
 from payment.models import PaymentModel
 from location.models import LocationModel
 from core.utils import unique_order_id_generator
@@ -83,6 +84,10 @@ class OrderManagerQuerySet(models.query.QuerySet):
     def not_created(self):
         return self.exclude(status='created')
 
+    def by_request(self, request):
+        payment, created = PaymentModel.objects.new_or_get(request)
+        return self.filter(payment=payment)
+
 
 class OrderManager(models.Manager):
     def get_queryset(self):
@@ -112,6 +117,12 @@ class OrderManager(models.Manager):
 class OrdersModel(models.Model):
     order_id = models.CharField(
         'ID commande', max_length=255, blank=True)
+    shipping_address = models.ForeignKey(
+        AddressModel, on_delete=models.SET_NULL,
+        related_name="shipping_address", null=True, blank=True)
+    billing_address = models.ForeignKey(
+        AddressModel, on_delete=models.SET_NULL,
+        related_name="billing_address", null=True, blank=True)
     payment = models.ForeignKey(
         PaymentModel, on_delete=models.SET_NULL,
         null=True, blank=True)
@@ -123,6 +134,8 @@ class OrdersModel(models.Model):
     active = models.BooleanField(default=True)
     status = models.CharField(
         max_length=120, default='created', choices=ORDER_STATUS)
+
+    objects = OrderManager()
 
     class Meta:
         ordering = ('-updated', '-created')

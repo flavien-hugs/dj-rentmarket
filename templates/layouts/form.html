@@ -1,5 +1,9 @@
 {% load formtags widget_tweaks %}
 
+{% if next_url %}
+    <input type='hidden' name='next' value='{{ next_url }}'>
+{% endif %}
+
 {% for field in form %}
     <div class="form-group">
         {{ field.label_tag }}

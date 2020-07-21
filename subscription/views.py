@@ -4,7 +4,6 @@ from django.core.mail import send_mail
 from django.http import HttpResponse, JsonResponse
 
 from subscription.forms import SubscribeForm
-from subscription.models import SubscribeModel
 
 
 def subscribeView(request):

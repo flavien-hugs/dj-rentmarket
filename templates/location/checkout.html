@@ -1,0 +1,259 @@
+{% extends "shop/index.html" %}
+{% load humanize widget_tweaks %}
+
+{% block slideshow %}{% endblock slideshow %}
+
+{% block content %}
+    {% block breadcrumb %}
+        {% include "layouts/breadcrumb.html" %}    
+    {% endblock breadcrumb %}
+
+    <div class="checkout block">
+        <div class="container">
+            {% if not payment %}
+                <div class="row">
+                    <div class="col-12 col-lg-6 col-xl-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="card-title">
+                                    Client de retour ?
+                                </div>
+
+                                {% include 'accounts/guest/form.html' with form=login_form next_url=request.build_absolute_uri %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-6 col-xl-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="card-title">
+                                    Continue as Guest
+                                </div>
+                                {% url "accounts:guest" as guest_register_url %}
+
+                                {% include 'accounts/guest/form.html' with form=guest_form next_url=request.build_absolute_uri action_url=guest_register_url %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                {% if not object.shipping_address %}
+                    <div class="row">
+                        <div class="col-12 col-lg-6 col-xl-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="card-title">
+                                        Shipping Address
+                                    </div>
+
+                                    {% url "address:checkout_address_create" as checkout_address_create %}
+
+                                    {% include 'address/form.html' with form=address_form next_url=request.build_absolute_uri action_url=checkout_address_create address_type='shipping' %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6 col-xl-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    {% url "address:checkout_address_reuse" as checkout_address_reuse %}
+
+                                    {% include 'address/prev_address.html' with address_qs=address_qs next_url=request.build_absolute_uri address_type='shipping' action_url=checkout_address_reuse %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% elif not object.billing_address %}
+                    <div class="row">
+                        <div class="col-12 col-lg-6 col-xl-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="card-title">
+                                        Billing Address
+                                    </div>
+
+                                    {% url "address:checkout_address_create" as checkout_address_create %}
+
+                                    {% include 'address/form.html' with form=address_form next_url=request.build_absolute_uri action_url=checkout_address_create address_type='billing' %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6 col-xl-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    {% url "address:checkout_address_reuse" as checkout_address_reuse %}
+
+                                    {% include 'address/prev_address.html' with address_qs=address_qs next_url=request.build_absolute_uri address_type='billing' action_url=checkout_address_reuse %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    {% if not has_card %}
+                        <div class="row">
+                            <div class="col-12 col-lg-6 col-xl-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class='form-group stripe-payment-form' data-token='{{ publish_key }}' data-next-url='{{ request.build_absolute_uri }}' data-btn-title='Add Payment Method'></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% else %}
+                        <div class="col-12 col-lg-6 col-xl-5 mt-4 mt-lg-0">
+                            <div class="card mb-0">
+                                <div class="card-body">
+                                    <h3 class="card-title">Finalize Checkout</h3>
+                                    <table class="checkout__totals">
+                                        <thead class="checkout__totals-header">
+                                            <tr>
+                                                <th>Product</th>
+                                                <th>Shipping Address</th>
+                                                <th>Billing Address</th>
+                                                <th>Payment Method</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody class="checkout__totals-products">
+                                            <tr>
+                                                <td>
+                                                    {% for obj in object.location.product.all %}
+                                                        {% if not forloop.last %}, {% endif %}
+                                                        {{ obj|safe }}
+                                                    {% endfor %}
+                                                </td>
+                                                <td>{{ object.shipping_address_final }}</td>
+                                                <td>{{ object.billing_address_final }}</td>
+                                                <td>{{ payment.default_card }} (<a href="{{ payment.get_payment_method_url }}?next={{ request.build_absolute_uri }}">Change</a>)td>
+                                            </tr>
+                                        </tbody>
+
+                                        <tbody class="checkout__totals-subtotals">
+                                            <tr>
+                                                <th>Total</th>
+                                                <td>{{ object.location.total|intcomma }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Shipping Total</th>
+                                                <td>{{ object.shipping_total|intcomma }}</td>
+                                            </tr>
+                                        </tbody>
+
+                                        <tfoot class="checkout__totals-footer">
+                                            <tr>
+                                                <th>Order Total (FR CFA)</th>
+                                                <td>{{ object.total|intcomma }}</td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+
+                                    <div class="payment-methods">
+                                        <ul class="payment-methods__list">
+                                            <li class="payment-methods__item payment-methods__item--active">
+                                                <label class="payment-methods__item-header">
+                                                    <span class="payment-methods__item-radio input-radio">
+                                                        <span class="input-radio__body">
+                                                            <input class="input-radio__input" name="checkout_payment_method" type="radio" checked="checked">
+                                                            <span class="input-radio__circle"></span>
+                                                        </span>
+                                                    </span>
+                                                    <span class="payment-methods__item-title">
+                                                    Virement bancaire</span>
+                                                </label>
+
+                                                <div class="payment-methods__item-container">
+                                                    <div class="payment-methods__item-description text-muted">Effectuez votre paiement directement sur notre compte bancaire. Veuillez utiliser votre numéro de commande comme référence de paiement. Votre commande ne sera pas expédiée tant que les fonds n'auront pas été débloqués sur notre compte. 
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li class="payment-methods__item">
+                                                <label class="payment-methods__item-header">
+                                                    <span class="payment-methods__item-radio input-radio">
+                                                        <span class="input-radio__body">
+                                                            <input class="input-radio__input" name="checkout_payment_method" type="radio">
+                                                            <span class="input-radio__circle">
+                                                            </span>
+                                                        </span>
+                                                    </span>
+
+                                                    <span class="payment-methods__item-title">Paiements par chèque
+                                                    </span>
+                                                </label>
+
+                                                <div class="payment-methods__item-container">
+                                                    <div class="payment-methods__item-description text-muted">
+                                                        Veuillez envoyer un chèque au nom du magasin, à la rue du magasin, à la ville du magasin, à l'État ou au comté du magasin, au code postal du magasin.
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li class="payment-methods__item">
+                                                <label class="payment-methods__item-header">
+                                                    <span class="payment-methods__item-radio input-radio">
+                                                        <span class="input-radio__body">
+                                                            <input class="input-radio__input" name="checkout_payment_method" type="radio">
+                                                            <span class="input-radio__circle"></span>
+                                                        </span>
+                                                    </span>
+
+                                                    <span class="payment-methods__item-title">Paiement à la livraison</span>
+                                                </label>
+
+                                                <div class="payment-methods__item-container">
+                                                    <div class="payment-methods__item-description text-muted">Payez en espèces à la livraison.
+                                                    </div>
+                                                </div>
+                                            </li>
+
+                                            <li class="payment-methods__item">
+                                                <label class="payment-methods__item-header">
+                                                    <span class="payment-methods__item-radio input-radio">
+                                                        <span class="input-radio__body">
+                                                            <input class="input-radio__input" name="checkout_payment_method" type="radio">
+                                                            <span class="input-radio__circle"></span>
+                                                        </span>
+                                                    </span>
+                                                    <span class="payment-methods__item-title">PayPal</span>
+                                                </label>
+                                                <div class="payment-methods__item-container">
+                                                    <div class="payment-methods__item-description text-muted">Payez via PayPal ; vous pouvez payer avec votre carte de crédit si vous n'avez pas de compte PayPal.
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <div class="checkout__agree form-group">
+                                        <div class="form-check">
+                                            <span class="form-check-input input-check">
+                                                <span class="input-check__body">
+                                                    <input class="input-check__input" type="checkbox" id="checkout-terms">
+                                                    <span class="input-check__box"></span>
+                                                    <svg class="input-check__icon" width="9px" height="7px">
+                                                        <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#check-9x7"></use>
+                                                    </svg>
+                                                </span>
+                                            </span>
+
+                                            <label class="form-check-label" for="checkout-terms">J'ai lu et j'accepte le site web
+                                                <a target="_blank" href="{% url "cgu" %}">modalités et conditions</a>*
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <form class='form' method='POST' action="">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-primary btn-md btn-block">Checkout</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}

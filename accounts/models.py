@@ -5,8 +5,8 @@ from django.urls import reverse
 from django.conf import settings
 from django.utils import timezone
 from django.core.mail import send_mail
-from django.db.models.signals import pre_save
 from django.template.loader import get_template
+from django.db.models.signals import pre_save, post_save
 from django.contrib.auth.models import(
     AbstractBaseUser, BaseUserManager, PermissionsMixin)
 
@@ -24,7 +24,7 @@ class UserManager(BaseUserManager):
     def create_user(self, email, full_name=None, password=None, is_staff=False, is_admin=False, is_active=True):
         if not email or not password:
             raise ValueError(
-                "Email ou mot de passe incorecte")
+                "Email ou mot de passe incorrecte")
 
         email = self.normalize_email(email)
         user = self.model(
@@ -64,7 +64,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     country = CountryField()
     city = models.CharField('Ville', max_length=50)
     phone_number = PhoneNumberField('Téléphone', null=True)
-    joined = models.DateField('date joined', auto_now_add=timezone.now)
+    joined = models.DateField('joined date', auto_now_add=timezone.now)
     is_active = models.BooleanField(default=True)
     admin = models.BooleanField(default=False)
     staff = models.BooleanField(default=False)
@@ -73,6 +73,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = []
 
     objects = UserManager()
+
+    def __str__(self):
+        return self.email
 
     def get_full_name(self):
         if self.full_name:
@@ -120,8 +123,8 @@ class EmailActivationManager(models.Manager):
 
     def email_exists(self, email):
         return self.get_queryset().filter(
-            Q(email=email) | Q(user__email=email)).filter(
-                activated=False)
+            Q(email=email) | Q(user__email=email)
+            ).filter(activated=False)
 
 
 class EmailActivationModel(models.Model):
@@ -160,15 +163,16 @@ class EmailActivationModel(models.Model):
         self.key = None
         self.save()
         if self.key is not None:
+            print(self.key)
             return True
         return False
 
-    def send_token(self):
+    def send_token_activation(self):
         if not self.activated and not self.forced_expired:
             if self.key:
                 base_url = getattr(
                     settings,
-                    'BASE_URL', 'https://unsta.io')
+                    'BASE_URL', 'https://unsta.pythonanywhere.com')
                 key_path = reverse(
                     'accounts:email-activate',
                     kwargs={'key': self.key})
@@ -181,17 +185,16 @@ class EmailActivationModel(models.Model):
                 }
 
                 txt = get_template(
-                    'accounts/verify.txt').render(context)
+                    'accounts/verify/verify.txt').render(context)
                 html = get_template(
-                    'accounts/verify.html').render(context)
-                subject = 'Activate your account'
+                    'accounts/verify/verify.html').render(context)
+                subject = 'Click email Verification'
                 from_email = settings.DEFAULT_FROM_EMAIL
                 recipient_list = [self.email]
                 sent_mail = send_mail(
                     subject, txt, from_email, recipient_list,
                     html_message=html, fail_silently=False,)
                 return sent_mail
-
         return False
 
 
@@ -202,6 +205,15 @@ def pre_save_email_activation(sender, instance, *args, **kwargs):
 
 pre_save.connect(
     pre_save_email_activation, sender=EmailActivationModel)
+
+
+def post_save_user_create_reciever(sender, instance, created, *args, **kwargs):
+    if created:
+        obj = EmailActivationModel.objects.create(
+            user=instance, email=instance.email)
+        obj.send_token_activation()
+
+post_save.connect(post_save_user_create_reciever, sender=User)
 
 
 class GuestEmailModel(models.Model):

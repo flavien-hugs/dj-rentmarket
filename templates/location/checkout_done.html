@@ -1,0 +1,18 @@
+{% extends "shop/index.html" %}
+{% load humanize widget_tweaks %}
+
+{% block slideshow %}{% endblock slideshow %}
+
+{% block content %}
+    {% block breadcrumb %}
+        {% include "layouts/breadcrumb.html" %}    
+    {% endblock breadcrumb %}
+
+    <div class="checkout block">
+        <div class="container">
+            <div class='col-6 mx-auto py-5 text-center'>
+                <h1 class='display-1'>Thank you for your order !!!</h1>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

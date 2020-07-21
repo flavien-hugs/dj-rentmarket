@@ -11,13 +11,15 @@
     <div class="checkout block">
         <div class="container">
             <div class="row">
-                <div class="col-12 mb-3">
-                    <div class="alert alert-lg alert-danger">
-                        Client de retour ? <a href="{% url "accounts:login" %}">
-                            Cliquez ici pour vous connecter
-                        </a>
+                {% if not request.user.is_authenticated %}
+                    <div class="col-12 mb-3">
+                        <div class="alert alert-lg alert-danger">
+                            Client de retour ? <a href="{% url "accounts:login" %}">
+                                Cliquez ici pour vous connecter
+                            </a>
+                        </div>
                     </div>
-                </div>
+                {% endif %}
 
 
                 <form class="row" method="post" novalidate>

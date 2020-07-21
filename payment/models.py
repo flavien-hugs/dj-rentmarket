@@ -9,7 +9,7 @@ from accounts.models import GuestEmailModel
 
 STRIPE_SECRET_KEY = getattr(
     settings, "STRIPE_SECRET_KEY",
-    "sk_test_cu1lQmcg1OLffhLvYrSCp5XE")
+    "sk_test_51H6F3bEVRs2R6z6LBLDgt4mlR50t4QHqDGb1BJ1A7NII7ejhXPVMlA9tnlWMy8WWtPjrQrtXeHBRcsfXdJwjmQL700iWChY2Zj")
 stripe.api_key = STRIPE_SECRET_KEY
 
 User = get_user_model()
@@ -18,8 +18,7 @@ User = get_user_model()
 class PaymentManager(models.Manager):
     def new_or_get(self, request):
         user = request.user
-        guest_email_id = request.session.get(
-            'guest_email_id')
+        guest_email_id = request.session.get('guest_email_id')
         created = False
         obj = None
         if user.is_authenticated:
@@ -55,10 +54,10 @@ class PaymentModel(models.Model):
         return ChargeModel.objects.do(self, order_obj, card)
 
     def get_card(self):
-        return self.card_set.all()
+        return self.cardmodel_set.all()
 
     def get_payment_method_url(self):
-        return reverse('billing-payment-method')
+        return reverse('payment:method')
 
     @property
     def has_card(self):

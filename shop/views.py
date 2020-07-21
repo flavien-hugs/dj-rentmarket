@@ -8,10 +8,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 from shop.forms import ReviewForm
 from shop.models import (
-    ProductModel, CategoryModel,
-    ReviewModel, WishListModel)
+    ProductModel, CategoryModel, ReviewModel, WishListModel)
 from location.models import LocationModel
 
+from analytics.models import CategoryView
 from analytics.mixins import ObjectViewMixin
 
 
@@ -41,11 +41,6 @@ class ProductListView(ListView):
     template_name = 'shop/products/product_list.html'
     paginate_by = 30
 
-    def get_context_data(self, *args, **kwargs):
-        kwargs['category'] = CategoryModel.objects.all()
-        kwargs['nb_product'] = len(self.get_queryset())
-        return super().get_context_data(*args, **kwargs)
-
 
 # DETAIL PRODUIT
 class ProductDetailView(ObjectViewMixin, DetailView):
@@ -67,52 +62,39 @@ class ProductDetailView(ObjectViewMixin, DetailView):
         print(location_obj)
 
         if self.request.user.is_authenticated:
-            kwargs['history_product'] = self.request.user\
-                .objectviewedmodel_set.by_model(
-                ProductModel, model_queryset=False)
-            print(kwargs['history_product'])
+            kwargs['history_product'] = sorted(
+                self.request.user.objectviewedmodel_set.by_model(
+                    self.model, model_queryset=False)[:50],
+                key=lambda x: random.random())
         return super().get_context_data(**kwargs)
-
-
-# class UserHistoryView(LoginRequiredMixin, ListView):
-#     template_name = "shop/products/product_history.html"
-
-#     def get_context_data(self, **kwargs):
-#         location_obj, new_obj = LocationModel.objects.new_or_get(
-#             self.request)
-#         kwargs['location'] = location_obj
-#         return super().get_context_data(**kwargs)
-
-#     def get_queryset(self, **kwargs):
-#         views = self.request.user.objectviewedmodel_set.by_model(
-#             ProductModel, model_queryset=False)
-#         return views
 
 
 # CATEGORY ALL
 class CategoryListView(ListView):
     queryset = CategoryModel.objects.all()
-    paginate_by = 30
+    paginate_by = 50
     template_name = 'shop/products/product_list.html'
-
-    def get_context_data(self, **kwargs):
-        kwargs['object_list'] = ProductModel.objects.get_available(
-            ).prefetch_related('category')
-        return super().get_context_data(**kwargs)
 
 
 # DETAIL CATEGORY
 class CategoryDetailView(DetailView):
-    queryset = CategoryModel.objects.all()
+    model = CategoryModel
+    template_name = 'shop/category/category_detail.html'
 
     def get_context_data(self, **kwargs):
-        self.product_set = self.get_object().get_queryset().all()
-        kwargs['category'] = self.product_set
-        kwargs['page_title'] = self.object.name
+        if self.request.user.is_authenticated or None:
+            kwargs['new_view'] = CategoryView.objects.add_count(
+                self.request.user, self.get_object())
+
+        obj = self.get_object()
+        kwargs['object_list'] = obj.productmodel_set.get_available()
+        print(kwargs['object_list'])
+
+        kwargs['page_title'] = 'Category: {}'.format(self.object.name)
         return super().get_context_data(**kwargs)
 
 
-# WishList
+# WISHLIST VIEWS
 def wishlist(request):
     if request.method == 'GET':
         product_id = request.GET['product_id']
@@ -128,11 +110,11 @@ def wishlist(request):
         return HttpResponse("request method")
 
 
-# Review VIEW
+# REVIEW VIEW
 def addReview(request, slug):
     product = get_object_or_404(ProductModel, slug=slug, available=True)
     if request.method == 'POST':
-        form = ReviewForm(request.POST or None)
+        form = ReviewForm(request.POST or None, request.user)
         if form.is_valid():
             rating = form.cleaned_data['rating']
             name = form.cleaned_data['name']

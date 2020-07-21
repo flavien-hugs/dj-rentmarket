@@ -1,17 +1,17 @@
 from django.conf import settings
 from django.contrib import admin
-from django.conf.urls.static import static
-from django.views.generic import TemplateView
 from django.urls import path, include
+from django.conf.urls.static import static
+from django.views.generic import TemplateView, RedirectView
 
 
 urlpatterns = [
     path('', TemplateView.as_view(
         template_name='shop/index.html'), name='home'),
-
     path('shop/', include('shop.urls', namespace='shop')),
     path('customer/', include('accounts.urls', namespace='accounts')),
     path('location/', include('location.urls', namespace='location')),
+    path('address/', RedirectView.as_view(url='/address')),
     path('address/', include('address.urls', namespace='address')),
     path('order/', include('orders.urls', namespace='orders')),
     path('payment/', include('payment.urls', namespace='payment')),

@@ -1,5 +1,5 @@
 {% extends "shop/index.html" %}
-{% load shoptags %}
+{% load humanize shoptags %}
 
 {% block slideshow %}{% endblock slideshow %}
 
@@ -45,7 +45,7 @@
                                     </ul>
                                 </td>
 
-                                <td class="cart-table__column cart-table__column--price" data-title="Prix">{{ obj.price|floatformat:0|safe }}</td>
+                                <td class="cart-table__column cart-table__column--price" data-title="Prix">{{ obj.price|intcomma }}</td>
 
                                 <td class="cart-table__column cart-table__column--total" data-title="Date de location">{{ obj.rent_date|date }}</td>
 
@@ -100,7 +100,7 @@
                                     <thead class="cart__totals-header">
                                         <tr>
                                             <th>Subtotal</th>
-                                            <td>{{ location.total|safe }}</td>
+                                            <td>{{ location.total|intcomma }}</td>
                                         </tr>
                                     </thead>
                                     <tbody class="cart__totals-body">

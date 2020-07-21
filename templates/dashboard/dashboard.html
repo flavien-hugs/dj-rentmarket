@@ -12,71 +12,59 @@
     <div class="block">
         <div class="container">
             <div class="row justify-content-end">
-                {% if messages %}
-                    <div class="col-6 float-right">
-                        {% for message in messages %}
-                            <div class="alert {% if message.tags %} alert-{{ message.tags }} {% endif %} alert-dismissible fade show" role="alert">
-                                {{ message }}
-                                <button class="close" type="button" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                            </div>
-                        {% endfor %}
-                    </div>
-                {% endif %}
+                {% include "layouts/message.html" %}
             </div>
 
             <div class="row">
                 <div class="col-md-4 d-flex">
                     <div class="card flex-grow-1 mb-md-0">
                         <div class="card-body">
-                            <h3 class="card-title">Information Client</h3>
-                            <div>
-                                <div class="form-group">
-                                    <label class="font-weight-bold">Nom &amp; Prénoms :</label> Mr/Mme {{ user.get_full_name }} <br>
+                            <h3 class="card-title">Account Details</h3>
 
-                                    <label class="font-weight-bold">
-                                    Email :</label>
-                                    {{ request.user.email }} <br>
+                            <div class="form-group">
+                                <label class="font-weight-bold">Nom &amp; Prénoms :</label> Mr/Mme {{ user.get_full_name }} <br>
 
-                                    <label class="font-weight-bold">
-                                    Pays/Ville :</label>
-                                    {{ request.user.country.name }}/{{ request.user.city }} <br>
+                                <label class="font-weight-bold">
+                                Email :</label>
+                                {{ request.user.email }} <br>
 
-                                    <label class="font-weight-bold">
-                                    Téléphone :</label>
-                                    {{ request.user.phone_number }} <br>
-                                </div>
+                                <label class="font-weight-bold">
+                                Pays/Ville :</label>
+                                {{ request.user.country.name }}/{{ request.user.city }} <br>
 
-                                <div class="form-group">
-                                    <a href="{% url 'accounts:update' %}" class="btn btn-primary btn-md btn-block">
-                                    Modifier mon compte</a>
-                                </div>
+                                <label class="font-weight-bold">
+                                Téléphone :</label>
+                                {{ request.user.phone_number }} <br>
+                            </div>
+                                
+                            <div class="form-group">
+                                <a href="{% url 'accounts:update' %}" class="btn btn-primary btn-sm btn-block">
+                                Update Details</a>
+                            </div>
 
-                                <div class="form-group">
-                                    <a class="btn btn-primary btn-success btn-block" href="https://web.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">
-                                        Partager sur facebook
-                                    </a>
-                                </div>
+                            <!--<div class="form-group">
+                                <a class="btn btn-primary btn-success btn-block" href="https://web.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">
+                                    Partager sur facebook
+                                </a>
+                            </div> -->
 
-                                <div class="form-group">
-                                    <a href="{% url 'accounts:delete' user.id %}" class="btn btn-primary btn-md btn-block">
-                                    Supprimer mon compte</a>
-                                </div>
+                            <div class="form-group">
+                                <a href="{% url 'accounts:password_change' %}" class="btn btn-primary btn-md btn-block">
+                                Change Password</a>
                             </div>
                         </div>
 
                         <div class="card-divider"></div>
 
                         <div class="card-body">
-                            <h3 class="card-title">Commande</h3>
+                            <h3 class="card-title">Resume</h3>
                             <div>
                                 <div class="form-group">
                                     <label class="font-weight-bold">
-                                    Nombre de produits en location : {{ count_products }}</label>
+                                    Number product: {{ count_products }}</label>
                                     <br>
 
-                                    <label class="font-weight-bold">Nombre de Commande : {{ count_orders }} </label>
+                                    <label class="font-weight-bold">Number Orders : {{ count_orders }} </label>
                                 </div>
                             </div>
                         </div>
@@ -86,52 +74,71 @@
                 <div class="col-md-8 d-flex mt-4 mt-md-0">
                     <div class="card flex-grow-1 mb-md-0">
                         <div class="card-body">
+                            <h3 class="card-title">Product on rente</h3>
 
-                                <h3 class="card-title">Produits en location</h3>
+                            <div class="py-2">
+                                <table class="table table-sm">
+                                    <tr class="small text-capitalize">
+                                        <th>Product</th>
+                                        <th>Price</th>
+                                        <th>Add to</th>
+                                        <th>Views</th>
+                                        <th class="cart-table__column cart-table__column--remove"></th>
+                                    </tr>
+                                    {% for obj in object_list|slice:'0:5' %}
+                                    <tr>
+                                        <td data-title="Product">
+                                            <a href="{{ obj.get_absolute_url }}">{{ obj.name|truncatewords:6|safe }}</a>
+                                        </td>
 
-                                <div class="py-2">
-                                    <table class="table table-sm">
-                                        <tr class="small text-capitalize">
-                                            <th>produit</th>
-                                            <th>prix</th>
-                                            <th>disponible</th>
-                                            <th>Ajouter le</th>
-                                            <th>Vues</th>
-                                            <th class="cart-table__column cart-table__column--remove"></th>
-                                        </tr>
+                                        <td data-title="Prix">{{ obj.price|intcomma }}</td>
 
-                                        {% for obj in object_list %}
+                                        <td data-title="Date de location">{{ obj.rent_date|date }}</td>
+
+                                        <td data-title="Nombre de vues">
+                                            {{ obj.views }}
+                                        </td>
+
+                                        <td class="cart-table__column cart-table__column--remove">
+                                            <a href="{% url 'dashboard:delete_product' obj.pk %}" type="button" class="btn btn-light btn-sm btn-svg-icon">
+                                                <svg width="12px" height="12px">
+                                                    <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#cross-12"></use>
+                                                </svg>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+
+                            <a href="{% url 'dashboard:add_product' %}" class="btn btn-primary btn-md text-uppercase">add product</a>
+                        </div>
+
+                        <div class="card-divider"></div>
+
+                        <div class="card-body">
+                            <h3 class="card-title">Orders</h3>
+
+                            <div class="py-2">
+                                <table class="table table-sm">
+                                    <tr class="small text-capitalize">
+                                        <th>Product</th>
+                                        <th>Add to</th>
+                                    </tr>
+
+                                    {% for obj in object_list|slice:'0:5' %}
                                         <tr>
                                             <td data-title="Produit">
                                                 <a href="{{ obj.get_absolute_url }}">{{ obj.name|truncatewords:6|safe }}</a>
                                             </td>
 
-                                            <td data-title="Prix">{{ obj.price|floatformat:0|safe }}</td>
+                                            <td data-title="Prix">{{ obj.pub_date|date }}</td>
+                                        </tr>   
+                                    {% endfor %}
+                                </table>
+                            </div>
 
-                                            <td data-title="Disponibilité">
-                                                {% if obj.available %}
-                                                oui{% else %}non{% endif %}
-                                            </td>
-
-                                            <td data-title="Date de location">{{ obj.rent_date|date }}</td>
-
-                                            <td data-title="Nombre de vues">
-                                                {{ obj.views }}
-                                            </td>
-
-                                            <td class="cart-table__column cart-table__column--remove">
-                                                <a href="{% url 'dashboard:delete_product' obj.pk %}" type="button" class="btn btn-light btn-sm btn-svg-icon">
-                                                    <svg width="12px" height="12px">
-                                                        <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#cross-12"></use>
-                                                    </svg>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        {% endfor %}
-                                    </table>
-                                </div>
-
-                            <a href="{% url 'dashboard:add_product' %}" class="btn btn-primary btn-md text-uppercase">ajouter un produit</a>
+                            <a href="#" class="btn btn-primary btn-md text-uppercase">Views all orders</a>
                         </div>
                     </div>
                 </div>

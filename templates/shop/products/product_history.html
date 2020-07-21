@@ -1,23 +1,11 @@
-{% if request.user.is_authenticated and history_product %}
+{% if history_product or request.user.is_authenticated  %}
     <div class="block block-products-carousel" data-layout="grid-4-sm">
         <div class="block-header">
             <h3 class="block-header__title">
             Product View History</h3>
             <div class="block-header__divider"></div>
 
-            <div class="block-header__arrows-list">
-                <button class="block-header__arrow block-header__arrow--left" type="button">
-                    <svg width="7px" height="11px">
-                        <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#arrow-rounded-left-7x11"></use>
-                    </svg>
-                </button>
-
-                <button class="block-header__arrow block-header__arrow--right" type="button">
-                    <svg width="7px" height="11px">
-                        <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#arrow-rounded-right-7x11"></use>
-                    </svg>
-                </button>
-            </div>
+            {% include "shop/products/snippets/arrow.html" %}
         </div>
 
         <div class="block-products-carousel__slider">

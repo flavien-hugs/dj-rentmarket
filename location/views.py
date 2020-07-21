@@ -1,8 +1,8 @@
+from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
 import stripe
-from decouple import config
 from shop.models import ProductModel
 from orders.models import OrdersModel
 from payment.models import PaymentModel
@@ -11,8 +11,8 @@ from location.models import LocationModel
 from address.forms import AddressCheckoutForm
 from accounts.forms import LoginForm, GuestEmailForm
 
-STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
-STRIPE_PUB_KEY = config('STRIPE_PUB_KEY')
+STRIPE_SECRET_KEY = getattr(settings, "STRIPE_SECRET_KEY", "sk_test_51H6F3bEVRs2R6z6LBLDgt4mlR50t4QHqDGb1BJ1A7NII7ejhXPVMlA9tnlWMy8WWtPjrQrtXeHBRcsfXdJwjmQL700iWChY2Zj")
+STRIPE_PUB_KEY =  getattr(settings, "STRIPE_PUB_KEY", 'pk_test_51H6F3bEVRs2R6z6LE0qO5BL9PAOYUPwRS0EI5TOnNd3P0hI5y4GAPTb47uSGT7rbE7tmua6qcjbreOpSVMop4pLh00BH4DVIcg')
 stripe.api_key = STRIPE_SECRET_KEY
 
 
@@ -36,8 +36,10 @@ def location_detail_api_view(request):
 
 
 def location_home(request):
-    context = {'page_title': 'Location'}
-    return render(request, "location/location_detail.html", context)
+    location_obj, new_obj = LocationModel.objects.new_or_get(request)
+    context = {'location': location_obj, 'page_title': 'Location'}
+    template = "location/location_detail.html"
+    return render(request, template, context)
 
 
 def location_update(request):
@@ -87,7 +89,7 @@ def checkout_home(request):
     address_qs = None
     has_card = False
     if payment is not None:
-        if request.user.is_authenticated():
+        if request.user.is_authenticated:
             address_qs = AddressModel.objects.filter(
                 payment=payment)
         order_obj, order_obj_created = OrdersModel.objects.new_or_get(
@@ -119,6 +121,7 @@ def checkout_home(request):
                 print(crg_msg)
                 return redirect("location:checkout")
     context = {
+        'page_title': 'Checkout',
         "object": order_obj,
         "payment": payment,
         "login_form": login_form,
@@ -127,7 +130,6 @@ def checkout_home(request):
         "address_qs": address_qs,
         "has_card": has_card,
         "publish_key": STRIPE_PUB_KEY,
-        "shipping_address_required": shipping_address_required,
     }
 
     return render(request, "location/checkout.html", context)

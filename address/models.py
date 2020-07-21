@@ -49,10 +49,11 @@ class AddressModel(models.Model):
             city=self.city)
 
     def get_address(self):
-        return "{for_name}\n{line1}\n{city}\n{state}, {postal}\n{country}".format(
-            for_name=self.first_name or "",
-            line1=self.phone_number,
-            city=self.city,
-            address_delivery=self.address_delivery,
-            posta=self.zipcode,
-            country=self.country)
+        return "{for_name}\n{line1}\n{city}\n{address_delivery},\
+            {address_type}\n{country}".format(
+                for_name=self.first_name or "",
+                line1=self.phone_number,
+                city=self.city,
+                address_delivery=self.address_delivery,
+                address_type=self.address_type,
+                country=self.country.name)

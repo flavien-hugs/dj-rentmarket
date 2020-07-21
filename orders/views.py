@@ -27,7 +27,7 @@ class LibraryView(LoginRequiredMixin, ListView):
     template_name = 'orders/library.html'
 
     def get_queryset(self):
-        return OrderPurchaseModel.objects.products_by_request(self.request)
+        return OrderPurchaseModel.objects.product_by_request(self.request)
 
 
 class VerifyOwnership(View):

@@ -29,9 +29,6 @@ class UserProductMixin(LoginRequiredMixin, UserMixin, UserEditeMixin):
     fields = '__all__'
     success_url = reverse_lazy('dashboard:dashboard')
 
-    def get_object(self):
-        return self.request.user
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         products = ProductModel.objects.all().count()
@@ -41,8 +38,11 @@ class UserProductMixin(LoginRequiredMixin, UserMixin, UserEditeMixin):
         return context
 
 
-class UserProductEditMixin(UserProductMixin, UserEditeMixin):
-    fields = '__all__'
+class UserProductEditMixin(UserProductMixin, UserEditeMixin, CreateView):
+    fields = [
+        'user', 'category', 'name',
+        'label', 'price', 'available', 'keywords',
+        'desc', 'img1', 'img2', 'img3', 'img4', 'img5']
     success_url = reverse_lazy('dashboard:dashboard')
     template_name = 'dashboard/dashboard_product_form.html'
 

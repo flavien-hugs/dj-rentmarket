@@ -3,7 +3,7 @@ from django.views.generic import TemplateView
 from shop.views import (
     SearchView, ProductListView,
     ProductDetailView, CategoryListView,
-    wishlist, addReview)
+    CategoryDetailView, wishlist, addReview)
 
 app_name = 'shop'
 urlpatterns = [
@@ -30,7 +30,7 @@ urlpatterns = [
             extra_context={'page_title': 'Toutes les catégories'}),
         name='all_category'),
     path(
-        'category/<slug>/', CategoryListView.as_view(),
+        'category/<slug>/', CategoryDetailView.as_view(),
         name='detail_category'),
 
     # URL wishlist

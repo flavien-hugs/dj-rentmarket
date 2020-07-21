@@ -1,9 +1,19 @@
-{% extends 'base.html' %}
+{% extends "shop/index.html" %}
+{% load humanize widget_tweaks %}
 
+{% block slideshow %}{% endblock slideshow %}
 
 {% block content %}
-    <div class='col-10 col-md-6 mx-auto'>
-        <h1>Add Payment Method</h1>
-        <div class='stripe-payment-form' data-token='{{ publish_key }}' data-next-url='{% if next_url %}{{ next_url }}{% endif %}' data-btn-title='Add New Card'></div>
+    {% block breadcrumb %}
+        {% include "layouts/breadcrumb.html" %}    
+    {% endblock breadcrumb %}
+
+    <div class="checkout block">
+        <div class="container">
+            <div class='col-10 col-md-6 mx-auto'>
+                <h1>Add Payment Method</h1>
+                <div class='stripe-payment-form' data-token='{{ publish_key }}' data-next-url='{% if next_url %}{{ next_url }}{% endif %}' data-btn-title='Add New Card'></div>
+            </div>
+        </div>
     </div>
 {% endblock %}

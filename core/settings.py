@@ -1,5 +1,4 @@
 import os
-from decouple import config
 from django.core.exceptions import ImproperlyConfigured
 
 
@@ -35,13 +34,13 @@ SITE_NAME = 'Rent Market'
 LOCATION_SESSION_ID = 'cartsession'
 USE_THOUSAND_SEPARATOR = True
 THOUSAND_SEPARATOR = ' '
-# BASE_URL = ''
 
-MANAGERS = (('flavien hugs', "admin@pm.me"),)
+MANAGERS = (('flavien hugs', "flavienhgs@gmail.com"),)
 ADMINS = MANAGERS
 
 # USER MODEL
 AUTH_USER_MODEL = 'accounts.User'
+SITE_ID = 1
 
 # Application definition
 INSTALLED_APPS = [
@@ -158,6 +157,20 @@ TIME_ZONE = 'UTC'
 USE_I18N = USE_L10N = USE_TZ = True
 
 
+# CONFIG MESSAGE
+try:
+    from django.contrib.messages import constants as messages
+    MESSAGE_TAGS = {
+        messages.DEBUG: 'alert-info',
+        messages.INFO: 'alert-info',
+        messages.SUCCESS: 'alert-success',
+        messages.WARNING: 'alert-warning',
+        messages.ERROR: 'alert-danger',
+    }
+except Exception as e:
+    pass
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
@@ -180,14 +193,14 @@ LOGOUT_REDIRECT_URL = 'home'
 FORCE_SESSION_TO_ONE = False
 FORCE_INACTIVE_USER_ENDSESSION = False
 
-
-EMAIL_HOST = config('EMAIL_HOST')
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-EMAIL_PORT = config('EMAIL_PORT', cast=int)
-EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
-DEFAULT_FROM_EMAIL = 'RentMarket <flavienhugs@gmail.com>'
-BASE_URL = '127.0.0.1:8000'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'flavienhgs@gmail.com'
+EMAIL_HOST_PASSWORD = '58fl02ghs@!?'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'RentMarket <info@rm.com>'
+BASE_URL = '127.0.0.1:8956'
 
 PHONENUMBER_DEFAULT_REGION = "CI"
 PHONENUMBER_DB_FORMAT = "INTERNATIONAL"
@@ -198,8 +211,8 @@ USER_AGENTS_CACHE = 'default'
 
 
 # STRIPE PAYMENT
-STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
-STRIPE_PUB_KEY = config('STRIPE_PUB_KEY')
+STRIPE_SECRET_KEY = "sk_test_51H6F3bEVRs2R6z6LBLDgt4mlR50t4QHqDGb1BJ1A7NII7ejhXPVMlA9tnlWMy8WWtPjrQrtXeHBRcsfXdJwjmQL700iWChY2Zj"
+STRIPE_PUB_KEY = 'pk_test_51H6F3bEVRs2R6z6LE0qO5BL9PAOYUPwRS0EI5TOnNd3P0hI5y4GAPTb47uSGT7rbE7tmua6qcjbreOpSVMop4pLh00BH4DVIcg'
 
 
 CORS_REPLACE_HTTPS_REFERER = False

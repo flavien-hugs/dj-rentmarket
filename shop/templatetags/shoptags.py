@@ -23,8 +23,8 @@ def show_featured_product(count=100):
 
 
 @register.inclusion_tag('shop/review/review_list.html')
-def show_review_list(count):
-    review_list = ReviewModel.objects.order_by('-date')[:count]
+def show_review_list(count=5):
+    review_list = ReviewModel.objects.order_by('-rating')[:count]
     context = {'review_list': review_list}
     return context
 

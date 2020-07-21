@@ -21,42 +21,13 @@
                                 <div class="product-gallery">
                                     <div class="product-gallery__featured">
                                         <div class="owl-carousel" id="product-image">
-
-                                            <a title="{{ object.name }}" href="{{ object.img1.url }}" target="_blank">
-                                                <img src="{{ STATIC_PREFIX }}img/products/product-16-1.jpg" alt="{{ object.name }}">
-                                            </a>
-
-                                            <a title="{{ object.name }}" href="{{ object.img2.url }}" target="_blank">
-                                                <img src="{{ STATIC_PREFIX }}img/products/product-16-2.jpg" alt="{{ object.name }}">
-                                            </a>
-
-                                            <a title="{{ object.name }}" href="{{ object.img3.url }}" target="_blank">
-                                                <img src="{{ STATIC_PREFIX }}img/products/product-16-3.jpg" alt="{{ object.name }}">
-                                            </a>
-
-                                            <a title="{{ object.name }}" href="{{ object.img4.url }}" target="_blank">
-                                                <img src="{{ STATIC_PREFIX }}img/products/product-16-4.jpg" alt="{{ object.name }}">
-                                            </a>
+                                            {% include "shop/products/snippets/image.html" %}
                                         </div>
                                     </div>
 
                                     <div class="product-gallery__carousel">
                                         <div class="owl-carousel" id="product-carousel">
-                                            <a title="{{ object.name }}" class="product-gallery__carousel-item">
-                                                <img src="{{ STATIC_PREFIX }}img/products/product-16-1.jpg" alt="{{ object.name }}">
-                                            </a>
-
-                                            <a title="{{ object.name }}" class="product-gallery__carousel-item">
-                                                <img src="{{ STATIC_PREFIX }}img/products/product-16-2.jpg" alt="{{ object.name }}">
-                                            </a>
-
-                                            <a title="{{ object.name }}" class="product-gallery__carousel-item">
-                                                <img src="{{ STATIC_PREFIX }}img/products/product-16-3.jpg" alt="{{ object.name }}">
-                                            </a>
-
-                                            <a title="{{ object.name }}" class="product-gallery__carousel-item">
-                                                <img src="{{ STATIC_PREFIX }}img/products/product-16-4.jpg" alt="{{ object.name }}">
-                                            </a>
+                                            {% include "shop/products/snippets/image.html" %}
                                         </div>
                                     </div>
                                 </div>
@@ -80,6 +51,7 @@
 
                                 <h1 class="product__name">
                                 {{ object.name|safe }}</h1>
+
                                 <div class="product__rating">
                                     <!-- reviews rating -->
                                     <div class="product__rating-stars">
@@ -88,14 +60,14 @@
                                     <!-- end reviews rating --> 
 
                                     <div class="product__rating-legend">
-                                        <a href="#">7 Reviews</a>
+                                        <a href="{{ object.get_absolute_url }}#tab-reviews">{{ object.review.rating }} Reviews</a>
                                         <span>/</span>
-                                        <a href="#tab-reviews">Write A Review</a>
+                                        <a href="{{ object.get_absolute_url }}#tab-reviews">Write A Review</a>
                                     </div>
                                 </div>
 
                                 <div class="product__description">
-                                    {{ object.desc }}
+                                    {{ object.desc|truncatewords:15|safe }}
                                 </div>
                                 <ul class="product__features">
                                     <li>Speed: 750 RPM</li>
@@ -107,7 +79,7 @@
 
                                 <ul class="product__meta">
                                     <li class="product__meta-availability">
-                                        Availability: <span class="text-success">In Stock</span>
+                                        Availability: <span class="text-success">{{ object.available|yesno:'Oui,Non' }}</span>
                                     </li>
                                     <li>Brand: <a href="#">Wakita</a></li>
                                     <li>SKU: 83690/32</li>
@@ -117,8 +89,10 @@
                             <!-- .product__sidebar -->
                             <div class="product__sidebar">
                                 <div class="product__availability">
-                                    Disponibilité:
-                                    <span class="text-success">Oui</span>
+                                    Available
+                                    <span class="text-success">
+                                        {{ object.available|yesno:'Oui,Non' }}
+                                    </span>
                                 </div>
                                 <div class="product__prices">
                                 {{ object.price|floatformat:0|safe }}</div>
@@ -161,9 +135,9 @@
                             <div class="product__footer">
                                 <div class="product__tags tags">
                                     <div class="tags__list">
-                                        <a href="#">Mounts</a>
-                                        <a href="#">Electrodes</a>
-                                        <a href="#">Chainsaws</a>
+                                        {% for category in object.category.all|slice:'0:3' %}
+                                            <a href="{{ category.get_absolute_url }}">{{ category.name }}</a>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>
@@ -175,22 +149,23 @@
                             <a href="#tab-description" class="product-tabs__item product-tabs__item--active">Description
                             </a>
                             <a href="#tab-specification" class="product-tabs__item">Specification</a>
+
                             <a href="#tab-reviews" class="product-tabs__item">Reviews</a>
                         </div>
 
                         <div class="product-tabs__content">
                             <div class="product-tabs__pane product-tabs__pane--active" id="tab-description">
                                 <div class="typography">
-                                    <h5>Description Global du produit</h5>
-                                    <p>{{ object.desc }}</p>
+                                    <h5>Product Full Description</h5>
+                                    <p>{{ object.desc|safe }}</p>
                                 </div>
                             </div>
 
                             <div class="product-tabs__pane" id="tab-specification">
                                 <div class="spec">
-                                    <h5 class="spec__header">Spécification</h5>
+                                    <h5 class="spec__header">Specification</h5>
                                     <div class="spec__section">
-                                        <h4 class="spec__section-title">Général
+                                        <h4 class="spec__section-title">General
                                         </h4>
                                         <div class="spec__row">
                                             <div class="spec__name">Material</div>
@@ -262,9 +237,11 @@
                         </div>
                     </div>
                 </div>
-                <!-- .block-related-products-carousel -->
-                {% include "shop/products/product_related.html" %}
-                <!-- end block-related-products-carousel -->
+                {% if related_product %}
+                    <!-- .block-related-products-carousel -->
+                    {% include "shop/products/product_related.html" %}
+                    <!-- end block-related-products-carousel -->
+                {% endif %}
 
                 <!-- .block-history-products-carousel -->
                 {% include "shop/products/product_history.html" %}

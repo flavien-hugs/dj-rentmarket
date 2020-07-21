@@ -10,6 +10,8 @@ from analytics.utils import get_client_ip
 from accounts.signals import user_logged_in
 from analytics.signals import object_viewed_signal
 
+from shop.models import CategoryModel
+
 User = get_user_model()
 
 FORCE_SESSION_TO_ONE = getattr(
@@ -64,7 +66,7 @@ def object_viewed_receiver(sender, instance, request, *args, **kwargs):
     content_type = ContentType.objects.get_for_model(sender)
     user = None
     try:
-        if request.user.is_authenticated() or None:
+        if request.user.is_authenticated or None:
             user = request.user
     except:
         pass
@@ -88,7 +90,6 @@ class UserSessionModel(models.Model):
 
     def end_session(self):
         session_key = self.session_key
-        is_ended = self.is_ended
         try:
             Session.objects.get(pk=session_key).delete()
             self.is_active = False
@@ -136,3 +137,28 @@ def user_logged_in_receiver(sender, instance, request, *args, **kwargs):
 
 
 user_logged_in.connect(user_logged_in_receiver)
+
+
+class CategoryViewManager(models.Manager):
+    def add_count(self, user, category):
+        category, created = self.model.objects.get_or_create(
+            user=user, category=category)
+        category.count += 1
+        category.save()
+        return category
+
+
+class CategoryView(models.Model):
+    user = models.ForeignKey(
+        User, on_delete=models.SET_NULL,
+        blank=True, null=True)
+    category = models.ForeignKey(
+        CategoryModel,
+        on_delete=models.SET_NULL,
+        blank=True, null=True)
+    count = models.IntegerField(default=0)
+
+    objects = CategoryViewManager()
+
+    def __str__(self):
+        return self.category.name

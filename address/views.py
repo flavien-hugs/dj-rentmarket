@@ -1,6 +1,7 @@
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.utils.http import is_safe_url
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView, UpdateView, CreateView
 
@@ -23,11 +24,11 @@ class AddressListView(LoginRequiredMixin, ListView):
 class AddressUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'address/update.html'
     form_class = AddressForm
-    success_url = reverse_lazy('address:address')
+    success_url = '/address'
 
     def get_queryset(self):
-        request = self.request
-        payment, payment_created = PaymentModel.objects.new_or_get(request)
+        payment, payment_created = PaymentModel.objects.new_or_get(
+            self.request)
         return PaymentModel.objects.filter(
             payment=payment)
 
@@ -35,11 +36,11 @@ class AddressUpdateView(LoginRequiredMixin, UpdateView):
 class AddressCreateView(LoginRequiredMixin, CreateView):
     template_name = 'address/update.html'
     form_class = AddressForm
-    success_url = reverse_lazy('address:address')
+    success_url = '/address'
 
     def form_valid(self, form):
-        request = self.request
-        payment, payment_created = PaymentModel.objects.new_or_get(request)
+        payment, payment_created = PaymentModel.objects.new_or_get(
+            self.request)
         instance = form.save(commit=False)
         instance.payment = payment
         instance.save()
@@ -48,7 +49,6 @@ class AddressCreateView(LoginRequiredMixin, CreateView):
 
 def checkout_address_create_view(request):
     form = AddressCheckoutForm(request.POST or None)
-    context = {'form': form}
     next_ = request.GET.get('next')
     next_post = request.POST.get('next')
     redirect_path = next_ or next_post or None
@@ -73,13 +73,12 @@ def checkout_address_create_view(request):
 
 
 def checkout_address_reuse_view(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         context = {}
         next_ = request.GET.get('next')
         next_post = request.POST.get('next')
         redirect_path = next_ or next_post or None
         if request.method == "POST":
-            print(request.POST)
             shipping_address = request.POST.get('shipping_address', None)
             address_type = request.POST.get('address_type', 'shipping')
             payment, payment_created = PaymentModel.objects.new_or_get(request)
@@ -88,8 +87,8 @@ def checkout_address_reuse_view(request):
                     payment=payment,
                     id=shipping_address)
                 if qs.exists():
-                    request.session[address_type + "_address_id"] = shipping_address
+                    request.session[
+                        address_type + "_address_id"] = shipping_address
                 if is_safe_url(redirect_path, request.get_host()):
                     return redirect(redirect_path)
-
-    return redirect('location:checkout') 
+    return redirect('location:checkout')

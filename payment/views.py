@@ -1,13 +1,19 @@
+from django.conf import settings
 from django.utils.http import is_safe_url
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponse
 
 import stripe
-from decouple import config
 from payment.models import PaymentModel, CardModel
 
-STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
-STRIPE_PUB_KEY = config('STRIPE_PUB_KEY')
+STRIPE_SECRET_KEY = getattr(
+    settings,
+    "STRIPE_SECRET_KEY",
+    "sk_test_51H6F3bEVRs2R6z6LBLDgt4mlR50t4QHqDGb1BJ1A7NII7ejhXPVMlA9tnlWMy8WWtPjrQrtXeHBRcsfXdJwjmQL700iWChY2Zj")
+STRIPE_PUB_KEY = getattr(
+    settings,
+    "STRIPE_PUB_KEY",
+    'pk_test_51H6F3bEVRs2R6z6LE0qO5BL9PAOYUPwRS0EI5TOnNd3P0hI5y4GAPTb47uSGT7rbE7tmua6qcjbreOpSVMop4pLh00BH4DVIcg')
 stripe.api_key = STRIPE_SECRET_KEY
 
 

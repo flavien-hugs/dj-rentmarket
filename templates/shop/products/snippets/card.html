@@ -15,7 +15,7 @@
 
         <div class="product-card__image">
             <a title="{{ obj.name }}" href="{{ obj.get_absolute_url }}">
-                <img src="{{ STATIC_PREFIX }}img/products/product-16-1.jpg" alt="{{ obj.name }}">
+                <img src="{{ obj.get_image_url }}" alt="{{ obj.name }}">
             </a>
         </div>
 
@@ -25,11 +25,13 @@
                     {{ obj.name|safe }}
                 </a>
             </div>
-
-            <div class="product-card__rating">
-                {% include "layouts/rating.html" %}
-                <div class="product-card__rating-legend">9 Reviews</div>
-            </div>
+            
+             {% if rating %}
+                <div class="product-card__rating">
+                    {% include "layouts/rating.html" %}
+                    <div class="product-card__rating-legend">9 Reviews</div>
+                </div>
+            {% endif %}
 
             <ul class="product-card__features-list">
                 <li>Speed: 750 RPM</li>

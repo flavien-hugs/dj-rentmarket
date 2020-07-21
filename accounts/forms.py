@@ -22,8 +22,8 @@ class ReactivateEmailForm(forms.Form):
         email = self.cleaned_data.get('email')
         queryset = EmailActivationModel.objects.email_exists(email)
         if not queryset.exists():
-            register_link = reverse('accounts:register')
-            message = """This email does not exists, would you like to <a href="{link}">register</a>?
+            register_link = reverse('accounts:signup')
+            message = """This email does not exists, would you like to <a href="{link}">signup</a>?
             """.format(link=register_link)
             raise forms.ValidationError(mark_safe(message))
         return email
@@ -53,11 +53,13 @@ class LoginForm(forms.Form):
                     email=email)
                 is_confirmed = confirm_email.confirmed().exists()
                 if is_confirmed:
-                    msg1 = "Please check your email to confirm your account or " + reconfirm_msg.lower()
+                    msg1 = "Please check your email to\
+                    confirm your account or " + reconfirm_msg.lower()
                     raise forms.ValidationError(mark_safe(msg1))
-                email_confirm_exists = EmailActivationModel.objects.email_exists(email).exists()
+                email_confirm_exists = EmailActivationModel\
+                    .objects.email_exists(email).exists()
                 if email_confirm_exists:
-                    msg2 = "Email not confirmed. " + reconfirm_msg
+                    msg2 = "Email not confirmed." + reconfirm_msg
                     raise forms.ValidationError(mark_safe(msg2))
                 if not is_confirmed and not email_confirm_exists:
                     raise forms.ValidationError("This user is inactive.")
@@ -169,6 +171,5 @@ class GuestEmailForm(forms.ModelForm):
         obj = super().save(commit=False)
         if commit:
             obj.save()
-            request = self.request
-            request.session['guest_email_id'] = obj.id
+            self.request.session['guest_email_id'] = obj.id
         return obj

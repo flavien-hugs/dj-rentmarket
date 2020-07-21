@@ -1,0 +1,7 @@
+{% extends "shop/products/product_list.html" %}
+
+{% block listing %}
+    {% for object in object_list %}
+        {% include "shop/products/snippets/card.html" with obj=object %}
+    {% endfor %}
+{% endblock listing %}

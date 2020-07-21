@@ -17,15 +17,17 @@
                     <div class="products-view">
                         {% include "layouts/option.html" %}
 
-                        <div class="products-view__list products-list" data-layout="grid-3-sidebar" data-with-features="true">
+                        <div class="products-view__list products-list" data-layout="grid-3-sidebar" data-with-features="">
                             <div class="products-list__body">
-                                {% for obj in object_list %}
-                                    {% if query %}
-                                        {% include "shop/products/snippets/card.html" with object_list=obj %}
-                                    {% else %}
-                                        {% include "shop/products/snippets/card.html" with object_list=obj %}
-                                    {% endif %}
-                                {% endfor %}
+                                {% block listing %}
+                                    {% for object in object_list %}
+                                        {% if query %}
+                                            {% include "shop/products/snippets/card.html" with obj=object %}
+                                        {% else %}
+                                            {% include "shop/products/snippets/card.html" with obj=object %}
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endblock listing %}
                             </div>
                         </div>
                         {% include "layouts/paginate.html" %}

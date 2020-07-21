@@ -8,8 +8,9 @@
         {% endif %}
     </h4>
 
-    <form method="post" novalidate>
+    <form method="post" action="" novalidate>
         {% csrf_token %}
+
         {% include 'layouts/form.html' %}
 
         <button style="background-color:#dc3545;" class="btn btn-block btn-lg font-weight-bold text-white" type="submit">Resend Activation</button>

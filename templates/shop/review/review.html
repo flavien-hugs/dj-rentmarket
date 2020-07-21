@@ -1,37 +1,35 @@
-{% load shoptags %}
+{% load shoptags widget_tweaks %}
 
 {% show_review_list 3 %}
 
 <form class="reviews-view__form" action="{% url 'shop:add_review' object.slug %}" method="post" novalidate>
     {% csrf_token %}
-    <h3 class="reviews-view__header">Un commentaire sur le produit ?</h3>
+    <h3 class="reviews-view__header">Customer Reviews</h3>
     <div class="row">
         <div class="col-12 col-lg-9 col-xl-8">
             <div class="form-row">
                 <div class="form-group col-md-4">
-                    <label for="{{ fom.rating.id_for_label }}">{{ fom.rating.label }}</label>
-                    <select name="{{ form.rating.name }}" id="{{ form.rating.id_for_label }}" class="form-control">
-                        {% for c in form.rating %}{{ c }}{% endfor %}
-                    </select>
+                   <label for="{{ fom.rating.id_for_label }}">Review Stars</label>
+                    {{ form.rating|add_class:'form-control shadow-none' }}
                 </div>
 
                 <div class="form-group col-md-4">
-                    <label for="{{ form.name.id_for_label }}">Votre {{ form.name.label }}</label>
-                    <input name='{{ form.name.name }}' type="text" class="form-control" id="{{ form.name.id_for_label }}" placeholder="Votre nom" required="True">
+                    <label for="{{ fom.name.id_for_label }}">Your Name</label>
+                    {{ form.name|add_class:'form-control shadow-none'|attr:"placeholder:Your Name"|attr:"onfocus:this.placeholder=''"|attr:"onblur:this.placeholder='Your Name'" }}
                 </div>
 
                 <div class="form-group col-md-4">
-                    <label for="{{ form.email.id_for_label }}">Votre {{ form.email.label }}</label>
-                    <input name='{{ form.email.name }}' type="email" class="form-control" id="{{ form.email.id_for_label }}" placeholder="Votre adresse email" required="True">
+                    <label for="{{ fom.email.id_for_label }}">Email Address</label>
+                    {{ form.email|add_class:'form-control shadow-none'|attr:"placeholder:Email Address"|attr:"onfocus:this.placeholder=''"|attr:"onblur:this.placeholder='Email Address'" }}
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="{{ form.comment.id_for_label }}">{{ form.comment.label }}</label>
-                <textarea placeholder="Laisser votre avis sur ce produit" name='{{ form.comment.name }}' class="form-control" id="{{ form.comment.id_for_label }}" rows="6"></textarea>
+                <label for="{{ form.comment.id_for_label }}">Your Review</label>
+                <textarea placeholder="Your Review" name='{{ form.comment.name }}' class="form-control" id="{{ form.comment.id_for_label }}" rows="6"></textarea>
             </div>
             <div class="form-group mb-0">
-                <button type="submit" value="Valider" class="btn btn-primary btn-lg">Valider</button>
+                <button type="submit" value="Valider" class="btn btn-primary btn-md">Post Your Review</button>
             </div>
         </div>
     </div>
