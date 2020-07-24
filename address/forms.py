@@ -14,7 +14,10 @@ class AddressForm(forms.ModelForm):
 
     class Meta:
         model = AddressModel
-        fields = '__all__'
+        fields = [
+            'full_name', 'country', 'city', 'address_delivery',
+            'address_type', 'zipcode', 'phone_number', 'note'
+        ]
 
 
 class AddressCheckoutForm(forms.ModelForm):
@@ -26,4 +29,7 @@ class AddressCheckoutForm(forms.ModelForm):
 
     class Meta:
         model = AddressModel
-        fields = '__all__'
+        fields = [
+            'full_name', 'country', 'city', 'address_delivery',
+            'address_type', 'zipcode', 'phone_number', 'note'
+        ]

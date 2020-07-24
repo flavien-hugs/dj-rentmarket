@@ -7,25 +7,29 @@
                 <div class="dropcart__product">
                     <div class="dropcart__product-image">
                         <a href="{{ obj.get_absolute_url }}">
-                            <img src="{{ obj.img1.url }}" alt="{{ obj.name }}">
+                            <img src="{{ obj.get_image_url }}" alt="{{ obj.name }}">
                         </a>
                     </div>
                     <div class="dropcart__product-info">
                         <div class="dropcart__product-name">
                             <a href="{{ obj.get_absolute_url }}">
-                            {{ obj.name|truncatewords:8|safe }}</a>
+                            {{ obj.name|truncatewords:5|safe }}</a>
                         </div>
                         <div class="dropcart__product-meta">
                             <span class="dropcart__product-price">
-                                {{ obj.price|intcomma|safe }} Fr CFA
+                                {{ obj.price|intcomma }}
                             </span>
                         </div>
                     </div>
-                    <a href="#" type="button" class="dropcart__product-remove btn btn-light btn-sm btn-svg-icon">
-                        <svg width="10px" height="10px">
-                            <use xlink:href="{{ STATIC_PREFIX }}img/svg/sprite.svg#cross-10"></use>
-                        </svg>
-                    </a>
+
+                    <form class="product__options" method='POST' action="{% url "location:update" %}" data-endpoint="{% url "location:update" %}" {% if request.user.is_authenticated %}data-user='unsta'{% endif %}>{% csrf_token %}
+                        <input type='hidden' name='product_id' value='{{ obj.id }}'>
+                        <button type="submit" class="dropcart__product-remove btn btn-light btn-sm btn-svg-icon submit">
+                            <svg width="12px" height="12px">
+                                <use xlink:href="{{ STATIC_PREFIX }}img/svg/sprite.svg#cross-10"></use>
+                            </svg>
+                        </button>
+                    </form>
                 </div>
             </div>
         {% endfor %}
@@ -34,20 +38,20 @@
             <table>
                 <tr>
                     <th>Total</th>
-                    <td>{{ location.get_total_price|safe }} Fr CFA</td>
+                    <td>{{ location.get_total_price|intcomma }}</td>
                 </tr>
             </table>
         </div>
 
         <div class="dropcart__buttons">
-            <a class="btn btn-secondary" href="{% url "location:detail" %}">Voir mon panier</a>
-            <a class="btn btn-primary" href="#">Louer</a>
+            <a class="btn btn-secondary" href="{% url 'location:detail' %}">Views Cart</a>
+            <a class="btn btn-primary" href="{% url 'location:checkout' %}">Checkout</a>
         </div>
 
     {% else %}
         <div class="dropcart__products-list">
             <div class="dropcart__product text-center">
-                Votre panier est vide.
+                Your cart is empty.
             </div>
         </div>
     {% endif %}

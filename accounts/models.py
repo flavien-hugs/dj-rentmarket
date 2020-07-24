@@ -4,9 +4,9 @@ from datetime import timedelta
 from django.urls import reverse
 from django.conf import settings
 from django.utils import timezone
+from django.dispatch import receiver
 from django.core.mail import send_mail
 from django.template.loader import get_template
-from django.db.models.signals import pre_save, post_save
 from django.contrib.auth.models import(
     AbstractBaseUser, BaseUserManager, PermissionsMixin)
 
@@ -198,22 +198,19 @@ class EmailActivationModel(models.Model):
         return False
 
 
+@receiver(models.signals.pre_save, sender=EmailActivationModel)
 def pre_save_email_activation(sender, instance, *args, **kwargs):
     if not instance.activated and not instance.forced_expired:
         if not instance.key:
             instance.key = unique_key_generator(instance)
 
-pre_save.connect(
-    pre_save_email_activation, sender=EmailActivationModel)
 
-
+@receiver(models.signals.post_save, sender=User)
 def post_save_user_create_reciever(sender, instance, created, *args, **kwargs):
     if created:
         obj = EmailActivationModel.objects.create(
             user=instance, email=instance.email)
         obj.send_token_activation()
-
-post_save.connect(post_save_user_create_reciever, sender=User)
 
 
 class GuestEmailModel(models.Model):

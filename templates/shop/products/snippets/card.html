@@ -56,17 +56,19 @@
             </div>
 
             <div class="product-card__buttons">
-                {% if obj in location.product.get_available %}
-                    <a href="{% url "location:update" %}" class="btn btn-primary product-card__addtocart" type="button">Delete ?</a>
 
-                    <a href="{% url "location:update" %}" class="btn btn-secondary product-card__addtocart product-card__addtocart--list" type="button">Delete ?</a>
-
-                {% else %}
-
-                    <a href="{% url "location:update" %}" class="btn btn-primary product-card__addtocart" type="button">Louer</a>
-
-                    <a href="{% url "location:update" %}" class="btn btn-secondary product-card__addtocart product-card__addtocart--list" type="button">Louer</a>
-                {% endif %}
+                <form class="product__options" method='POST' action="{% url "location:update" %}" data-endpoint="{% url "location:update" %}" {% if request.user.is_authenticated %}data-user='unsta'{% endif %}>{% csrf_token %}
+                    <input type='hidden' name='product_id' value='{{ obj.id }}'>
+                    {% if obj in location.product.get_available %}
+                        <button type="submit" class="btn btn-primary product-card__addtocart submit">Delete ?</button>
+                        <button type="submit" class="btn btn-secondary product-card__addtocart product-card__addtocart--list submit">Delete ?</button>
+                    {% else %}
+                        <button type="submit" class="btn btn-primary product-card__addtocart submit">Add</button>
+                        <button type="submit" class="btn btn-secondary product-card__addtocart product-card__addtocart--list submit">
+                            Add
+                        </button>
+                    {% endif %}
+                </form>
 
                 <button class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist" type="button">
                     <svg width="16px" height="16px">

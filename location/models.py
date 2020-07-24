@@ -1,6 +1,6 @@
 from django.db import models
+from django.dispatch import receiver
 from django.contrib.auth import get_user_model
-from django.db.models.signals import pre_save, m2m_changed
 
 from shop.models import ProductModel
 
@@ -45,6 +45,7 @@ class LocationModel(models.Model):
         return str(self.id)
 
 
+@receiver(models.signals.m2m_changed, sender=LocationModel.product.through)
 def m2m_changed_cart_receiver(sender, instance, action, *args, **kwargs):
     if action == 'post_add' or action == 'post_remove' or action == 'post_clear':
         product = instance.product.all()
@@ -53,14 +54,7 @@ def m2m_changed_cart_receiver(sender, instance, action, *args, **kwargs):
             total += x.price
             instance.save()
 
-m2m_changed.connect(
-    m2m_changed_cart_receiver,
-    sender=LocationModel.product.through)
 
-
+@receiver(models.signals.pre_save, sender=LocationModel)
 def pre_save_cart_receiver(sender, instance, *args, **kwargs):
     instance.total = 0.00
-
-pre_save.connect(
-    pre_save_cart_receiver,
-    sender=LocationModel)

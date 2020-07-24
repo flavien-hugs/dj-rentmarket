@@ -32,15 +32,7 @@ class UserProductMixin(LoginRequiredMixin, UserEditeMixin):
     model = ProductModel
 
 
-class UserProductEditMixin(UserProductMixin, UserEditeMixin):
-    form_class = ProductModelModelForm
-    template_name = 'dashboard/d_form.html'
-    success_url = reverse_lazy('dashboard:dashboard')
-
-
-class ManageProductListView(UserProductMixin, ListView):
-    model = ProductModel
-    template_name = 'dashboard/dashboard.html'
+class GetContextData(object):
 
     def get_context_data(self, **kwargs):
         kwargs['product_count'] = ProductModel.objects.get_available(
@@ -48,33 +40,39 @@ class ManageProductListView(UserProductMixin, ListView):
 
         kwargs['order_count'] = OrdersModel.objects.by_request(
             self.request).count()
+        return super().get_context_data(**kwargs)
+
+
+class UserProductEditMixin(UserProductMixin, UserEditeMixin):
+    form_class = ProductModelModelForm
+    template_name = 'dashboard/d_form.html'
+    success_url = reverse_lazy('dashboard:dashboard')
+
+
+class ManageProductListView(UserProductMixin, GetContextData, ListView):
+    model = ProductModel
+    template_name = 'dashboard/dashboard.html'
+
+    def get_context_data(self, **kwargs):
         kwargs['orders'] = OrdersModel.objects.by_request(self.request)
         return super().get_context_data(**kwargs)
 
 
-class UserOrderListView(LoginRequiredMixin, ListView):
+# USER ORDER LIST
+class UserOrderListView(LoginRequiredMixin, GetContextData, ListView):
     template_name = 'dashboard/d_user_order.html'
 
     def get_queryset(self):
         return OrdersModel.objects.by_request(self.request)
 
-    def get_context_data(self, **kwargs):
-        kwargs['count'] = OrdersModel.objects.by_request(
-            self.request).count()
-        return super().get_context_data(**kwargs)
 
-
-class UserProductListView(LoginRequiredMixin, ListView):
+# USER PRODUCT LIST
+class UserProductListView(LoginRequiredMixin, GetContextData, ListView):
     template_name = 'dashboard/d_user_product.html'
 
     def get_queryset(self):
         return ProductModel.objects.get_available(
             ).filter(user__in=[self.request.user])
-
-    def get_context_data(self, **kwargs):
-        kwargs['count'] = ProductModel.objects.get_available(
-            ).filter(user__in=[self.request.user]).count()
-        return super().get_context_data(**kwargs)
 
 
 class ProductCreateView(PermissionRequiredMixin, UserProductEditMixin, CreateView):

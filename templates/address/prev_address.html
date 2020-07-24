@@ -14,13 +14,9 @@
   <form method="post" action='{{ action_url }}' novalidate>
     {% csrf_token %}
 
-    {% if next_url %}
-      <input type='hidden' name='next' value='{{ next_url }}'>
-    {% endif %}
+    {% if next_url %}<input type='hidden' name='next' value='{{ next_url }}'>{% endif %}
 
-    {% if address_type %}
-      <input type='hidden' name='address_type' value='{{ address_type }}'>
-    {% endif %}
+    {% if address_type %}<input type='hidden' name='address_type' value='{{ address_type }}'>{% endif %}
 
     {% for address in address_qs %}
       <div class="form-group">
@@ -31,6 +27,6 @@
       </div>
     {% endfor %}
     
-    <button style="background-color:#dc3545;" class="btn btn-block btn-lg font-weight-bold text-white" type="submit">Use Address</button><!-- /.end button login -->
+    <input style="background-color:#dc3545;" class="btn btn-block btn-lg font-weight-bold text-white" type="submit" value="Use Address"><!-- /.end button login -->
   </form>
 {% endif %}

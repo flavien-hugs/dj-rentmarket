@@ -13,8 +13,8 @@ $(document).ready(function(){
     var stripeTemplateHtml = stripeTemplate.render(stripeTemplateDataContext)
     stripeFormModule.html(stripeTemplateHtml)
 
-    // https secure site when live
 
+    // https secure site when live
     var paymentForm = $(".payment-form")
     if (paymentForm.length > 1){
         alert("Only one payment form is allowed per page")
@@ -86,30 +86,21 @@ $(document).ready(function(){
 
           stripe.createToken(card).then(function(result) {
             if (result.error) {
-              // Inform the user if there was an error
-              var errorElement = $('#card-errors');
-              errorElement.textContent = result.error.message;
-              currentTimeout = displayBtnStatus(
-                                    btnLoad, 
-                                    errorHtml, 
-                                    errorClasses, 
-                                    1000, 
-                                    currentTimeout
-                                )
+                // Inform the user if there was an error
+                var errorElement = $('#card-errors');
+                errorElement.textContent = result.error.message;
+                currentTimeout = displayBtnStatus(
+                    btnLoad, errorHtml, errorClasses, 1000,
+                    currentTimeout)
 
 
             } else {
-              // Send the token to your server
-              currentTimeout = displayBtnStatus(
-                                    btnLoad, 
-                                    loadingHtml, 
-                                    loadingClasses, 
-                                    10000, 
-                                    currentTimeout
-                                )
+                // Send the token to your server
+                currentTimeout = displayBtnStatus(
+                    tnLoad, loadingHtml, loadingClasses, 10000, 
+                    currentTimeout)
 
-              stripeTokenHandler(nextUrl, result.token);
-
+                stripeTokenHandler(nextUrl, result.token);
             }
           });
         });     
@@ -138,18 +129,16 @@ $(document).ready(function(){
         function redirectToNext(nextPath, timeoffset) {
             // body...
             if (nextPath){
-            setTimeout(function(){
-                        window.location.href = nextPath
-                    }, timeoffset)
+                setTimeout(function(){
+                    window.location.href = nextPath
+                }, timeoffset)
             }
         }
 
         function stripeTokenHandler(nextUrl, token){
             // console.log(token.id)
-            var paymentMethodEndpoint = '/billing/payment-method/create/'
-            var data = {
-                'token': token.id
-            }
+            var paymentMethodEndpoint = '/payment/process/done/'
+            var data = {'token': token.id}
             $.ajax({
                 data: data,
                 url: paymentMethodEndpoint,
@@ -171,12 +160,17 @@ $(document).ready(function(){
                     
                 },
                 error: function(error){
-                    // console.log(error)
-                    $.alert({title: "An error occured", content:"Please try adding your card again."})
+                    console.log(error)
+                    $.alert(
+                        {
+                            title: "An error occured",
+                            content: "Please try adding your card again."
+                        }
+                    )
                     btnLoad.html(btnLoadDefaultHtml)
                     btnLoad.attr('class', btnLoadDefaultClasses)
                 }
             })
         }
     }
-})
+});

@@ -1,15 +1,17 @@
+import os
 from django.db import models
 from django.urls import reverse
-from django.conf import settings
+from django.dispatch import receiver
 from django.contrib.auth import get_user_model
-from django.db.models.signals import post_save, pre_save
 
 import stripe
 from accounts.models import GuestEmailModel
 
-STRIPE_SECRET_KEY = getattr(
-    settings, "STRIPE_SECRET_KEY",
+
+STRIPE_SECRET_KEY = os.environ.get(
+    "STRIPE_SECRET_KEY",
     "sk_test_51H6F3bEVRs2R6z6LBLDgt4mlR50t4QHqDGb1BJ1A7NII7ejhXPVMlA9tnlWMy8WWtPjrQrtXeHBRcsfXdJwjmQL700iWChY2Zj")
+
 stripe.api_key = STRIPE_SECRET_KEY
 
 User = get_user_model()
@@ -19,6 +21,7 @@ class PaymentManager(models.Manager):
     def new_or_get(self, request):
         user = request.user
         guest_email_id = request.session.get('guest_email_id')
+        print('Guest: %s' % guest_email_id, 'User: %s' % user)
         created = False
         obj = None
         if user.is_authenticated:
@@ -77,6 +80,7 @@ class PaymentModel(models.Model):
         return card_qs.filter(active=True).count()
 
 
+@receiver(models.signals.pre_save, sender=PaymentModel)
 def payment_created_receiver(sender, instance, *args, **kwargs):
     if not instance.customer_id and instance.email:
         print("ACTUAL API REQUEST Send to stripe/braintree")
@@ -84,14 +88,11 @@ def payment_created_receiver(sender, instance, *args, **kwargs):
         print(customer)
         instance.customer_id = customer.id
 
-pre_save.connect(payment_created_receiver, sender=PaymentModel)
 
-
+@receiver(models.signals.post_save, sender=User)
 def user_created_receiver(sender, instance, created, *args, **kwargs):
     if created and instance.email:
         PaymentModel.objects.get_or_create(user=instance, email=instance.email)
-
-post_save.connect(user_created_receiver, sender=User)
 
 
 class CardManager(models.Manager):
@@ -137,14 +138,13 @@ class CardModel(models.Model):
         return "{} {}".format(self.brand, self.last4)
 
 
+@receiver(models.signals.post_save, sender=CardModel)
 def new_card_post_save_receiver(sender, instance, created, *args, **kwargs):
     if instance.default:
         payment = instance.payment
         qs = CardModel.objects.filter(
             payment=payment).exclude(pk=instance.pk)
         qs.update(default=False)
-
-post_save.connect(new_card_post_save_receiver, sender=CardModel)
 
 
 class ChargeManager(models.Manager):

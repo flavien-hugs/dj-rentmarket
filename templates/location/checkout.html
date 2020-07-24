@@ -16,7 +16,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <div class="card-title">
-                                    Client de retour ?
+                                    Returning customer ?
                                 </div>
 
                                 {% include 'accounts/guest/form.html' with form=login_form next_url=request.build_absolute_uri %}
@@ -44,9 +44,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="card-title">
-                                        Shipping Address
-                                    </div>
-
+                                    Shipping Address</div>
                                     {% url "address:checkout_address_create" as checkout_address_create %}
 
                                     {% include 'address/form.html' with form=address_form next_url=request.build_absolute_uri action_url=checkout_address_create address_type='shipping' %}
@@ -57,6 +55,7 @@
                         <div class="col-12 col-lg-6 col-xl-6">
                             <div class="card">
                                 <div class="card-body">
+                                    <div class="card-title">Your Shipping Address</div>
                                     {% url "address:checkout_address_reuse" as checkout_address_reuse %}
 
                                     {% include 'address/prev_address.html' with address_qs=address_qs next_url=request.build_absolute_uri address_type='shipping' action_url=checkout_address_reuse %}
@@ -70,9 +69,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <div class="card-title">
-                                        Billing Address
-                                    </div>
-
+                                    Billing Address</div>
                                     {% url "address:checkout_address_create" as checkout_address_create %}
 
                                     {% include 'address/form.html' with form=address_form next_url=request.build_absolute_uri action_url=checkout_address_create address_type='billing' %}
@@ -83,6 +80,8 @@
                         <div class="col-12 col-lg-6 col-xl-6">
                             <div class="card">
                                 <div class="card-body">
+                                    <div class="card-title">
+                                    Your Billing Address</div>
                                     {% url "address:checkout_address_reuse" as checkout_address_reuse %}
 
                                     {% include 'address/prev_address.html' with address_qs=address_qs next_url=request.build_absolute_uri address_type='billing' action_url=checkout_address_reuse %}
@@ -92,10 +91,13 @@
                     </div>
                 {% else %}
                     {% if not has_card %}
-                        <div class="row">
-                            <div class="col-12 col-lg-6 col-xl-6">
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-12 col-lg-8 col-xl-8">
                                 <div class="card">
                                     <div class="card-body">
+                                        <div class="card-title">
+                                        Choose Payment Method</div>
+
                                         <div class='form-group stripe-payment-form' data-token='{{ publish_key }}' data-next-url='{{ request.build_absolute_uri }}' data-btn-title='Add Payment Method'></div>
                                     </div>
                                 </div>
@@ -143,7 +145,7 @@
 
                                         <tfoot class="checkout__totals-footer">
                                             <tr>
-                                                <th>Order Total (FR CFA)</th>
+                                                <th>Order Total</th>
                                                 <td>{{ object.total|intcomma }}</td>
                                             </tr>
                                         </tfoot>

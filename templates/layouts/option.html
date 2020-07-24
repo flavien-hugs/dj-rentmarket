@@ -30,7 +30,9 @@
                     results were found for the search for
                     <em class="font-weight-bolder">{{ query }}</em>
             {% else %}
-                {{ count }} product{{ count|pluralize|intcomma }}</div>
+                <strong>
+                    {% if product_count %}{{ product_count|intcomma }} {% else %} {{ count|intcomma }}
+                {% endif %}</strong> product{% if product_count %}{{ product_count|pluralize }} {% else %} {{ count|pluralize }}{% endif %}</div>
             {% endif %}
         <div class="view-options__divider">
         </div>

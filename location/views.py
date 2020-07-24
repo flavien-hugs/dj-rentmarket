@@ -1,3 +1,4 @@
+import os
 from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
@@ -11,8 +12,14 @@ from location.models import LocationModel
 from address.forms import AddressCheckoutForm
 from accounts.forms import LoginForm, GuestEmailForm
 
-STRIPE_SECRET_KEY = getattr(settings, "STRIPE_SECRET_KEY", "sk_test_51H6F3bEVRs2R6z6LBLDgt4mlR50t4QHqDGb1BJ1A7NII7ejhXPVMlA9tnlWMy8WWtPjrQrtXeHBRcsfXdJwjmQL700iWChY2Zj")
-STRIPE_PUB_KEY =  getattr(settings, "STRIPE_PUB_KEY", 'pk_test_51H6F3bEVRs2R6z6LE0qO5BL9PAOYUPwRS0EI5TOnNd3P0hI5y4GAPTb47uSGT7rbE7tmua6qcjbreOpSVMop4pLh00BH4DVIcg')
+STRIPE_SECRET_KEY = os.environ.get(
+    'STRIPE_SECRET_KEY',
+    "sk_test_51H6F3bEVRs2R6z6LBLDgt4mlR50t4QHqDGb1BJ1A7NII7ejhXPVMlA9tnlWMy8WWtPjrQrtXeHBRcsfXdJwjmQL700iWChY2Zj")
+
+STRIPE_PUB_KEY = os.environ.get(
+    'STRIPE_PUB_KEY',
+    'pk_test_51H6F3bEVRs2R6z6LE0qO5BL9PAOYUPwRS0EI5TOnNd3P0hI5y4GAPTb47uSGT7rbE7tmua6qcjbreOpSVMop4pLh00BH4DVIcg')
+
 stripe.api_key = STRIPE_SECRET_KEY
 
 
@@ -49,7 +56,6 @@ def location_update(request):
         try:
             product_obj = ProductModel.objects.get(id=product_id)
         except ProductModel.DoesNotExist:
-            print("Show message to user, product is gone?")
             return redirect("location:detail")
         location_obj, new_obj = LocationModel.objects.new_or_get(request)
         if product_obj in location_obj.product.all():
@@ -60,14 +66,12 @@ def location_update(request):
             added = True
         request.session['location_items'] = location_obj.product.count()
         if request.is_ajax():
-            print("Ajax request")
             json_data = {
                 "added": added,
                 "removed": not added,
                 "LocationItemCount": location_obj.product.count()
             }
             return JsonResponse(json_data, status=200)
-
     return redirect("location:detail")
 
 
@@ -80,28 +84,34 @@ def checkout_home(request):
     login_form = LoginForm(request=request)
     guest_form = GuestEmailForm(request=request)
     address_form = AddressCheckoutForm()
-    billing_address_id = request.session.get(
-        "billing_address_id", None)
 
+    print(login_form.errors, guest_form.errors, address_form.errors)
+
+    billing_address_id = request.session.get("billing_address_id", None)
     shipping_address_id = request.session.get("shipping_address_id", None)
-
     payment, payment_created = PaymentModel.objects.new_or_get(request)
     address_qs = None
     has_card = False
+
     if payment is not None:
         if request.user.is_authenticated:
-            address_qs = AddressModel.objects.filter(
-                payment=payment)
+            address_qs = AddressModel.objects.filter(payment=payment)
         order_obj, order_obj_created = OrdersModel.objects.new_or_get(
             payment, location_obj)
+
         if shipping_address_id:
-            order_obj.shipping_address = AddressModel.objects.get(id=shipping_address_id)
+            order_obj.shipping_address = AddressModel.objects.get(
+                id=shipping_address_id)
             del request.session["shipping_address_id"]
+
         if billing_address_id:
-            order_obj.billing_address = AddressModel.objects.get(id=billing_address_id) 
+            order_obj.billing_address = AddressModel.objects.get(
+                id=billing_address_id)
             del request.session["billing_address_id"]
+
         if billing_address_id or shipping_address_id:
             order_obj.save()
+
         has_card = payment.has_card
 
     if request.method == "POST":

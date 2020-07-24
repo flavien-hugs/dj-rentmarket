@@ -52,16 +52,16 @@
                                 <td class="cart-table__column cart-table__column--total" data-title="Date de retour">{{ obj.pub_date|date }}</td>
 
                                 <td class="cart-table__column cart-table__column--remove">
-                                    <form method="POST" action="{% url "location:update" %}" data-endpoint='{% url "location:update" %}'>
-                                        {% csrf_token %}
+                                    <form class="product__options" method='POST' action="{% url "location:update" %}" data-endpoint="{% url "location:update" %}" {% if request.user.is_authenticated %}data-user='unsta'{% endif %}>
+                                    {% csrf_token %}
 
-                                        <input class='remove_location' type='hidden' name='product_id' value='{{ product_id }}'>
+                                        <input type='hidden' name='product_id' value='{{ obj.id }}'>
 
-                                        <a href="{% url "location:update" %}" type="submit" class="btn btn-light btn-sm btn-svg-icon">
+                                        <button type="submit" class="btn btn-light btn-sm btn-svg-icon submit">
                                             <svg width="12px" height="12px">
                                                 <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#cross-12"></use>
                                             </svg>
-                                        </a>
+                                        </button>
                                     </form>
                                 </td>
                             </tr> 
@@ -83,9 +83,8 @@
                     </form>
 
                     <div class="cart__buttons">
-                        <a href="{% url 'shop:all_product' %}" class="btn btn-light">
+                        <a href="{% url 'shop:all_product' %}" class="btn btn-primary">
                         Continue Rent</a>
-                        <a href="#" class="btn btn-primary cart__update-button">Update Rent</a>
                     </div>
                 </div><!-- end coupon -->
                 
@@ -95,7 +94,7 @@
                         <div class="card">
                             <div class="card-body">
                                 <h3 class="card-title">
-                                Rent Totals</h3>
+                                Rent Total</h3>
                                 <table class="cart__totals">
                                     <thead class="cart__totals-header">
                                         <tr>

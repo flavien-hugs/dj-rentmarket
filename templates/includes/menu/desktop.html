@@ -480,7 +480,7 @@
                         </li>
 
                         <li class="nav-links__item">
-                            <a href="{% url "shop:all_product" %}"><span>Tous les produits</span></a>
+                            <a href="{% url "shop:all_product" %}"><span>All products</span></a>
                         </li>
                     </ul>
                 </div>
@@ -497,8 +497,7 @@
                         </a>
 
                         <div class="indicator__dropdown">
-                            <!-- .dropcart -->
-                            {% include "includes/menu/dropcart.html" %}<!-- end dropcart -->
+                            <!-- .dropcart --><!-- end dropcart -->
                         </div>
                     </div>
 
@@ -509,7 +508,9 @@
                                     <use xlink:href="{{ STATIC_PREFIX }}img/svg/sprite.svg#cart-20"></use>
                                 </svg>
                                 <span class="indicator__value location_items_count">
-                                   {{ request.session.location_items }}
+                                    {% if location.product.exists %}{{ request.session.location_items }} {% else %} 0
+                                    {% endif %}
+                                   
                                 </span>
                             </span>
                         </a>

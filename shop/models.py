@@ -165,9 +165,6 @@ class ProductModelManager(models.Manager):
     def featured(self):
         return self.get_queryset().featured()
 
-    def count(self):
-        return self.get_queryset().get_available().count()
-
     def search(self, query):
         return self.get_queryset().available().search(query)
 

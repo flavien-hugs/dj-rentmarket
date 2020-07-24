@@ -1,3 +1,4 @@
+from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.utils.http import is_safe_url
 
@@ -16,26 +17,24 @@ class AddressListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         request = self.request
         payment, payment_created = PaymentModel.objects.new_or_get(request)
-        return PaymentModel.objects.filter(
-            payment=payment)
+        return PaymentModel.objects.filter(payment=payment)
 
 
 class AddressUpdateView(LoginRequiredMixin, UpdateView):
     template_name = 'address/update.html'
     form_class = AddressForm
-    success_url = '/address'
+    success_url = reverse_lazy('address:address-update')
 
     def get_queryset(self):
         payment, payment_created = PaymentModel.objects.new_or_get(
             self.request)
-        return PaymentModel.objects.filter(
-            payment=payment)
+        return PaymentModel.objects.filter(payment=payment)
 
 
 class AddressCreateView(LoginRequiredMixin, CreateView):
     template_name = 'address/update.html'
     form_class = AddressForm
-    success_url = '/address'
+    success_url = reverse_lazy('address:address-create')
 
     def form_valid(self, form):
         payment, payment_created = PaymentModel.objects.new_or_get(
@@ -48,6 +47,9 @@ class AddressCreateView(LoginRequiredMixin, CreateView):
 
 def checkout_address_create_view(request):
     form = AddressCheckoutForm(request.POST or None)
+    context = {"form": form}
+    print(context)
+
     next_ = request.GET.get('next')
     next_post = request.POST.get('next')
     redirect_path = next_ or next_post or None
@@ -82,8 +84,7 @@ def checkout_address_reuse_view(request):
             payment, payment_created = PaymentModel.objects.new_or_get(request)
             if shipping_address is not None:
                 qs = AddressModel.objects.filter(
-                    payment=payment,
-                    id=shipping_address)
+                    payment=payment, id=shipping_address)
                 if qs.exists():
                     request.session[
                         address_type + "_address_id"] = shipping_address

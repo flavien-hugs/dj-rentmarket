@@ -13,7 +13,7 @@ urlpatterns = [
         SearchView.as_view(),
         name="search"),
     path(
-        'product/',
+        'product/list/',
         ProductListView.as_view(
             extra_context={'page_title': 'Tous les produits'}),
         name='all_product'),
@@ -25,12 +25,12 @@ urlpatterns = [
 
     # url category
     path(
-        'category/',
+        'category/list/',
         CategoryListView.as_view(
             extra_context={'page_title': 'Toutes les catégories'}),
         name='all_category'),
     path(
-        'category/<slug>/', CategoryDetailView.as_view(),
+        'category/detail/<slug>/', CategoryDetailView.as_view(),
         name='detail_category'),
 
     # URL wishlist

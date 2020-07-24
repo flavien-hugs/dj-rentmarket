@@ -91,7 +91,7 @@
                                 <div class="product__availability">
                                     Available
                                     <span class="text-success">
-                                        {{ object.available|yesno:'Oui,Non' }}
+                                        {{ object.available|yesno:'Yes,No' }}
                                     </span>
                                 </div>
                                 <div class="product__prices">
@@ -107,7 +107,7 @@
                                                 {% if object in location.product.get_available %}
                                                     <button type="submit" class="btn btn-primary btn-lg">Delete ?</button>
                                                 {% else %}
-                                                    <button type="submit" class="btn btn-primary btn-lg">Louer</button>
+                                                    <button type="submit" class="btn btn-primary btn-lg">Add</button>
                                                 {% endif %}
                                             </div>
 

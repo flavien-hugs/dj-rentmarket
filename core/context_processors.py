@@ -8,6 +8,7 @@ def location(request):
     return {'location': location_obj}
 
 
+# mélange la séquence x
 def category(request):
     category = CategoryModel.objects.all()
     mcategory = sorted(
@@ -24,7 +25,9 @@ def featured_product(request):
     featured_product = sorted(ProductModel.objects.featured().filter(
        pub_date__isnull=False).order_by('-pub_date')[:50],
         key=lambda x: random.random())
-    context = {'featured_product': featured_product}
+    context = {
+        'featured_product': random.sample(featured_product, k=2)
+    }
     return context
 
 
