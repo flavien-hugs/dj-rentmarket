@@ -15,7 +15,7 @@
                     <div class="widget-products__info">
                         <div class="widget-products__name">
                             <a title="{{ obj.name }}" href="{{ obj.get_absolute_url }}">
-                                {{ obj.name|safe }}
+                                {{ obj.name|truncatewords:8|safe  }}
                             </a>
                         </div>
 

@@ -15,21 +15,28 @@
   </div>
 {% endif %}
 
-{% include "layouts/message.html" %}
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert {% if message.tags %} alert-{{ message.tags }} {% endif %} alert-dismissible fade show" role="alert">
+      <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      {{ message|safe }}
+    </div>
+  {% endfor %}
+{% endif %}
 
 <form method="post" novalidate>
   {% csrf_token %}
   
   {% include 'layouts/form.html' %}
   
-  <button style="background-color:#dc3545;" class="btn btn-block btn-lg font-weight-bold text-white" type="submit">Se connecter</button><!-- /.end button login -->
+  <button style="background-color:#dc3545;" class="btn btn-block btn-lg font-weight-bold text-white" type="submit">Login</button><!-- /.end button login -->
 
   <div class="d-flex align-items-center justify-content-lg-end justify-content-center py-3">
-    <a href="{% url 'accounts:password_reset' %}">Mot de passe oublié ?</a>
+    <a href="{% url 'accounts:password_reset' %}">Forgot your password?</a>
   </div><!-- password reset link -->
 
   <div class="text-center mt-3">
-    Nouvel utilisateur ? <a href="{% url "accounts:signup" %}" class="text-dark font-weight-bold"><u>Inscription</u></a>
+    New User ? <a href="{% url "accounts:signup" %}" class="text-dark font-weight-bold"><u>Registration</u></a>
   </div><!-- signup link -->
 </form>
 {% endblock auth_content %}

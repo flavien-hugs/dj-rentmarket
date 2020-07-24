@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block desktop %}
+    {% include "includes/menu/header.html" %}
+{% endblock desktop %}
+
+{% block slideshow %}{% endblock slideshow %}
+
+
+{% block content %}
+    {% block breadcrumb %}
+        {% include "layouts/breadcrumb.html" %}    
+    {% endblock breadcrumb %}
+
+    <div class="block">
+        <div class="container">
+            <div class="col-12">
+                <div class="block">
+                    <div class="products-view">
+                        {% include "layouts/option.html" %}
+
+                        <div class="products-view__list products-list" data-layout="grid-5-full" data-with-features="false">
+                            <div class="products-list__body">
+                                {% for object in object_list %}
+                                    {% include "shop/products/snippets/card.html" with obj=object %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        {% include "layouts/paginate.html" %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

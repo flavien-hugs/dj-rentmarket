@@ -10,7 +10,7 @@
         <div class="block-products-carousel__preloader"></div>
         <div class="owl-carousel">
             {% for obj in related_product %}
-            {% include "shop/products/snippets/carousel.html" with instance=obj %}
+                {% include "shop/products/snippets/carousel.html" with instance=obj %}
             {% endfor %}
         </div>
     </div>

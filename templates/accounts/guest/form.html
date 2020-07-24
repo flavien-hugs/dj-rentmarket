@@ -8,6 +8,15 @@
   </div>
 {% endif %}
 
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert {% if message.tags %} alert-{{ message.tags }} {% endif %} alert-dismissible fade show" role="alert">
+      <button class="close" type="button" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      {{ message|safe }}
+    </div>
+  {% endfor %}
+{% endif %}
+
 <form method="post" action='{% if action_url %}{{ action_url }}{% else %}{% url "accounts:login" %}{% endif %}' novalidate>
   {% csrf_token %}
 
@@ -17,5 +26,5 @@
   
   {% include 'layouts/form.html' %}
   
-  <button style="background-color:#dc3545;" class="btn btn-block btn-lg font-weight-bold text-white" type="submit">Se connecter</button><!-- /.end button login -->
+  <button style="background-color:#dc3545;" class="btn btn-block btn-lg font-weight-bold text-white" type="submit">Login</button><!-- /.end button login -->
 </form>

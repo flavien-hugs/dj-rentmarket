@@ -4,7 +4,7 @@
 {% block auth_content %}
 
   <h3 class="card-title text-uppercase text-center">
-    Modifier Information
+    Edit Information
   </h3>
 
   <form method="post" action="{% if action_url %}{{ action_url }}{% endif %}" novalidate>
@@ -12,7 +12,7 @@
 
     {% include 'layouts/form.html' %}
 
-    <button type="submit" class="btn btn-block btn-lg btn-success font-weight-bold text-white">Enregistrer les modifications
+    <button type="submit" class="btn btn-block btn-lg btn-success font-weight-bold text-white">Save changes
     </button>
   </form>
  

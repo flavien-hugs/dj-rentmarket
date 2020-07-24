@@ -35,7 +35,7 @@ urlpatterns = [
 
     # URL wishlist
     path('addwish/<int:product_id>/', wishlist, name='addwish'),
-    path('wishlist/', TemplateView.as_view(
+    path('wishlist/content/', TemplateView.as_view(
         template_name='shop/wishlist.html'), name='wishlist'),
     # URL compare
     path('compare/', TemplateView.as_view(

@@ -2,11 +2,10 @@
     <li><button type="button" class="block-header__group block-header__group--active">All</button>
     </li>
 
-    <li><button type="button" class="block-header__group">Power Tools</button></li>
-
-    <li><button type="button" class="block-header__group">Hand Tools</button></li>
-
-    <li><button type="button" class="block-header__group">Plumbing</button></li>
+    {% for object in category|slice:'0:3' %}
+        <li><button type="button" class="block-header__group">
+        {{ object.name|title }}</button></li>
+    {% endfor %}
 </ul>
 
 {% include "shop/products/snippets/arrow.html" %}

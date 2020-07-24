@@ -8,26 +8,24 @@
     <div class="checkout block">
         <div class="container">
             <div class="row">
-                <form class="row" method="POST"  enctype="multipart/form-data" novalidate>
+                <form class="form-row" method="POST"  enctype="multipart/form-data" novalidate>
+                    {{ form.management_form }}
                     {% csrf_token %}
-                    {% if form.non_field_errors %}
-                        <div class="alert alert-danger" role="alert">
-                            {% for error in form.non_field_errors %}
-                            <p {% if forloop.last %} class="mb-0"{% endif %}>{{ error }}</p>
-                            {% endfor %}
-                        </div>
-                    {% endif %}
 
-                    <div class="col-12 col-lg-6 col-xl-7">
+                    <div class="form-group col-12 col-lg-6 col-xl-7">
                         <div class="card mb-lg-0">
                             <div class="card-body">
-                                <h3 class="card-title">Ajout de nouveau produit</h3>
+                                <h5 class="card-title">
+                                    {% if page_title %}
+                                        {{ page_title }}
+                                    {% endif %}
+                                </h5>
                                 {% include 'dashboard/form_1.html' %}
                             </div>
                         </div> 
                     </div>
 
-                    <div class="col-12 col-lg-6 col-xl-5 mt-4 mt-lg-0">
+                    <div class="form-group col-12 col-lg-6 col-xl-5 mt-4 mt-lg-0">
                         <div class="card mb-0">
                             <div class="card-body">
                                 {% include 'dashboard/form_2.html' %}
@@ -35,10 +33,11 @@
                         </div> 
                     </div>
 
-                    <div class="col-6">
-                        <button type="submit" value="Ajouter" class="btn btn-md font-weight-bold text-white btn-success">Ajouter</button>
+                    <div class="form-row">
+                        <a href="{% url 'dashboard:dashboard' %}" class="shadow-none btn btn-md text-uppercase float-right" type="submit">Cancel</a>
+
+                        <input class="shadow-none btn btn-md btn-danger text-uppercase" value="save" type="submit">
                     </div>
-                    
                 </form>
             </div>
         </div>

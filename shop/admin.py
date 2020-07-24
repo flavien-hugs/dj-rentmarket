@@ -98,7 +98,7 @@ class ProductModelAdmin(admin.ModelAdmin):
     )
     list_filter = [
         'available', 'category',
-        'label', 'rent_date', 'pub_date', 'keywords']
+        'label', 'rent_date', 'pub_date']
     list_editable = ['price', 'available']
     search_fields = ['name', 'price']
     prepopulated_fields = {

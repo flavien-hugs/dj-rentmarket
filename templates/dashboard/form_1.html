@@ -1,21 +1,30 @@
 {% load widget_tweaks %}
 
-<div class="form-group">
-    {{ form.instance.user|add_class:'form-control shadow-none' }}
-</div>
+{% if form.non_field_errors %}
+    <div class="alert alert-danger" role="alert">
+        {% for error in form.non_field_errors %}
+        <p {% if forloop.last %} class="mb-0"{% endif %}>{{ error }}</p>
+        {% endfor %}
+    </div>
+{% endif %}
 
 <div class="form-group">
     <label for="{{ form.category.id_for_label }}">
-    Catégorie du produit</label>
+    Product category</label>
     <select name="{{ form.category.name }}" id="{{ form.category.id_for_label }}" class="form-control custom-select shadow-none">
        {% for c in form.category %}{{ c }}{% endfor %}
     </select>
 </div>
 
+<div class="form-group">
+    <label for="{{ form.name.id_for_label }}">Product name</label>
+       {{ form.name|add_class:'form-control shadow-none'|attr:"placeholder:Enter product name"|attr:"onfocus:this.placeholder=''"|attr:"onblur:this.placeholder='Enter product name'" }}
+</div>
+
 <div class="form-row">
     <div class="form-group col-md-8">
-       <label for="{{ form.name.id_for_label }}">Nom du produit</label>
-       {{ form.name|add_class:'form-control shadow-none'|attr:"placeholder:Saisir le nom du produit"|attr:"onfocus:this.placeholder=''"|attr:"onblur:this.placeholder='Saisir le nom du produit'" }}
+        <label for="{{ form.price.id_for_label }}">Product price</label>
+        {{ form.price|add_class:'form-control shadow-none'|attr:"placeholder:Enter product price"|attr:"onfocus:this.placeholder=''"|attr:"onblur:this.placeholder='Enter product price'" }}
     </div>
 
     <div class="form-group col-md-4">
@@ -25,22 +34,19 @@
 </div>
 
 <div class="form-group">
-    <label for="{{ form.price.id_for_label }}">Prix du produit</label>
-    {{ form.price|add_class:'form-control shadow-none'|attr:"placeholder:Saisir le prix du produit"|attr:"onfocus:this.placeholder=''"|attr:"onblur:this.placeholder='Saisir le prix du produit'" }}
+    <div class="form-check">
+        {{ form.featured|add_class:'form-check-input shadow-none' }}
+        <label class="ml-3 form-check-label" for="{{ form.featured.id_for_label }}">
+            Feature product ?
+        </label>
+    </div>
 </div>
 
 <div class="form-group">
     <div class="form-check">
         {{ form.available|add_class:'form-check-input shadow-none' }}
         <label class="ml-3 form-check-label" for="{{ form.available.id_for_label }}">
-            Ce produit est disponible ?
+            This product is available ?
         </label>
     </div>
-</div>
-
-<div class="form-group">
-    <label for="{{ form.keywords.id_for_label }}">
-        Mots clés
-    </label>
-    {{ form.keywords|add_class:'form-control shadow-none'|attr:"placeholder:Saisir des mots clés séparés de virgule"|attr:"onfocus:this.placeholder=''"|attr:"onblur:this.placeholder='Saisir des mots clés séparés de virgule'" }}
 </div>

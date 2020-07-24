@@ -14,14 +14,6 @@ def show_latest_product(count=20):
     return context
 
 
-@register.inclusion_tag('shop/products/featured/featured_product.html')
-def show_featured_product(count=100):
-    featured_product = ProductModel.objects.featured().filter(
-       pub_date__isnull=False).order_by('-pub_date')[:count]
-    context = {'featured': featured_product}
-    return context
-
-
 @register.inclusion_tag('shop/review/review_list.html')
 def show_review_list(count=5):
     review_list = ReviewModel.objects.order_by('-rating')[:count]

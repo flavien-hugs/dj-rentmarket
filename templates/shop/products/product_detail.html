@@ -1,5 +1,5 @@
 {% extends "shop/index.html" %}
-{% load static %} {% get_static_prefix as STATIC_PREFIX %}
+{% load static humanize social_share %} {% get_static_prefix as STATIC_PREFIX %}
 
 {% block slideshow %}{% endblock slideshow %}
 
@@ -50,7 +50,7 @@
                                 </div>
 
                                 <h1 class="product__name">
-                                {{ object.name|safe }}</h1>
+                                {{ object.name|truncatewords:8|safe }}</h1>
 
                                 <div class="product__rating">
                                     <!-- reviews rating -->
@@ -79,7 +79,7 @@
 
                                 <ul class="product__meta">
                                     <li class="product__meta-availability">
-                                        Availability: <span class="text-success">{{ object.available|yesno:'Oui,Non' }}</span>
+                                        Availability: <span class="text-success">{{ object.available|yesno:'Yes,No' }}</span>
                                     </li>
                                     <li>Brand: <a href="#">Wakita</a></li>
                                     <li>SKU: 83690/32</li>
@@ -95,7 +95,7 @@
                                     </span>
                                 </div>
                                 <div class="product__prices">
-                                {{ object.price|floatformat:0|safe }}</div>
+                                {{ object.price|intcomma }}</div>
 
                                 <!-- .product__options -->
                                 <form class="product__options" method='POST' action="{% url "location:update" %}" data-endpoint="{% url "location:update" %}" {% if request.user.is_authenticated %}data-user='unsta'{% endif %}>
@@ -139,6 +139,23 @@
                                             <a href="{{ category.get_absolute_url }}">{{ category.name }}</a>
                                         {% endfor %}
                                     </div>
+                                </div>
+
+                                <div class="product__share-links share-links">
+                                    <ul class="share-links__list">
+
+                                        <li class="share-links__item share-links__item--type--tweet">
+                                            {% post_to_twitter "I would like to recommend this product on RentMarket." object.build_absolute_uri "Tweet" %}
+                                        </li>
+
+                                        <li class="share-links__item share-links__item--type--like">
+                                            {% post_to_facebook object.build_absolute_uri 'Facebook' %}
+                                        </li>
+
+                                        <li class="share-links__item share-links__item--type--pin">
+                                            {% post_to_whatsapp '{{ object.name }}' "Whatsapp" %}
+                                        </li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>

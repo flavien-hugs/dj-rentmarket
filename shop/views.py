@@ -9,7 +9,6 @@ from django.http import HttpResponse, HttpResponseRedirect
 from shop.forms import ReviewForm
 from shop.models import (
     ProductModel, CategoryModel, ReviewModel, WishListModel)
-from location.models import LocationModel
 
 from analytics.models import CategoryView
 from analytics.mixins import ObjectViewMixin
@@ -41,6 +40,10 @@ class ProductListView(ListView):
     template_name = 'shop/products/product_list.html'
     paginate_by = 30
 
+    def get_context_data(self, **kwargs):
+        kwargs['count'] = ProductModel.objects.get_available().count()
+        return super().get_context_data(**kwargs)
+
 
 # DETAIL PRODUIT
 class ProductDetailView(ObjectViewMixin, DetailView):
@@ -51,20 +54,16 @@ class ProductDetailView(ObjectViewMixin, DetailView):
         kwargs['form'] = ReviewForm()
         kwargs['category'] = CategoryModel.objects.all()
         kwargs['page_title'] = self.object.name
+
         kwargs['related_product'] = sorted(
             ProductModel.objects.get_related(
                 instance=self.get_object())[:25],
             key=lambda x: random.random())
 
-        location_obj, new_obj = LocationModel.objects.new_or_get(
-            self.request)
-        kwargs['location'] = location_obj
-        print(location_obj)
-
         if self.request.user.is_authenticated:
             kwargs['history_product'] = sorted(
                 self.request.user.objectviewedmodel_set.by_model(
-                    self.model, model_queryset=False)[:50],
+                    ProductModel, model_queryset=False)[:50],
                 key=lambda x: random.random())
         return super().get_context_data(**kwargs)
 

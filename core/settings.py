@@ -1,4 +1,5 @@
 import os
+import dj_database_url
 from django.core.exceptions import ImproperlyConfigured
 
 
@@ -60,6 +61,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'phonenumbers',
     'django_user_agents',
+    'django_social_share',
 
     'accounts.apps.AccountsConfig',
     'shop.apps.ShopConfig',
@@ -102,6 +104,7 @@ TEMPLATES = [
 
                 'core.context_processors.location',
                 'core.context_processors.category',
+                'core.context_processors.featured_product',
             ],
 
             'debug': DEBUG,
@@ -156,19 +159,14 @@ LANGUAGE_CODE = 'fr'
 TIME_ZONE = 'UTC'
 USE_I18N = USE_L10N = USE_TZ = True
 
-
-# CONFIG MESSAGE
-try:
-    from django.contrib.messages import constants as messages
-    MESSAGE_TAGS = {
-        messages.DEBUG: 'alert-info',
-        messages.INFO: 'alert-info',
-        messages.SUCCESS: 'alert-success',
-        messages.WARNING: 'alert-warning',
-        messages.ERROR: 'alert-danger',
-    }
-except Exception as e:
-    pass
+# Parse database configuration from $DATABASE_URL
+# Change 'default' database configuration with
+# $DATABASE_URL.
+DATABASES['default'].update(
+    dj_database_url.config(
+        conn_max_age=500,
+        ssl_require=True)
+    )
 
 
 # Static files (CSS, JavaScript, Images)
@@ -200,7 +198,7 @@ EMAIL_HOST_PASSWORD = '58fl02ghs@!?'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'RentMarket <info@rm.com>'
-BASE_URL = '127.0.0.1:8956'
+BASE_URL = '127.0.0.1:9865'
 
 PHONENUMBER_DEFAULT_REGION = "CI"
 PHONENUMBER_DB_FORMAT = "INTERNATIONAL"
@@ -211,12 +209,12 @@ USER_AGENTS_CACHE = 'default'
 
 
 # STRIPE PAYMENT
-STRIPE_SECRET_KEY = "sk_test_51H6F3bEVRs2R6z6LBLDgt4mlR50t4QHqDGb1BJ1A7NII7ejhXPVMlA9tnlWMy8WWtPjrQrtXeHBRcsfXdJwjmQL700iWChY2Zj"
-STRIPE_PUB_KEY = 'pk_test_51H6F3bEVRs2R6z6LE0qO5BL9PAOYUPwRS0EI5TOnNd3P0hI5y4GAPTb47uSGT7rbE7tmua6qcjbreOpSVMop4pLh00BH4DVIcg'
+STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
+STRIPE_PUB_KEY = os.environ.get('STRIPE_PUB_KEY')
 
 
 CORS_REPLACE_HTTPS_REFERER = False
-HOST_SCHEME = "http://"
+HOST_SCHEME = "https://"
 SECURE_PROXY_SSL_HEADER = None
 SECURE_SSL_REDIRECT = False
 SESSION_COOKIE_SECURE = False

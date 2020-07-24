@@ -1,6 +1,6 @@
 import random
 from location.models import LocationModel
-from shop.models import MainCategoryModel, CategoryModel
+from shop.models import ProductModel, MainCategoryModel, CategoryModel
 
 
 def location(request):
@@ -18,6 +18,14 @@ def category(request):
         'category': category,
         'main_category': mcategory
     }
+
+
+def featured_product(request):
+    featured_product = sorted(ProductModel.objects.featured().filter(
+       pub_date__isnull=False).order_by('-pub_date')[:50],
+        key=lambda x: random.random())
+    context = {'featured_product': featured_product}
+    return context
 
 
 def get_info_ur(request):

@@ -3,86 +3,17 @@
 <div class="block block-products-carousel" data-layout="grid-5">
     <div class="container">
         <div class="block-header">
-            <h3 class="block-header__title">Featured</h3>
+            <h3 class="block-header__title">Featured Products</h3>
             <div class="block-header__divider"></div>
                 {% include "shop/products/snippets/btn.html" %}
             </div>
 
             <div class="block-products-carousel__slider">
                 <div class="block-products-carousel__preloader"></div>
-
                 <div class="owl-carousel">
-
-                    {% show_featured_product 30 %}
-
-                    <div class="block-products-carousel__column">
-                        <div class="block-products-carousel__cell">
-                            <div class="product-card">
-                                <button class="product-card__quickview" type="button">
-                                    <svg width="16px" height="16px">
-                                        <use xlink:href="{{ STATIC_PREFIX }}img/svg/sprite.svg#quickview-16"></use>
-                                    </svg>
-                                    <span class="fake-svg-icon"></span>
-                                </button>
-
-                                <div class="product-card__badges-list">
-                                    <div class="product-card__badge product-card__badge--hot">Hot</div>
-                                </div>
-
-                                <div class="product-card__image">
-                                    <a href="#"><img src="{{ STATIC_PREFIX }}img/products/product-2.jpg" alt=""></a>
-                                </div>
-
-                                <div class="product-card__info">
-                                    <div class="product-card__name"
-                                    >
-                                    <a href="#">Undefined Tool IRadix DPS3000SY 2700 Watts</a>
-                                </div>
-
-                                <div class="product-card__rating">
-                                    {% include "layouts/rating.html" %}
-
-                                    <div class="product-card__rating-legend">11 Reviews</div>
-                                </div>
-
-                                <ul class="product-card__features-list">
-                                    <li>Speed: 750 RPM</li>
-                                    <li>Power Source: Cordless-Electric</li><li>Battery Cell Type: Lithium</li>
-                                    <li>Voltage: 20 Volts</li>
-                                    <li>Battery Capacity: 2 Ah</li>
-                                </ul>
-                            </div>
-
-                            <div class="product-card__actions">
-                                <div class="product-card__availability">Availability:
-                                    <span class="text-success">In Stock</span>
-                                </div>
-
-                                <div class="product-card__prices">$1,019.00</div>
-
-                                <div class="product-card__buttons">
-                                    <button class="btn btn-primary product-card__addtocart" type="button">Add To Cart</button>
-
-                                    <button class="btn btn-secondary product-card__addtocart product-card__addtocart--list" type="button">Add To Cart</button>
-
-                                    <button class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__wishlist" type="button">
-                                        <svg width="16px" height="16px">
-                                            <use xlink:href="{{ STATIC_PREFIX }}img/svg/sprite.svg#wishlist-16"></use>
-                                        </svg>
-
-                                        <span class="fake-svg-icon fake-svg-icon--wishlist-16"></span>
-                                    </button>
-
-                                    <button class="btn btn-light btn-svg-icon btn-svg-icon--fake-svg product-card__compare" type="button">
-                                        <svg width="16px" height="16px">
-                                            <use xlink:href="{{ STATIC_PREFIX }}img/svg/sprite.svg#compare-16"></use>
-                                        </svg>
-                                        <span class="fake-svg-icon fake-svg-icon--compare-16"></span>
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    {% for obj in featured_product %}
+                        {% include "shop/products/snippets/carousel.html" with instance=obj %}
+                    {% endfor %}
                 </div>
             </div>
         </div>

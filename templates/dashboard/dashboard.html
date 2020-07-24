@@ -9,10 +9,25 @@
 {% block slideshow %}{% endblock slideshow %}
 
 {% block content %}
+    {% block breadcrumb %}
+        {% include "layouts/breadcrumb.html" %}    
+    {% endblock breadcrumb %}
+
     <div class="block">
         <div class="container">
             <div class="row justify-content-end">
-                {% include "layouts/message.html" %}
+                {% if messages %}
+                    <div class="col-6 float-right">
+                        {% for message in messages %}
+                            <div class="alert {% if message.tags %} alert-{{ message.tags }} {% endif %} alert-dismissible fade show" role="alert">
+                                <button class="close" type="button" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                {{ message|safe }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
 
             <div class="row">
@@ -22,35 +37,30 @@
                             <h3 class="card-title">Account Details</h3>
 
                             <div class="form-group">
-                                <label class="font-weight-bold">Nom &amp; Prénoms :</label> Mr/Mme {{ user.get_full_name }} <br>
+                                <label class="font-weight-bold">Full Name :</label> Mr/Mme {{ user.get_full_name }} <br>
 
                                 <label class="font-weight-bold">
                                 Email :</label>
                                 {{ request.user.email }} <br>
 
                                 <label class="font-weight-bold">
-                                Pays/Ville :</label>
+                                Country/City :</label>
                                 {{ request.user.country.name }}/{{ request.user.city }} <br>
 
                                 <label class="font-weight-bold">
-                                Téléphone :</label>
+                                Contact :</label>
                                 {{ request.user.phone_number }} <br>
                             </div>
-                                
-                            <div class="form-group">
-                                <a href="{% url 'accounts:update' %}" class="btn btn-primary btn-sm btn-block">
-                                Update Details</a>
-                            </div>
 
-                            <!--<div class="form-group">
-                                <a class="btn btn-primary btn-success btn-block" href="https://web.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" target="_blank">
-                                    Partager sur facebook
-                                </a>
-                            </div> -->
+                            <div class="form-row">
+                                <div class="form-group col-6">
+                                    <a href="{% url 'accounts:update' %}" class="btn btn-primary btn-sm btn-block">Update Details</a>
+                                </div>
 
-                            <div class="form-group">
-                                <a href="{% url 'accounts:password_change' %}" class="btn btn-primary btn-md btn-block">
+                            <div class="form-group col-6">
+                                <a href="{% url 'accounts:password_change' %}" class="btn btn-primary btn-sm btn-block">
                                 Change Password</a>
+                                </div>
                             </div>
                         </div>
 
@@ -61,10 +71,10 @@
                             <div>
                                 <div class="form-group">
                                     <label class="font-weight-bold">
-                                    Number product: {{ count_products }}</label>
+                                    Number of product{{ product_count|pluralize }}: ({{ product_count }}) product{{ product_count|pluralize }}</label>
                                     <br>
 
-                                    <label class="font-weight-bold">Number Orders : {{ count_orders }} </label>
+                                    <label class="font-weight-bold">Number of Order{{ order_count|pluralize }}: ({{ order_count }}) order{{ order_count|pluralize }} </label>
                                 </div>
                             </div>
                         </div>
@@ -84,6 +94,7 @@
                                         <th>Add to</th>
                                         <th>Views</th>
                                         <th class="cart-table__column cart-table__column--remove"></th>
+                                        <th class="cart-table__column cart-table__column--remove"></th>
                                     </tr>
                                     {% for obj in object_list|slice:'0:5' %}
                                     <tr>
@@ -95,12 +106,18 @@
 
                                         <td data-title="Date de location">{{ obj.rent_date|date }}</td>
 
-                                        <td data-title="Nombre de vues">
-                                            {{ obj.views }}
+                                        <td class="text-right" data-title="Nombre de vues">
+                                            {{ obj.views|intcomma }}
                                         </td>
 
                                         <td class="cart-table__column cart-table__column--remove">
-                                            <a href="{% url 'dashboard:delete_product' obj.pk %}" type="button" class="btn btn-light btn-sm btn-svg-icon">
+                                            <a href="{% url 'dashboard:update_product' obj.slug %}" type="button" class="btn btn-light btn-sm btn-svg-icon" title="Update product">
+                                                <i class="fa fa-edit mr-2"></i>
+                                            </a>
+                                        </td>
+
+                                        <td class="cart-table__column cart-table__column--remove">
+                                            <a href="{% url 'dashboard:delete_product' obj.slug %}" type="button" class="btn btn-light btn-sm btn-svg-icon" title="Remove product">
                                                 <svg width="12px" height="12px">
                                                     <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#cross-12"></use>
                                                 </svg>
@@ -110,8 +127,12 @@
                                     {% endfor %}
                                 </table>
                             </div>
+                            
+                            <div class="form-row">
+                                <div class="form-group"><a href="{% url 'dashboard:add_product' %}" class="btn btn-primary btn-sm text-uppercase">add new product</a></div>
 
-                            <a href="{% url 'dashboard:add_product' %}" class="btn btn-primary btn-md text-uppercase">add product</a>
+                                <div class="form-group ml-3"><a href="{% url 'dashboard:user_product' %}" class="btn btn-link btn-sm text-uppercase">views all products</a></div>
+                            </div>
                         </div>
 
                         <div class="card-divider"></div>
@@ -122,23 +143,29 @@
                             <div class="py-2">
                                 <table class="table table-sm">
                                     <tr class="small text-capitalize">
-                                        <th>Product</th>
+                                        <th>Order ID</th>
+                                        <th>Status</th>
                                         <th>Add to</th>
                                     </tr>
 
-                                    {% for obj in object_list|slice:'0:5' %}
+                                    {% for obj in orders|slice:'0:5' %}
                                         <tr>
                                             <td data-title="Produit">
-                                                <a href="{{ obj.get_absolute_url }}">{{ obj.name|truncatewords:6|safe }}</a>
+                                                <a href="{{ obj.get_absolute_url }}">
+                                                {{ obj.order_id|safe }}</a>
                                             </td>
 
-                                            <td data-title="Prix">{{ obj.pub_date|date }}</td>
+                                            <td data-title="Status">
+                                                {{ obj.get_status|safe}}
+                                            </td>
+
+                                            <td data-title="Created">{{ obj.created|date }}</td>
                                         </tr>   
                                     {% endfor %}
                                 </table>
                             </div>
 
-                            <a href="#" class="btn btn-primary btn-md text-uppercase">Views all orders</a>
+                            <a href="{% url 'dashboard:user_order' %}" class="btn btn-link btn-sm text-uppercase">views all orders</a>
                         </div>
                     </div>
                 </div>

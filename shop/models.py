@@ -16,7 +16,7 @@ from core.utils import unique_slug_generator
 User = get_user_model()
 
 
-LABEL = (('New', 'New'), ('Sale', 'Sale'),)
+LABEL = (('NEW', 'NEW'), ('SALE', 'SALE'), ('HOT', 'HOT'))
 
 
 def category(instance, filename):
@@ -165,6 +165,9 @@ class ProductModelManager(models.Manager):
     def featured(self):
         return self.get_queryset().featured()
 
+    def count(self):
+        return self.get_queryset().get_available().count()
+
     def search(self, query):
         return self.get_queryset().available().search(query)
 
@@ -190,9 +193,6 @@ class ProductModel(models.Model):
         'Prix de location', max_digits=10, decimal_places=2)
     available = models.BooleanField('Disponible', default=True)
     rent_date = models.DateField('Date mise en location', default=timezone.now)
-    keywords = models.CharField(
-        'Mot clés', max_length=255, blank=True,
-        help_text='Ensemble de mots-clés SEO')
     pub_date = models.DateField('Date ajout', auto_now_add=timezone.now)
     updated = models.DateField('Date mise à jour', auto_now_add=timezone.now)
     views = models.PositiveIntegerField(
@@ -224,7 +224,7 @@ class ProductModel(models.Model):
 
     def get_delete_url(self):
         return reverse(
-            'dashboard:product_delete', kwargs={'pk': str(self.id)})
+            'dashboard:product_delete', kwargs={'slug': str(self.slug)})
 
     def get_update_url(self):
         return reverse(

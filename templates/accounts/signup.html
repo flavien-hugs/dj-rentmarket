@@ -20,11 +20,11 @@ Inscription</h4>
     {% include 'layouts/form.html' %}
     
     <!-- Submit Button -->
-    <button style="background-color:#dc3545;" class="btn btn-block btn-lg font-weight-bold text-white" type="submit">Créez mon compte</button>
+    <button style="background-color:#dc3545;" class="btn btn-block btn-lg font-weight-bold text-white" type="submit">Create an account</button>
     <!-- /.end button login -->
 
     <div class="text-center mt-3">
-        Vous avez déjà un compte ? <a href="{% url "accounts:login" %}" class="text-dark font-weight-bold"><u>Se connecter</u></a>
+        You already have an account? <a href="{% url "accounts:login" %}" class="text-dark font-weight-bold"><u>Login</u></a>
     </div>
 </form>
 {% endblock auth_content %}

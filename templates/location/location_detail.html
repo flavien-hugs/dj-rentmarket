@@ -31,7 +31,7 @@
 
                                 <td class="cart-table__column cart-table__column--image">
                                     <a href="{{ obj.get_absolute_url }}">
-                                        <img src="{% if obj.img1 %}{{ obj.img1.url }}{% endif %}" alt="{{ obj.name }}">
+                                        <img src="{{ obj.get_image_url }}" alt="{{ obj.name }}">
                                     </a>
                                 </td>
 
@@ -117,7 +117,7 @@
                                     <tfoot class="cart__totals-footer">
                                         <tr>
                                             <th>Total (XOF)</th>
-                                            <td>{{ location.total|safe }}</td>
+                                            <td>{{ location.total|intcomma }}</td>
                                         </tr>
                                     </tfoot>
                                 </table>

@@ -1,14 +1,11 @@
-<p>Hello {{ full_name }},</p>
+<p>Hello {{ user.get_full_name }}, <br>
+Thank you for registering with RentMarket !
 
-<p>Merci de vous être inscrit à RentMarket ! <br>
+Please click on this <a target="_blank" href="{{ path }}">link</a> to confirm your email address. This means that you will be able to reset your password if you forget it later.</p> <br>
 
-Veuillez cliquer sur ce <a target="_blank" href="{{ path }}">lien</a> pour confirmer votre adresse électronique. Cela signifie que vous pourrez réinitialiser votre mot de passe si vous l'oubliez plus tard.</p> <br>
+<p>If you cannot click on the link from your email program, please copy this URL and paste it into your web browser :
+    <a class="text-center" target="_blank" href='{{ path }}'>{{ path }}</a>
+</p> 
 
-<p>
-    Si vous ne pouvez pas cliquer sur le lien depuis votre programme de messagerie, veuillez copier cette URL et la coller dans votre navigateur web :
-
-    <a target="_blank" href='{{ path }}'>{{ path }}</a> 
-</p>
-
-<p>Merci,</p>
-<p>L'équipe de RentMarket.</p>
+<p>Thank you, <br>
+Team RentMarket.</p>

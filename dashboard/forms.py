@@ -1,16 +1,15 @@
-from django import forms
+from django.forms import ModelForm, FileField, FileInput
 
 from shop.models import ProductModel
 
 
-class ProductModelModelForm(forms.ModelForm):
-    user = forms.ModelChoiceField()
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['user'].queryset = ProductModel.objects.filter(
-            user=self.request.user)
+class ProductModelModelForm(ModelForm):
 
     class Meta:
         model = ProductModel
-        fields = '__all__'
+        fields = [
+            'category', 'name', 'price',
+            'label', 'desc', 'featured', 'available']
+
+    img = FileField(
+        widget=FileInput(attrs={'multiple': 'true'}))

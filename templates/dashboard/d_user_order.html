@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block desktop %}
+    {% include "includes/menu/header.html" %}
+{% endblock desktop %}
+
+{% block slideshow %}{% endblock slideshow %}
+
+
+{% block content %}
+    {% block breadcrumb %}
+        {% include "layouts/breadcrumb.html" %}    
+    {% endblock breadcrumb %}
+
+    <div class="block">
+        <div class="container">
+            <table class="wishlist">
+                <thead class="wishlist__head">
+                    <tr class="wishlist__row">
+                        <th class="wishlist__column wishlist__column">ID Order</th>
+
+                        <th class="wishlist__column wishlist__column">Status</th>
+
+                        <th class="wishlist__column wishlist__column">Add To</th>
+
+                        <th class="wishlist__column wishlist__column">Detail order</th>
+
+                        <th class="wishlist__column wishlist__column--remove"></th>
+                    </tr>
+                </thead>
+
+                <tbody class="wishlist__body">
+                    {% for object in object_list %}
+                    <tr class="wishlist__row">
+                        <td class="wishlist__column wishlist__column--product">
+                            <a href="#" class="wishlist__product">
+                                {{ object.order_id }}
+                            </a>
+                        </td>
+
+                        <td class="wishlist__column wishlist__column">
+                            <div class="badge badge-success">{{ object.get_status }}</div>
+                        </td>
+
+                        <td class="wishlist__column wishlist__column">
+                        {{ object.created|date }}</td>
+
+                        <td class="wishlist__column wishlist__column">
+                            <a href="#" class="wishlist__product btn btn-primary btn-sm">Detail order</a>
+                        </td>
+
+                        <td class="wishlist__column wishlist__column--remove">
+                            <button type="button" class="btn btn-light btn-sm btn-svg-icon">
+                                <svg width="12px" height="12px">
+                                    <use xlink:href="{{ STATIC_PREFIX }}img/svg/sprite.svg#cross-12"></use>
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock content %}

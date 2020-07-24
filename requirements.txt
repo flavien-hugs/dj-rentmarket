@@ -12,6 +12,7 @@ Django==3.0.8
 django-countries==6.1.2
 django-heroku==0.3.1
 django-phonenumber-field==4.0.0
+django-social-share==1.4.0
 django-toolbelt==0.0.1
 django-user-agents==0.4.0
 django-widget-tweaks==1.4.8

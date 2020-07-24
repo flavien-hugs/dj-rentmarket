@@ -8,7 +8,7 @@ from location.views import(
 app_name = 'location'
 
 urlpatterns = [
-    path('detail/', location_home, name='detail'),
+    path('cart/content/', location_home, name='detail'),
     path('update/', location_update, name='update'),
     path('checkout/success/', checkout_done, name='success'),
     path('checkout/', checkout_home, name='checkout'),
