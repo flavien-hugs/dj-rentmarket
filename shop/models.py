@@ -143,7 +143,6 @@ class ProductModelQuerySet(models.query.QuerySet):
             Q(category__name__icontains=query) |
             Q(desc__icontains=query) |
             Q(price__icontains=query) |
-            Q(keywords__icontains=query) |
             Q(label__icontains=query))
 
         return self.filter(lookups).distinct()

@@ -508,9 +508,7 @@
                                     <use xlink:href="{{ STATIC_PREFIX }}img/svg/sprite.svg#cart-20"></use>
                                 </svg>
                                 <span class="indicator__value location_items_count">
-                                    {% if location.product.exists %}{{ request.session.location_items }} {% else %} 0
-                                    {% endif %}
-                                   
+                                    {% if location.product.exists %}{{ request.session.location_items }} {% else %} 0 {% endif %}
                                 </span>
                             </span>
                         </a>
