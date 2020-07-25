@@ -34,8 +34,8 @@ urlpatterns = [
         name='detail_category'),
 
     # URL wishlist
-    path('addwish/<int:product_id>/', wishlist, name='addwish'),
-    path('wishlist/content/', TemplateView.as_view(
+    path('wish/add/<int:product_id>/', wishlist, name='addwish'),
+    path('wish/list/content/', TemplateView.as_view(
         extra_context={'page_title': 'Wish List'},
         template_name='shop/wishlist.html'), name='wishlist'),
 

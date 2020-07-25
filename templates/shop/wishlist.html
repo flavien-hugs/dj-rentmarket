@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load humanize %}
 
 {% block content %}
     {% block breadcrumb %}
@@ -25,40 +26,44 @@
                 </thead>
 
                 <tbody class="wishlist__body">
-                    <tr class="wishlist__row">
-                        <td class="wishlist__column wishlist__column--image">
-                            <a href="#">
-                                <img src="{{ STATIC_PREFIX }}img/products/product-1.jpg" alt="">
-                            </a>
-                        </td>
-                        <td class="wishlist__column wishlist__column--product">
-                            <a href="#" class="wishlist__product-name">Electric Planer Brandix KL370090G 300 Watts</a>
+                    {% for obj in object_list %}
+                        <tr class="wishlist__row">
+                            <td class="wishlist__column wishlist__column--image">
+                                <a href="{{ obj.get_absolute_url }}">
+                                    <img src="{{ obj.get_image_url }}" alt="{{ obj.name }}">
+                                </a>
+                            </td>
+                            <td class="wishlist__column wishlist__column--product">
+                                <a href="{{ obj.get_absolute_url }}" class="wishlist__product-name">
+                                    {{ obj.name|truncatewords:6 }}
+                                </a>
 
-                            <div class="wishlist__product-rating">
-                                {% include "layouts/rating.html" %}
+                                <div class="wishlist__product-rating">
+                                    {% include "layouts/rating.html" %}
 
-                                <div class="wishlist__product-rating-legend">3 Reviews</div>
-                            </div>
-                        </td>
+                                    <div class="wishlist__product-rating-legend">3 Reviews</div>
+                                </div>
+                            </td>
 
-                        <td class="wishlist__column wishlist__column--stock">
-                            <div class="badge badge-success">In Stock</div>
-                        </td>
+                            <td class="wishlist__column wishlist__column--stock">
+                                <div class="badge badge-success">In Stock</div>
+                            </td>
 
-                        <td class="wishlist__column wishlist__column--price">$699.00</td>
+                            <td class="wishlist__column wishlist__column--price">{{ obj.price|intcomma }}</td>
 
-                        <td class="wishlist__column wishlist__column--tocart">
-                            <button type="button" class="btn btn-primary btn-sm">Add To Cart</button>
-                        </td>
+                            <td class="wishlist__column wishlist__column--tocart">
+                                <button type="button" class="btn btn-primary btn-sm">Add To Cart</button>
+                            </td>
 
-                        <td class="wishlist__column wishlist__column--remove">
-                            <button type="button" class="btn btn-light btn-sm btn-svg-icon">
-                                <svg width="12px" height="12px">
-                                    <use xlink:href="{{ STATIC_PREFIX }}img/svg/sprite.svg#cross-12"></use>
-                                </svg>
-                            </button>
-                        </td>
-                    </tr>
+                            <td class="wishlist__column wishlist__column--remove">
+                                <button type="button" class="btn btn-light btn-sm btn-svg-icon">
+                                    <svg width="12px" height="12px">
+                                        <use xlink:href="{{ STATIC_PREFIX }}img/svg/sprite.svg#cross-12"></use>
+                                    </svg>
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>

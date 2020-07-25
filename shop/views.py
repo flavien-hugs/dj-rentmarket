@@ -94,15 +94,14 @@ class CategoryDetailView(ObjectViewMixin, DetailView):
 
 
 # WISHLIST VIEWS
-def wishlist(request):
-    if request.method == 'GET':
-        product_id = request.GET['product_id']
-        addwish = ProductModel.objects.create(
-            pk=product_id, user=request.user)
+def wishlist(request, slug):
+    product = get_object_or_404(ProductModel, slug=slug, available=True)
+    if request.method == 'POST':
+        product = request.GET['product_id']
+        addwish = ProductModel.objects.create(pk=product, user=request.user)
         WishListModel.objects.get_or_create(wishlist=addwish)
         return HttpResponse("Success !")
-    else:
-        return HttpResponse("request method")
+    return HttpResponse("request method")
 
 
 # REVIEW VIEW

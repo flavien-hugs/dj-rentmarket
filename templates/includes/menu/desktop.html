@@ -229,7 +229,7 @@
                 </div>
 
                 <div class="nav-panel__indicators">
-                    <div class="indicator indicator--trigger--click">
+                    <div class="indicator">
                         <a href="{% url "shop:wishlist" %}" class="indicator__button">
                             <span class="indicator__area">
                                 <svg width="20px" height="20px">
@@ -251,7 +251,8 @@
                                     <use xlink:href="{{ STATIC_PREFIX }}img/svg/sprite.svg#cart-20"></use>
                                 </svg>
                                 <span class="indicator__value location_items_count">
-                                    {% if location.product.exists %}{{ request.session.location_items }} {% else %} 0 {% endif %}
+                                    {% if location.product.exists %}
+                                    {{ request.session.location_items }} {% else %}0{% endif %}
                                 </span>
                             </span>
                         </a>
