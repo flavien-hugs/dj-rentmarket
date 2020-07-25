@@ -71,7 +71,7 @@ def object_viewed_receiver(sender, instance, request, *args, **kwargs):
     except:
         pass
 
-    new_view_instance = ObjectViewedModel.objects.get_or_create(
+    ObjectViewedModel.objects.get_or_create(
         user=user, content_type=content_type,
         object_id=instance.id,
         ip_address=get_client_ip(request))
@@ -131,9 +131,9 @@ def user_logged_in_receiver(sender, instance, request, *args, **kwargs):
     ip_address = get_client_ip(request)
     session_key = request.session.session_key
     UserSessionModel.objects.create(
-            user=user,
-            ip_address=ip_address,
-            session_key=session_key)
+        user=user,
+        ip_address=ip_address,
+        session_key=session_key)
 
 user_logged_in.connect(user_logged_in_receiver)
 

@@ -12,6 +12,7 @@ def location(request):
 def category(request):
     return {
         'category': CategoryModel.objects.all(),
+        'scategory': MainCategoryModel.objects.all(),
         'main_category': sorted(
             MainCategoryModel.objects.all()[:6],
             key=lambda x: random.random())

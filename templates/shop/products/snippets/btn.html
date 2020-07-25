@@ -2,7 +2,7 @@
     <li><button type="button" class="block-header__group block-header__group--active">All</button>
     </li>
 
-    {% for object in category|slice:'0:3' %}
+    {% for object in category|slice:':3' %}
         <li><button type="button" class="block-header__group">
         {{ object.name|title }}</button></li>
     {% endfor %}

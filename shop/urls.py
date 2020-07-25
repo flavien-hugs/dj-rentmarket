@@ -14,14 +14,14 @@ urlpatterns = [
         name="search"),
 
     path(
-        'product/list/',
+        'list/',
         ProductListView.as_view(
             extra_context={'page_title': 'All Products'}),
         name='all_product'),
     path(
-        'product/detail/<slug>/',
+        'detail/<slug>/',
         ProductDetailView.as_view(),
-        name="produit_detail"),
+        name="product_detail"),
 
     # url category
     path(

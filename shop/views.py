@@ -8,10 +8,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 from shop.forms import ReviewForm
 from shop.models import (
-    ProductModel, CategoryModel, ReviewModel, WishListModel)
+    ProductModel, MainCategoryModel, CategoryModel,
+    ReviewModel, WishListModel)
 
 from analytics.models import CategoryView
-from core.mixins import AjaxRequiredMixin
 from analytics.mixins import ObjectViewMixin
 
 
@@ -21,15 +21,13 @@ class SearchView(ListView):
     success_url = reverse_lazy('shop:search')
 
     def get_context_data(self, **kwargs):
-        kwargs['query'] = self.request.GET.get('q')
+        kwargs['query'] = self.request.GET.get('q', None)
         kwargs['page_title'] = 'Results were found for\
             the search for : {}'.format(kwargs['query'])
         return super().get_context_data(**kwargs)
 
     def get_queryset(self):
-        request = self.request
-        mdict = request.GET
-        query = mdict.get('q', None)
+        query = self.request.GET.get('q', None)
         if query is not None:
             return ProductModel.objects.search(query)
         return ProductModel.objects.get_available()
@@ -64,7 +62,7 @@ class ProductDetailView(ObjectViewMixin, DetailView):
         if self.request.user.is_authenticated:
             kwargs['history_product'] = sorted(
                 self.request.user.objectviewedmodel_set.by_model(
-                    ProductModel, model_queryset=False)[:50],
+                    ProductModel, model_queryset=False)[:25],
                 key=lambda x: random.random())
         return super().get_context_data(**kwargs)
 
@@ -77,7 +75,7 @@ class CategoryListView(ListView):
 
 
 # DETAIL CATEGORY VIEW
-class CategoryDetailView(DetailView):
+class CategoryDetailView(ObjectViewMixin, DetailView):
     model = CategoryModel
     template_name = 'shop/category/category_detail.html'
 
@@ -90,24 +88,18 @@ class CategoryDetailView(DetailView):
         kwargs['object_list'] = obj.productmodel_set.get_available()
         kwargs['product_count'] = kwargs['object_list'].count()
 
-        kwargs['page_title'] = 'Category: {}'.format(self.object.name)
+        kwargs['page_title'] = 'Category: {}'.format(
+            self.object.name)
         return super().get_context_data(**kwargs)
-
-
-# DETAIL CATEGORY
 
 
 # WISHLIST VIEWS
 def wishlist(request):
     if request.method == 'GET':
         product_id = request.GET['product_id']
-        user = request.GET['user']
         addwish = ProductModel.objects.create(
-            pk=product_id, user=user)
-        wish = WishListModel(wishlist=addwish)
-
-        wish.save()
-
+            pk=product_id, user=request.user)
+        WishListModel.objects.get_or_create(wishlist=addwish)
         return HttpResponse("Success !")
     else:
         return HttpResponse("request method")
@@ -123,16 +115,12 @@ def addReview(request, slug):
             name = form.cleaned_data['name']
             email = form.cleaned_data['email']
             comment = form.cleaned_data['comment']
-            review = ReviewModel()
-            review.product = product
-            review.rating = rating
-            review.name = name
-            review.email = email
-            review.comment = comment
-            review.date = timezone.now()
-            review.save()
+            ReviewModel.objects.get_or_create(
+                product=product, rating=rating,
+                name=name, email=email,
+                comment=comment, date=timezone.now())
 
             return HttpResponseRedirect(
-                reverse('shop:produit_detail', args=(slug,)))
+                reverse('shop:product_detail', args=(slug,)))
 
     return HttpResponse()

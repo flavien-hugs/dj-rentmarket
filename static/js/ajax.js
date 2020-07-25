@@ -34,7 +34,7 @@ $(document).ready(function(){
     var searchForm = $(".search__form")
     var searchInput = searchForm.find("[name='q']")
     var typingTimer;
-    var typingInterval = 500
+    var typingInterval = 100
     var searchBtn = searchForm.find("[type='submit']")
     searchInput.keyup(function(event){
       clearTimeout(typingTimer)
@@ -47,17 +47,14 @@ $(document).ready(function(){
 
     function displaySearching(){
       searchBtn.addClass("disabled")
-      searchBtn.html("<i class='fa fa-spin fa-spinner'></i> Searching...")
+      searchBtn.html("<i class='fa fa-spin fa-spinner'></i>")
     }
 
     function perfomSearch(){
       displaySearching()
       var query = searchInput.val()
-      setTimeout(function(){
-        window.location.href='/search/?q=' + query
-      }, 1000)
-      
     }
+
 
 	// Cart + Add Products 
 	var productForm = $(".product__actions");

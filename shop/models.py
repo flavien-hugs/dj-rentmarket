@@ -31,7 +31,7 @@ class MainCategoryModel(models.Model):
     name = models.CharField(
         'catégorie principale', max_length=200, unique=True, db_index=True)
     slug = models.SlugField(max_length=200, unique=True, db_index=True)
-    img = models.ImageField('Image de description', upload_to=category)
+    img = models.ImageField(blank=True, upload_to=category)
 
     def __str__(self):
         return self.name
@@ -219,7 +219,7 @@ class ProductModel(models.Model):
 
     def get_absolute_url(self):
         return reverse(
-            'shop:produit_detail', kwargs={'slug': str(self.slug)})
+            'shop:product_detail', kwargs={'slug': str(self.slug)})
 
     def get_edit_url(self):
         return reverse(
