@@ -316,48 +316,6 @@
 
 
     /*
-    // block posts carousel
-    */
-    $(function() {
-        $('.block-posts').each(function() {
-            const layout = $(this).data('layout');
-            const options = {
-                margin: 30,
-                nav: false,
-                dots: false,
-                loop: true
-            };
-            const layoutOptions = {
-                'grid-nl': {
-
-                    responsive: {
-                        992: {items: 3},
-                        768: {items: 2},
-                        0: {items: 1}
-                    }
-                },
-                'list-sm': {
-                    responsive: {
-                        992: {items: 2},
-                        0: {items: 1}
-                    }
-                }
-            };
-            const owl = $('.block-posts__slider .owl-carousel');
-
-            owl.owlCarousel($.extend({}, options, layoutOptions[layout]));
-
-            $(this).find('.block-header__arrow--left').on('click', function() {
-                owl.trigger('prev.owl.carousel', [500]);
-            });
-            $(this).find('.block-header__arrow--right').on('click', function() {
-                owl.trigger('next.owl.carousel', [500]);
-            });
-        });
-    });
-
-
-    /*
     // teammates
     */
     $(function() {
@@ -840,7 +798,6 @@
     /*
     // Contact Form
     */
-
     var contactForm = $('.contact-form');
     var contactFormMethod = contactForm.attr('method');
     var contactFormEndPoint = contactForm.attr('action');
@@ -869,6 +826,7 @@
             method: contactFormMethod,
             url: contactFormEndpoint,
             data:contactFormData,
+
         success: function(data){
             contactForm[0].reset()
             $.alert({
@@ -881,6 +839,7 @@
                 contactFormSubmitBtnTxt, false)
             }, 500)
         },
+
         error: function(error){
             console.log(error.responseJSON)
             var jsonData = error.responseJSON;
@@ -902,4 +861,8 @@
         }
       })
     });
+
+    /*
+    // Review
+    */ 
 })(jQuery);

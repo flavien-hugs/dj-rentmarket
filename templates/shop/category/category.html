@@ -11,14 +11,15 @@
                 <div class="block-categories__item category-card category-card--layout--compact">
                     <div class="category-card__body">
                         <div class="category-card__image">
-                            <a title="{{ obj.name }}" href="{{ obj.get_absolute_url }}">
-                                <img src="{{ obj.img.url }}" alt="{{ obj.name }}">
-                            </a>
+                            <span>
+                                <img src="{{ obj.get_image_url }}" alt="{{ obj.name }}">
+                            </span>
                         </div>
 
                         <div class="category-card__content">
                             <div class="category-card__name">
-                                <a title="{{ obj.name }}" href="{{ obj.get_absolute_url }}">{{ obj.name }}</a>
+                                <span>
+                                {{ obj.name }}</span>
                             </div>
                             <div class="category-card__products">
                                 {{ obj.categorymodel_set.count }} Sub-categor{{ obj.categorymodel_set.count|pluralize:"y,ies" }}

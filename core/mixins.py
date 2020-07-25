@@ -1,4 +1,22 @@
+from django.http import Http404
 from django.utils.http import is_safe_url
+from django.utils.decorators import method_decorator
+
+
+def ajax_required(function):
+    def wrap(request, *args, **kwargs):
+        if not request.is_ajax():
+            raise Http404
+        return function(request, *args, **kwargs)
+    wrap.__doc__ = function.__doc__
+    wrap.__name__ = function.__name__
+    return wrap
+
+
+class AjaxRequiredMixin(object):
+    @method_decorator(ajax_required)
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
 
 
 class RequestFormAttachMixin(object):

@@ -142,6 +142,10 @@ class EmailActivationModel(models.Model):
     def __str__(self):
         return self.email
 
+    def get_absolute_url(self):
+        return reverse("shop:vendor_detail", kwargs={
+            "username": self.email})
+
     def can_activate(self):
         queryset = EmailActivationModel.objects.filter(
             pk=self.pk).confirmed()

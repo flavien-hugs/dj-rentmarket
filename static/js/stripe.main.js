@@ -1,4 +1,8 @@
 $(document).ready(function(){
+    /*
+    // Checkout payment methods
+    */
+
     var stripeFormModule = $(".stripe-payment-form")
     var stripeModuleToken = stripeFormModule.attr("data-token")
     var stripeModuleNextUrl = stripeFormModule.attr("data-next-url")
@@ -20,8 +24,8 @@ $(document).ready(function(){
         alert("Only one payment form is allowed per page")
         paymentForm.css('display', 'none')
     }
-    else if (paymentForm.length == 1) {
 
+    else if (paymentForm.length == 1) {
         var pubKey = paymentForm.attr('data-token')
         var nextUrl = paymentForm.attr('data-next-url')
             // Create a Stripe client

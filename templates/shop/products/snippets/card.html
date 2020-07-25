@@ -56,16 +56,15 @@
             </div>
 
             <div class="product-card__buttons">
-
-                <form class="product__options" method='POST' action="{% url "location:update" %}" data-endpoint="{% url "location:update" %}" {% if request.user.is_authenticated %}data-user='unsta'{% endif %}>{% csrf_token %}
+                <form method='POST' action="{% url "location:update" %}" data-endpoint="{% url "location:update" %}" {% if request.user.is_authenticated %}data-user='unsta'{% endif %}>{% csrf_token %}
                     <input type='hidden' name='product_id' value='{{ obj.id }}'>
                     {% if obj in location.product.get_available %}
                         <button type="submit" class="btn btn-primary product-card__addtocart submit">Delete ?</button>
                         <button type="submit" class="btn btn-secondary product-card__addtocart product-card__addtocart--list submit">Delete ?</button>
                     {% else %}
-                        <button type="submit" class="btn btn-primary product-card__addtocart submit">Add</button>
+                        <button type="submit" class="btn btn-primary product-card__addtocart submit">Add to cart</button>
                         <button type="submit" class="btn btn-secondary product-card__addtocart product-card__addtocart--list submit">
-                            Add
+                            Add to cart
                         </button>
                     {% endif %}
                 </form>

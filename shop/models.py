@@ -66,6 +66,12 @@ class MainCategoryModel(models.Model):
     def get_absolute_url(self):
         return reverse('shop:detail_category', kwargs={'slug': str(self.slug)})
 
+    def get_image_url(self):
+        img = self.img
+        if img:
+            return img.url
+        return img
+
 
 @receiver(models.signals.pre_save, sender=MainCategoryModel)
 def delete_file_on_change_extension(sender, instance, **kwargs):
@@ -101,10 +107,11 @@ class CategoryModel(models.Model):
     def save(self):
         if not self.slug:
             self.slug = slugify(self.name)
-        return super(CategoryModel, self).save()
+        return super().save()
 
     def get_absolute_url(self):
-        return reverse('shop:detail_category', kwargs={'slug': str(self.slug)})
+        return reverse('shop:detail_category', kwargs={
+            'slug': str(self.slug)})
 
     @property
     def count_product(self):

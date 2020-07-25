@@ -10,14 +10,11 @@ def location(request):
 
 # mélange la séquence x
 def category(request):
-    category = CategoryModel.objects.all()
-    mcategory = sorted(
-        MainCategoryModel.objects.all()[:6],
-        key=lambda x: random.random())
-
     return {
-        'category': category,
-        'main_category': mcategory
+        'category': CategoryModel.objects.all(),
+        'main_category': sorted(
+            MainCategoryModel.objects.all()[:6],
+            key=lambda x: random.random())
     }
 
 

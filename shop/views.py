@@ -11,6 +11,7 @@ from shop.models import (
     ProductModel, CategoryModel, ReviewModel, WishListModel)
 
 from analytics.models import CategoryView
+from core.mixins import AjaxRequiredMixin
 from analytics.mixins import ObjectViewMixin
 
 
@@ -68,14 +69,14 @@ class ProductDetailView(ObjectViewMixin, DetailView):
         return super().get_context_data(**kwargs)
 
 
-# CATEGORY ALL
+# CATEGORY LIST VIEW
 class CategoryListView(ListView):
     queryset = CategoryModel.objects.all()
     paginate_by = 50
     template_name = 'shop/products/product_list.html'
 
 
-# DETAIL CATEGORY
+# DETAIL CATEGORY VIEW
 class CategoryDetailView(DetailView):
     model = CategoryModel
     template_name = 'shop/category/category_detail.html'
@@ -87,10 +88,13 @@ class CategoryDetailView(DetailView):
 
         obj = self.get_object()
         kwargs['object_list'] = obj.productmodel_set.get_available()
-        print(kwargs['object_list'])
+        kwargs['product_count'] = kwargs['object_list'].count()
 
         kwargs['page_title'] = 'Category: {}'.format(self.object.name)
         return super().get_context_data(**kwargs)
+
+
+# DETAIL CATEGORY
 
 
 # WISHLIST VIEWS
@@ -113,7 +117,7 @@ def wishlist(request):
 def addReview(request, slug):
     product = get_object_or_404(ProductModel, slug=slug, available=True)
     if request.method == 'POST':
-        form = ReviewForm(request.POST or None, request.user)
+        form = ReviewForm(request.POST or None, request.user or None)
         if form.is_valid():
             rating = form.cleaned_data['rating']
             name = form.cleaned_data['name']
@@ -130,8 +134,5 @@ def addReview(request, slug):
 
             return HttpResponseRedirect(
                 reverse('shop:produit_detail', args=(slug,)))
-
-    else:
-        form = ReviewForm()
 
     return HttpResponse()

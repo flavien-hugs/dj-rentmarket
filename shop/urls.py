@@ -12,22 +12,22 @@ urlpatterns = [
         'search/',
         SearchView.as_view(),
         name="search"),
+
     path(
         'product/list/',
         ProductListView.as_view(
-            extra_context={'page_title': 'Tous les produits'}),
+            extra_context={'page_title': 'All Products'}),
         name='all_product'),
     path(
         'product/detail/<slug>/',
         ProductDetailView.as_view(),
         name="produit_detail"),
-    # path('history/', UserHistoryView.as_view(), name='userhistory'),
 
     # url category
     path(
         'category/list/',
         CategoryListView.as_view(
-            extra_context={'page_title': 'Toutes les catégories'}),
+            extra_context={'page_title': 'All Category'}),
         name='all_category'),
     path(
         'category/detail/<slug>/', CategoryDetailView.as_view(),
@@ -36,11 +36,14 @@ urlpatterns = [
     # URL wishlist
     path('addwish/<int:product_id>/', wishlist, name='addwish'),
     path('wishlist/content/', TemplateView.as_view(
+        extra_context={'page_title': 'Wish List'},
         template_name='shop/wishlist.html'), name='wishlist'),
+
     # URL compare
-    path('compare/', TemplateView.as_view(
+    path('compare/product/', TemplateView.as_view(
+        extra_context={'page_title': 'Compare Product'},
         template_name='shop/compare.html'), name='compare'),
 
     # url review
-    path('review/<slug>/', addReview, name='add_review'),
+    path('review/add/<slug>/', addReview, name='add_review'),
 ]

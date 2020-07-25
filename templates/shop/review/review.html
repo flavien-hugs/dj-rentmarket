@@ -2,7 +2,7 @@
 
 {% show_review_list 3 %}
 
-<form class="reviews-view__form" action="{% url 'shop:add_review' object.slug %}" method="post" novalidate>
+<form class="reviews-view__form reviews_form" action="{% url 'shop:add_review' object.slug %}" method="post" novalidate>
     {% csrf_token %}
     <h3 class="reviews-view__header">Customer Reviews</h3>
     <div class="row">
@@ -29,7 +29,7 @@
                 <textarea placeholder="Your Review" name='{{ form.comment.name }}' class="form-control" id="{{ form.comment.id_for_label }}" rows="6"></textarea>
             </div>
             <div class="form-group mb-0">
-                <button type="submit" value="Valider" class="btn btn-primary btn-md">Post Your Review</button>
+                <button type="submit" value="Valider" class="btn btn-primary btn-md review-btn">Post Your Review</button>
             </div>
         </div>
     </div>
