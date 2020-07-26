@@ -6,9 +6,9 @@ from phonenumber_field.formfields import PhoneNumberField
 
 
 class AddressForm(forms.ModelForm):
-    country = CountryField(blank_label='selectionner votre pays').formfield()
+    country = CountryField(blank_label='Choose your country').formfield()
     country.widget.attrs.update({'class': 'form-control'})
-    phone_number = PhoneNumberField(label='Numéro de téléphone')
+    phone_number = PhoneNumberField(label='Phone Number')
     note = forms.CharField(required=False, widget=forms.Textarea)
     note.widget.attrs.update({'class': 'form-control'})
 
@@ -16,20 +16,19 @@ class AddressForm(forms.ModelForm):
         model = AddressModel
         fields = [
             'full_name', 'country', 'city', 'address_delivery',
-            'address_type', 'zipcode', 'phone_number', 'note'
+            'address_type', 'postal_code', 'phone_number', 'note'
         ]
 
 
 class AddressCheckoutForm(forms.ModelForm):
-    country = CountryField(blank_label='selectionner votre pays').formfield()
+    country = CountryField(blank_label='Choose you country').formfield()
     country.widget.attrs.update({'class': 'form-control'})
-    phone_number = PhoneNumberField(label='Numéro de téléphone')
+    phone_number = PhoneNumberField(label='Phone Number')
     note = forms.CharField(required=False, widget=forms.Textarea)
     note.widget.attrs.update({'class': 'form-control'})
 
     class Meta:
         model = AddressModel
         fields = [
-            'full_name', 'country', 'city', 'address_delivery',
-            'address_type', 'zipcode', 'phone_number', 'note'
+            'full_name', 'country', 'city', 'postal_code', 'phone_number'
         ]

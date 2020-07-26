@@ -21,7 +21,6 @@ class PaymentManager(models.Manager):
     def new_or_get(self, request):
         user = request.user
         guest_email_id = request.session.get('guest_email_id')
-        print('Guest: %s' % guest_email_id, 'User: %s' % user)
         created = False
         obj = None
         if user.is_authenticated:
@@ -40,8 +39,7 @@ class PaymentManager(models.Manager):
 
 
 class PaymentModel(models.Model):
-    user = models.OneToOneField(
-        User, on_delete=models.SET_NULL, null=True, blank=True)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True)
     email = models.EmailField()
     active = models.BooleanField(default=True)
     updated = models.DateTimeField(auto_now=True)
@@ -64,8 +62,7 @@ class PaymentModel(models.Model):
 
     @property
     def has_card(self):
-        card_qs = self.get_card()
-        return card_qs.exists()
+        return self.get_card().exists()
 
     @property
     def default_card(self):
@@ -120,8 +117,7 @@ class CardManager(models.Manager):
 
 class CardModel(models.Model):
     payment = models.ForeignKey(
-        PaymentModel, on_delete=models.SET_NULL,
-        null=True, blank=True)
+        PaymentModel, on_delete=models.CASCADE, blank=True)
     stripe_id = models.CharField(max_length=120)
     brand = models.CharField(max_length=120, null=True, blank=True)
     country = models.CharField(max_length=20, null=True, blank=True)
@@ -151,18 +147,17 @@ class ChargeManager(models.Manager):
     def do(self, payment, order_obj, card=None):
         card_obj = card
         if card_obj is None:
-            card = payment.card_set.filter(default=True)
+            card = payment.cardmodel_set.filter(default=True)
             if card.exists():
                 card_obj = card.first()
         if card_obj is None:
             return False, "No card available"
-        c = stripe.ChargeModel.get_or_create(
+        c = stripe.Charge.create(
             amount=int(order_obj.total * 100),
             currency="usd",
             customer=payment.customer_id,
             source=card_obj.stripe_id,
-            metadata={"order_id": order_obj.order_id},
-            )
+            metadata={"order_id": order_obj.order_id},)
         new_charge_obj = self.model(
             payment=payment,
             stripe_id=c.id,
@@ -178,9 +173,7 @@ class ChargeManager(models.Manager):
 
 
 class ChargeModel(models.Model):
-    payment = models.ForeignKey(
-        PaymentModel, on_delete=models.SET_NULL,
-        null=True, blank=True)
+    payment = models.ForeignKey(PaymentModel, on_delete=models.CASCADE, blank=True)
     stripe_id = models.CharField(max_length=120)
     paid = models.BooleanField(default=False)
     refunded = models.BooleanField(default=False)

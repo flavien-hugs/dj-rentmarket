@@ -17,15 +17,15 @@ class AddressModel(models.Model):
     payment = models.ForeignKey(
         PaymentModel, on_delete=models.CASCADE, blank=True)
     full_name = models.CharField(
-        'Nom & prénoms', max_length=255, null=True, blank=True,
+        'Full Name', max_length=255, blank=True,
         help_text='Shipping to? Who is it for?')
-    country = CountryField(blank_label='selectionner votre pays')
-    city = models.CharField('Ville', max_length=255)
-    address_delivery = models.CharField('Adresse de livraison', max_length=120)
+    country = CountryField(blank_label='Choose your country')
+    city = models.CharField('City', max_length=255)
+    address_delivery = models.CharField('Adresse delivery', max_length=120)
     address_type = models.CharField(max_length=120, choices=ADDRESS_TYPES)
-    zipcode = models.CharField('Code postal/ZIP', max_length=255)
-    phone_number = PhoneNumberField('Téléphone', null=True)
-    note = models.TextField('Note de commande (optionnelle)', blank=True)
+    postal_code = models.CharField('Code postal', max_length=255)
+    phone_number = PhoneNumberField('Phone Number', null=True)
+    note = models.TextField('Note (optionnelle)', blank=True)
 
     def __str__(self):
         if self.full_name:

@@ -12,7 +12,7 @@
 
                             <ul class="footer-contacts__contacts">
                                 <li>
-                                    <i class="footer-contacts__icon fas fa-globe-americas"></i> 715 Fake Street, New York 10021 USA
+                                    <i class="footer-contacts__icon fas fa-globe-americas"></i> 715 XXX Street, Gbeke City 10021 CI
                                 </li>
                                 <li>
                                     <i class="footer-contacts__icon far fa-envelope"></i>rentmarket@example.com
@@ -34,19 +34,19 @@
                             <ul class="footer-links__list">
 
                                 <li class="footer-links__item">
-                                    <a title="À propos de nous" href="{% url "about" %}" class="footer-links__link">À propos de nous</a>
+                                    <a title="À propos de nous" href="{% url "about" %}" class="footer-links__link">About Us</a>
                                 </li>
 
                                 <li class="footer-links__item">
-                                    <a title="Contactez-nous" href="{% url "contact" %}" class="footer-links__link">Contactez-nous</a>
+                                    <a title="Contactez-nous" href="{% url "contact" %}" class="footer-links__link">Contact Us</a>
                                 </li>
 
                                 <li class="footer-links__item">
-                                    <a title="Informations sur la livraison" href="#" class="footer-links__link">Informations sur la livraison</a>
+                                    <a title="Informations sur la livraison" href="{% url 'delivery' %}" class="footer-links__link">Delivery Information</a>
                                 </li>
 
                                 <li class="footer-links__item">
-                                    <a title="Politique de confidentialité" href="{% url "cgu" %}" class="footer-links__link">Politique de confidentialité</a>
+                                    <a title="Politique de confidentialité" href="{% url "cgu" %}" class="footer-links__link">Privacy Policy</a>
                                 </li>
 
                                 <li class="footer-links__item">
@@ -58,18 +58,18 @@
 
                     <div class="col-6 col-md-3 col-lg-2">
                         <div class="site-footer__widget footer-links">
-                            <h5 class="footer-links__title">Mon Compte</h5>
+                            <h5 class="footer-links__title">Account</h5>
                             <ul class="footer-links__list">
                                 <li class="footer-links__item">
-                                    <a title="historique des commandes" href="#" class="footer-links__link">Historique des commandes</a>
+                                    <a title="historique des commandes" href="." class="footer-links__link">History Orders</a>
                                 </li>
 
                                 <li class="footer-links__item">
-                                    <a title="Liste de souhaits" href="{% url "shop:wishlist" %}" class="footer-links__link">Liste de souhaits</a>
+                                    <a title="Liste de souhaits" href="{% url "shop:wishlist" %}" class="footer-links__link">WishList</a>
                                 </li>
 
                                 <li class="footer-links__item">
-                                    <a title="Affiliate" href="#" class="footer-links__link">Affiliate</a>
+                                    <a title="Affiliate" href="." class="footer-links__link">Affiliate</a>
                                 </li>
                             </ul>
                         </div>
@@ -82,7 +82,7 @@
                                 Praesent pellentesque volutpat ex, vitae auctor lorem pulvinar mollis felis at lacinia.
                             </div>
 
-                            <form action="#" class="footer-newsletter__form">
+                            <form method='POSt' class="footer-newsletter__form">
                                 <label class="sr-only" for="footer-newsletter-address">Email Address</label>
                                 <input type="text" class="footer-newsletter__form-input form-control" id="footer-newsletter-address" placeholder="Email Address...">
                                 <button class="footer-newsletter__form-button btn btn-primary">Subscribe</button>

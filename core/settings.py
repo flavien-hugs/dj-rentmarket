@@ -102,7 +102,6 @@ TEMPLATES = [
                 'django.template.context_processors.csrf',
                 'django.contrib.messages.context_processors.messages',
 
-                'core.context_processors.location',
                 'core.context_processors.category',
                 'core.context_processors.featured_product',
             ],
@@ -216,12 +215,12 @@ STRIPE_PUB_KEY = os.environ.get('STRIPE_PUB_KEY')
 CORS_REPLACE_HTTPS_REFERER = False
 HOST_SCHEME = "https://"
 SECURE_PROXY_SSL_HEADER = None
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = False
 CSRF_COOKIE_SECURE = True
 SECURE_HSTS_SECONDS = 3600
 SECURE_HSTS_INCLUDE_SUBDOMAINS = False
 SECURE_FRAME_DENY = False
 SECURE_REFERRER_POLICY = 'origin'
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-SECURE_HSTS_PRELOAD = True
+# SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+# SECURE_HSTS_PRELOAD = True

@@ -33,11 +33,13 @@ class LibraryView(LoginRequiredMixin, ListView):
 class VerifyOwnership(View):
     def get(self, request, *args, **kwargs):
         if request.is_ajax():
-            data = request.GET 
+            data = request.GET
+            print(data)
             product_id = request.GET.get('product_id', None)
             if product_id is not None:
                 product_id = int(product_id)
-                ownership_ids = OrderPurchaseModel.objects.product_by_id(request)
+                ownership_ids = OrderPurchaseModel.\
+                    objects.product_by_id(request)
                 if product_id in ownership_ids:
                     return JsonResponse({'owner': True})
             return JsonResponse({'owner': False})

@@ -4,8 +4,8 @@ import string
 import datetime
 from django.db import models
 from django.utils import timezone
+from django.dispatch import receiver
 from django.db.models import Count, Sum, Avg
-from django.db.models.signals import pre_save, post_save
 
 
 from shop.models import ProductModel
@@ -91,8 +91,7 @@ class OrderManagerQuerySet(models.query.QuerySet):
 
 class OrderManager(models.Manager):
     def get_queryset(self):
-        return OrderManagerQuerySet(
-            self.model, using=self._db)
+        return OrderManagerQuerySet(self.model, using=self._db)
 
     def by_request(self, request):
         return self.get_queryset().by_request(request)
@@ -115,22 +114,25 @@ class OrderManager(models.Manager):
 
 
 class OrdersModel(models.Model):
-    order_id = models.CharField(
-        'ID commande', max_length=255, blank=True)
+    order_id = models.CharField('ID Order', max_length=255, blank=True)
     shipping_address = models.ForeignKey(
         AddressModel, on_delete=models.SET_NULL,
-        related_name="shipping_address", null=True, blank=True)
+        null=True, blank=True,
+        related_name="shipping_address")
     billing_address = models.ForeignKey(
         AddressModel, on_delete=models.SET_NULL,
         related_name="billing_address", null=True, blank=True)
+    shipping_address_final = models.TextField(blank=True, null=True)
+    billing_address_final = models.TextField(blank=True, null=True)
     payment = models.ForeignKey(
-        PaymentModel, on_delete=models.SET_NULL,
-        null=True, blank=True)
+        PaymentModel, on_delete=models.CASCADE, null=True, blank=True)
     location = models.ForeignKey(
-        LocationModel, on_delete=models.SET_NULL,
-        null=True, blank=True)
-    created = models.DateTimeField('Créé', auto_now_add=timezone.now)
-    updated = models.DateTimeField('Mise à jour', auto_now_add=timezone.now)
+        LocationModel, on_delete=models.CASCADE, null=True, blank=True)
+    shipping_total = models.DecimalField(
+        default=5.99, max_digits=100, decimal_places=2)
+    total = models.DecimalField(default=0.00, max_digits=100, decimal_places=2)
+    created = models.DateTimeField('created', auto_now_add=timezone.now)
+    updated = models.DateTimeField('updated', auto_now=timezone.now)
     active = models.BooleanField(default=True)
     status = models.CharField(
         max_length=120, default='created', choices=ORDER_STATUS)
@@ -139,18 +141,18 @@ class OrdersModel(models.Model):
 
     class Meta:
         ordering = ('-updated', '-created')
-        verbose_name = "Commande"
+        verbose_name = "Order"
 
     def __str__(self):
-        return 'Commande n° {}'.format(self.order_id)
+        return 'Order n° {}'.format(self.order_id)
 
     def save(self, *args, **kwargs):
         self.generate(10)
         super().save(*args, **kwargs)
 
     def generate(self, nb_carac):
-        today = datetime.date.today().strftime('%y%m%d')
-        carac = string.digits + string.ascii_uppercase
+        today = datetime.date.today().strftime('%d%m%y')
+        carac = string.digits
         random_carac = [random.choice(carac) for _ in range(nb_carac)]
         self.order_id = today + ''.join(random_carac)
 
@@ -169,13 +171,30 @@ class OrdersModel(models.Model):
         self.save()
         return new_total
 
+    def check_done(self):
+        if self.shipping_address:
+            shipping_done = True
+        elif not self.shipping_address:
+            shipping_done = False
+        else:
+            shipping_done = True
+
+        payment = self.payment
+        billing_address = self.billing_address
+        total = self.total
+        if payment and shipping_done and billing_address and total > 0:
+            return True
+        return False
+
     def update_purchases(self):
         for p in self.location.product.all():
-            obj, created = ItemOrderModel.objects.get_or_create(
+            obj, created = OrderPurchaseModel.objects.get_or_create(
                 order_id=self.order_id,
                 product=p,
                 payment=self.payment)
-        return ItemOrderModel.objects.filter(order_id=self.order_id).count()
+
+        return OrderPurchaseModel.objects.filter(
+            order_id=self.order_id).count()
 
     def mark_paid(self):
         if self.status != 'paid':
@@ -186,6 +205,7 @@ class OrdersModel(models.Model):
         return self.status
 
 
+@receiver(models.signals.pre_save, sender=OrdersModel)
 def pre_save_create_order_id(sender, instance, *args, **kwargs):
     if not instance.order_id:
         instance.order_id = unique_order_id_generator(instance)
@@ -195,29 +215,32 @@ def pre_save_create_order_id(sender, instance, *args, **kwargs):
     if qs.exists():
         qs.update(active=False)
 
-pre_save.connect(pre_save_create_order_id, sender=OrdersModel)
+    if instance.shipping_address and not instance.shipping_address_final:
+        instance.shipping_address_final = instance.\
+            shipping_address.get_address()
+
+    if instance.billing_address and not instance.billing_address_final:
+        instance.billing_address_final = instance.billing_address.get_address()
 
 
+@receiver(models.signals.post_save, sender=LocationModel)
 def post_save_location_total(sender, instance, created, *args, **kwargs):
     if not created:
         location_obj = instance
         location_total = location_obj.total
+        print(location_total)
         location_id = location_obj.id
         qs = OrdersModel.objects.filter(location__id=location_id)
         if qs.count() == 1:
             order_obj = qs.first()
             order_obj.update_total()
 
-post_save.connect(post_save_location_total, sender=LocationModel)
 
-
+@receiver(models.signals.post_save, sender=OrdersModel)
 def post_save_order(sender, instance, created, *args, **kwargs):
     if created:
         print("Updating... first")
         instance.update_total()
-
-
-post_save.connect(post_save_order, sender=OrdersModel)
 
 
 class OrderPurchaseQuerySet(models.query.QuerySet):
@@ -231,7 +254,7 @@ class OrderPurchaseQuerySet(models.query.QuerySet):
 
 class OrderPurchaseManager(models.Manager):
     def get_queryset(self):
-        return OrderPurchaseManager(self.model, using=self._db)
+        return OrderPurchaseQuerySet(self.model, using=self._db)
 
     def all(self):
         return self.get_queryset().active()
@@ -252,12 +275,11 @@ class OrderPurchaseManager(models.Manager):
 
 
 class OrderPurchaseModel(models.Model):
-    order = models.ForeignKey(
-        OrdersModel, on_delete=models.CASCADE)
+    order_id = models.CharField(max_length=120)
     payment = models.ForeignKey(
-        PaymentModel, on_delete=models.CASCADE)
+        PaymentModel, on_delete=models.CASCADE, blank=True)
     product = models.ForeignKey(
-        ProductModel, on_delete=models.CASCADE)
+        ProductModel, on_delete=models.CASCADE, blank=True)
     refunded = models.BooleanField(default=False)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
@@ -266,10 +288,7 @@ class OrderPurchaseModel(models.Model):
 
     class Meta:
         ordering = ['-created', '-updated']
-        verbose_name = "Commande"
+        verbose_name = "Order"
 
     def __str__(self):
         return '{} ({})'.format(self.product.name, self.id)
-
-    def get_depense(self):
-        return self.price

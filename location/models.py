@@ -1,3 +1,4 @@
+from decimal import Decimal
 from django.db import models
 from django.dispatch import receiver
 from django.contrib.auth import get_user_model
@@ -32,17 +33,23 @@ class LocationManager(models.Manager):
 
 
 class LocationModel(models.Model):
-    user = models.ForeignKey(
-        User, on_delete=models.SET_NULL, blank=True, null=True)
-    product = models.ManyToManyField(ProductModel, blank=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    product = models.ManyToManyField(ProductModel)
+    subtotal = models.DecimalField(
+        default=0.00, max_digits=100, decimal_places=2)
     total = models.DecimalField(default=0.00, max_digits=100, decimal_places=2)
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
     objects = LocationManager()
 
+    class Meta:
+        verbose_name = 'Location'
+
     def __str__(self):
-        return str(self.id)
+        return '{} ({})'.format(
+            self.user,
+            self.created)
 
 
 @receiver(models.signals.m2m_changed, sender=LocationModel.product.through)
@@ -50,11 +57,18 @@ def m2m_changed_cart_receiver(sender, instance, action, *args, **kwargs):
     if action == 'post_add' or action == 'post_remove' or action == 'post_clear':
         product = instance.product.all()
         total = 0
-        for x in product:
-            total += x.price
+        for n in product:
+            total += n.price
+            print(total)
+
+        if instance.subtotal != total:
+            instance.subtotal = total
             instance.save()
 
 
 @receiver(models.signals.pre_save, sender=LocationModel)
 def pre_save_cart_receiver(sender, instance, *args, **kwargs):
-    instance.total = 0.00
+    if instance.subtotal > 0:
+        instance.total = Decimal(instance.subtotal) * Decimal(0.18)
+    else:
+        instance.total = 0.00

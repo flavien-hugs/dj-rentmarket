@@ -1,5 +1,4 @@
 import os
-from django.conf import settings
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
 
@@ -37,15 +36,15 @@ def location_detail_api_view(request):
 
     location_data = {
         "product": product,
+        "subtotal": location_obj.subtotal,
         "total": location_obj.total
     }
     return JsonResponse(location_data)
 
 
-def location_home(request):
+def location_home(request, template="location/location.html"):
     location_obj, new_obj = LocationModel.objects.new_or_get(request)
     context = {'location': location_obj, 'page_title': 'Location'}
-    template = "location/location_detail.html"
     return render(request, template, context)
 
 
@@ -56,6 +55,7 @@ def location_update(request):
         try:
             product_obj = ProductModel.objects.get(id=product_id)
         except ProductModel.DoesNotExist:
+            print("Show message to user, product is gone?")
             return redirect("location:detail")
         location_obj, new_obj = LocationModel.objects.new_or_get(request)
         if product_obj in location_obj.product.all():
@@ -85,11 +85,10 @@ def checkout_home(request):
     guest_form = GuestEmailForm(request=request)
     address_form = AddressCheckoutForm()
 
-    print(login_form.errors, guest_form.errors, address_form.errors)
-
     billing_address_id = request.session.get("billing_address_id", None)
     shipping_address_id = request.session.get("shipping_address_id", None)
     payment, payment_created = PaymentModel.objects.new_or_get(request)
+
     address_qs = None
     has_card = False
 
@@ -146,4 +145,4 @@ def checkout_home(request):
 
 
 def checkout_done(request):
-    return render(request, "location/checkout-done.html", {})
+    return render(request, "location/checkout_done.html", {})

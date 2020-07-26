@@ -8,8 +8,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 from shop.forms import ReviewForm
 from shop.models import (
-    ProductModel, MainCategoryModel, CategoryModel,
-    ReviewModel, WishListModel)
+    ProductModel, CategoryModel, ReviewModel, WishListModel)
 
 from analytics.models import CategoryView
 from analytics.mixins import ObjectViewMixin

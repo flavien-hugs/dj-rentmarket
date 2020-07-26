@@ -58,7 +58,7 @@ class WishListInline(admin.StackedInline):
     model = WishListModel
     extra = 1
 
-    list_display = ('id', 'wishlist',)
+    list_display = ('__str__', 'wishlist',)
     list_filter = ('wishlist',)
 
 
@@ -71,7 +71,7 @@ class ReviewModelInline(admin.ModelAdmin):
     search_fields = ['product']
     list_display_links = ('product',)
     list_display = (
-        'id', 'product', 'name', 'email',
+        '__str__', 'product', 'name', 'email',
         'comment', 'date', 'rating',)
     list_filter = ['date', 'rating']
 

@@ -2,7 +2,7 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
-from django.views.generic import TemplateView, RedirectView
+from django.views.generic import TemplateView
 
 
 urlpatterns = [
@@ -11,20 +11,26 @@ urlpatterns = [
     path('product/', include('shop.urls', namespace='shop')),
     path('customer/', include('accounts.urls', namespace='accounts')),
     path('location/', include('location.urls', namespace='location')),
-    path('address/', RedirectView.as_view(url='/address')),
     path('address/', include('address.urls', namespace='address')),
     path('order/', include('orders.urls', namespace='orders')),
     path('payment/', include('payment.urls', namespace='payment')),
     path('dashboard/', include('dashboard.urls', namespace='dashboard')),
     path('subscribe/', include('subscription.urls', namespace='subscribe')),
     path('faq/', TemplateView.as_view(
+        extra_context={'page_title': 'Frequently Asked Questions'},
         template_name='pages/faq.html'), name='faq'),
     path('cgu/', TemplateView.as_view(
+        extra_context={'page_title': 'Terms And Conditions'},
         template_name='pages/cgu.html'), name='cgu'),
     path('contact/', TemplateView.as_view(
+        extra_context={'page_title': 'Contact Us'},
         template_name='pages/contact.html'), name='contact'),
     path('about/', TemplateView.as_view(
+        extra_context={'page_title': 'About Us'},
         template_name='pages/about.html'), name='about'),
+    path('delivery/', TemplateView.as_view(
+        extra_context={'page_title': 'Delivery Information'},
+        template_name='pages/delivery.html'), name='delivery'),
     path('admin/', admin.site.urls),
 ]
 

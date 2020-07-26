@@ -101,8 +101,8 @@ $(document).ready(function(){
             } else {
                 // Send the token to your server
                 currentTimeout = displayBtnStatus(
-                    tnLoad, loadingHtml, loadingClasses, 10000, 
-                    currentTimeout)
+                    btnLoad, loadingHtml, loadingClasses,
+                    10000, currentTimeout)
 
                 stripeTokenHandler(nextUrl, result.token);
             }
@@ -156,7 +156,7 @@ $(document).ready(function(){
                     if ($.alert){
                         $.alert(succesMsg)
                     } else {
-                        alert(succesMsg)
+                       alert(succesMsg)
                     }
                     btnLoad.html(btnLoadDefaultHtml)
                     btnLoad.attr('class', btnLoadDefaultClasses)

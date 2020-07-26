@@ -97,14 +97,13 @@
                                     <div class="card-body">
                                         <div class="card-title">
                                         Choose Payment Method</div>
-
                                         <div class='form-group stripe-payment-form' data-token='{{ publish_key }}' data-next-url='{{ request.build_absolute_uri }}' data-btn-title='Add Payment Method'></div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     {% else %}
-                        <div class="col-12 col-lg-6 col-xl-5 mt-4 mt-lg-0">
+                        <div class="col-12 mt-4 mt-lg-0">
                             <div class="card mb-0">
                                 <div class="card-body">
                                     <h3 class="card-title">Finalize Checkout</h3>
@@ -122,24 +121,29 @@
                                             <tr>
                                                 <td>
                                                     {% for obj in object.location.product.all %}
-                                                        {% if not forloop.last %}, {% endif %}
                                                         {{ obj|safe }}
+                                                        {% if not forloop.last %}, {% endif %}
                                                     {% endfor %}
                                                 </td>
-                                                <td>{{ object.shipping_address_final }}</td>
-                                                <td>{{ object.billing_address_final }}</td>
-                                                <td>{{ payment.default_card }} (<a href="{{ payment.get_payment_method_url }}?next={{ request.build_absolute_uri }}">Change</a>)td>
+                                                <td>
+                                                {{ object.shipping_address_final }}</td>
+                                                <td>
+                                                {{ object.billing_address_final }}</td>
+                                                <td>
+                                                    {{ payment.default_card }}
+                                                    (<a href="{{ payment.get_payment_method_url }}?next={{ request.build_absolute_uri }}">Change</a>)
+                                                <td>
                                             </tr>
                                         </tbody>
 
                                         <tbody class="checkout__totals-subtotals">
                                             <tr>
-                                                <th>Total</th>
+                                                <th>Cart Total</th>
                                                 <td>{{ object.location.total|intcomma }}</td>
                                             </tr>
                                             <tr>
                                                 <th>Shipping Total</th>
-                                                <td>{{ object.shipping_total|intcomma }}</td>
+                                                <td>{{ object.location.shipping_total|intcomma }}</td>
                                             </tr>
                                         </tbody>
 
@@ -246,9 +250,9 @@
                                         </div>
                                     </div>
 
-                                    <form class='form' method='POST' action="">
+                                    <form class='form' method='POST'>
                                         {% csrf_token %}
-                                        <button type="submit" class="btn btn-primary btn-md btn-block">Checkout</button>
+                                        <button type="submit" class="btn btn-primary btn-md btn-block col-6">Finalize Checkout</button>
                                     </form>
                                 </div>
                             </div>

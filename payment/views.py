@@ -17,7 +17,6 @@ stripe.api_key = STRIPE_SECRET_KEY
 
 
 def payment_method_view(request):
-
     payment, payment_created = PaymentModel.objects.new_or_get(request)
     if not payment:
         return redirect("location:location")

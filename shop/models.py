@@ -91,10 +91,10 @@ class CategoryModel(models.Model):
         MainCategoryModel,
         on_delete=models.SET_NULL,
         blank=True, null=True)
-    name = models.CharField('sous-categorie', max_length=200, db_index=True)
+    name = models.CharField('sub-category', max_length=200, db_index=True)
     slug = models.SlugField(max_length=200, unique=True, db_index=True)
     keywords = models.CharField(
-        'Mots clés', max_length=200, blank=True,
+        'keywords', max_length=200, blank=True,
         help_text='Ensemble de mots-clés SEO')
 
     class Meta:
@@ -184,22 +184,20 @@ class ProductModelManager(models.Manager):
 class ProductModel(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
     category = models.ManyToManyField(
-        CategoryModel, verbose_name='sous-catégorie')
-    name = models.CharField('Nom', max_length=200, db_index=True)
+        CategoryModel, verbose_name='subcategory')
+    name = models.CharField('product name', max_length=200, db_index=True)
     label = models.CharField(choices=LABEL, max_length=4, blank=True)
-    featured = models.BooleanField('En vedette', default=False)
+    featured = models.BooleanField('featured', default=False)
     slug = models.SlugField(
-        max_length=200, unique=True,
-        db_index=True, blank=True)
-    desc = models.TextField('Description', blank=True)
-    price = models.DecimalField(
-        'Prix de location', max_digits=10, decimal_places=2)
-    available = models.BooleanField('Disponible', default=True)
-    rent_date = models.DateField('Date mise en location', default=timezone.now)
-    pub_date = models.DateField('Date ajout', auto_now_add=timezone.now)
-    updated = models.DateField('Date mise à jour', auto_now_add=timezone.now)
+        max_length=200, unique=True, db_index=True, blank=True)
+    desc = models.TextField('description', blank=True)
+    price = models.DecimalField('price', max_digits=10, decimal_places=2)
+    available = models.BooleanField('available', default=True)
+    rent_date = models.DateField('date rent', default=timezone.now)
+    pub_date = models.DateField('pub date', auto_now_add=timezone.now)
+    updated = models.DateField('updated', auto_now_add=timezone.now)
     views = models.PositiveIntegerField(
-        'Nombre de vues', default=0, blank=True, editable=False)
+        'views', default=0, blank=True, editable=False)
 
     objects = ProductModelManager()
 
@@ -286,5 +284,4 @@ class ReviewModel(models.Model):
 
     def get_lastest_review(self):
         return ReviewModel.objects.filter(
-            product__review=self).order_by(
-            '-date').first()
+            product__review=self).order_by('-date').first()

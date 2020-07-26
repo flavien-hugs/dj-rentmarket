@@ -1,11 +1,5 @@
 import random
-from location.models import LocationModel
 from shop.models import ProductModel, MainCategoryModel, CategoryModel
-
-
-def location(request):
-    location_obj, new_obj = LocationModel.objects.new_or_get(request)
-    return {'location': location_obj}
 
 
 # mélange la séquence x

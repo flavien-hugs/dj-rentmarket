@@ -68,8 +68,13 @@ class UserProductDetailRedirectView(RedirectView):
 class ManageProductListView(UserProductMixin, GetContextData, ListView):
     template_name = 'dashboard/dashboard.html'
 
+    def queryset(self):
+        return ProductModel.objects.get_available(
+            ).filter(user=self.request.user)
+
     def get_context_data(self, **kwargs):
-        kwargs['orders'] = OrdersModel.objects.by_request(self.request)
+        kwargs['orders'] = OrdersModel.objects.by_request(
+            self.request)
         return super().get_context_data(**kwargs)
 
 
