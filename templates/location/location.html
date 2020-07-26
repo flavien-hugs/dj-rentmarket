@@ -1,0 +1,134 @@
+{% extends "shop/index.html" %}
+{% load humanize shoptags %}
+
+{% block slideshow %}{% endblock slideshow %}
+
+{% block content %}
+    {% block breadcrumb %}
+    {% include "layouts/breadcrumb.html" %}    
+    {% endblock breadcrumb %}
+
+    <div class="cart block">
+        <div class="container">
+            {% if location.product.exists %}
+                <table class="cart__table cart-table">
+                    <thead class="cart-table__head">
+                        <tr class="cart-table__row">
+                            <th>#</th>
+                            <th class="cart-table__column cart-table__column--image">Image</th>
+                            <th class="cart-table__column cart-table__column--product">Product</th>
+                            <th class="cart-table__column cart-table__column--price">Price</th>
+                            <th class="cart-table__column cart-table__column--total">Borrowed on</th>
+                            <th class="cart-table__column cart-table__column--total">Created</th>
+                            <th class="cart-table__column cart-table__column--remove"></th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="cart-table__body cart-body">
+                        {% for obj in location.product.all %}
+                            <tr class="cart-table__row">
+                                <td>{{ forloop.counter }}</td>
+
+                                <td class="cart-table__column cart-table__column--image">
+                                    <a href="{{ obj.get_absolute_url }}">
+                                        <img src="{{ obj.get_image_url }}" alt="{{ obj.name }}">
+                                    </a>
+                                </td>
+
+                                <td class="cart-table__column cart-table__column--product">
+                                    <a href="{{ obj.get_absolute_url }}" class="cart-table__product-name">
+                                    {{ obj.name|truncatewords:10|safe }}</a>
+
+                                    <ul class="cart-table__options">
+                                        <li>Color: Yellow</li>
+                                        <li>Material: Aluminium</li>
+                                    </ul>
+                                </td>
+
+                                <td class="cart-table__column cart-table__column--price" data-title="Prix">{{ obj.price|intcomma }}</td>
+
+                                <td class="cart-table__column cart-table__column--total" data-title="Date de location">{{ obj.rent_date|date }}</td>
+
+                                <td class="cart-table__column cart-table__column--total" data-title="Date de retour">{{ obj.pub_date|date }}</td>
+
+                                <td class="cart-table__column cart-table__column--remove">
+                                    <form class="product__options" method='POST' action="{% url "location:update" %}" data-endpoint="{% url "location:update" %}" {% if request.user.is_authenticated %}data-user='unsta'{% endif %}>
+                                    {% csrf_token %}
+                                        <input type='hidden' name='product_id' value='{{ obj.id }}'>
+
+                                        <button type="submit" class="btn btn-light btn-sm btn-svg-icon submit">
+                                            <svg width="12px" height="12px">
+                                                <use xlink:href="{{ STATIC_PREFIX }}img/sprite.svg#cross-12"></use>
+                                            </svg>
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr> 
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                <!-- Coupon -->
+                <div class="cart__actions">
+                   
+                    <form class="cart__coupon-form">
+                        {% if coupon %}
+                            <label for="input-coupon-code" class="sr-only">
+                            Coupon</label>
+                            <input type="text" class="form-control" id="input-coupon-code" placeholder="Code promo">
+                            <button type="submit" class="btn btn-primary">Apply Coupon
+                            </button>
+                        {% endif %}
+                    </form>
+
+                    <div class="cart__buttons">
+                        <a href="{% url 'shop:all_product' %}" class="btn btn-primary">
+                        Continue Rent</a>
+                    </div>
+                </div><!-- end coupon -->
+                
+                <!-- Cart Totals -->
+                <div class="row justify-content-end pt-5">
+                    <div class="col-12 col-md-7 col-lg-6 col-xl-5">
+                        <div class="card">
+                            <div class="card-body">
+                                <h3 class="card-title">
+                                Rent Total</h3>
+                                <table class="cart__totals">
+                                    <thead class="cart__totals-header">
+                                        <tr>
+                                            <th>Subtotal</th>
+                                            <td>{{ location.subtotal|intcomma }}</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="cart__totals-body">
+                                        <tr>
+                                            <th>Shipping</th>
+                                            <td>$25.00
+                                                <div class="cart__calc-shipping"><a href="{% url 'delivery' %}">Detail Shipping</a>
+                                                </div>
+                                            </td>
+                                            <tr>
+                                                <th>Tax</th><td>18 %</td>
+                                            </tr>
+                                        </tr>
+                                    </tbody>
+
+                                    <tfoot class="cart__totals-footer">
+                                        <tr>
+                                            <th>Total</th>
+                                            <td>{{ location.total|intcomma }}</td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                                <a class="btn btn-primary btn-md btn-block cart__checkout-button" href="{% url "location:checkout" %}">Proceed to checkout</a>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- end cart total -->
+            {% else %}
+                <p class="lead">Empty !!</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}
