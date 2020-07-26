@@ -50,7 +50,7 @@ class UserProductMixin(UserEditeMixin):
     model = ProductModel
 
 
-class UserProductEditMixin(UserProductMixin, UserEditeMixin):
+class UserProductEditMixin(UserProductMixin):
     form_class = ProductModelModelForm
     template_name = 'dashboard/d_form.html'
     success_url = reverse_lazy('dashboard:dashboard')
