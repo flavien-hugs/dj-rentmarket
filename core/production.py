@@ -7,6 +7,8 @@ from core.settings import *
 
 DEBUG = TEMPLATE_DEBUG = False
 
+ALLOWED_HOSTS = ['rtmarket.herokuapp.com']
+
 # Parse database configuration from $DATABASE_URL
 # Change 'default' database configuration with $DATABASE_URL.
 DATABASES['default'].update(
