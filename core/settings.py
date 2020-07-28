@@ -98,9 +98,9 @@ TEMPLATES = [
                 'django.template.context_processors.csrf',
                 'django.contrib.messages.context_processors.messages',
 
-                # 'core.context_processors.category',
+                'core.context_processors.category',
                 'core.context_processors.location',
-                # 'core.context_processors.featured_product',
+                'core.context_processors.featured_product',
             ],
 
             'debug': DEBUG,
