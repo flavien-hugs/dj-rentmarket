@@ -30,7 +30,7 @@ DEFAULT_CHARSET = 'UTF-8'
 DEFAULT_CONTENT_TYPE = 'text/html'
 SITE_DESCRIPTION = ''
 META_KEYWORDS = ''
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = []
 SITE_NAME = 'Rent Market'
 LOCATION_SESSION_ID = 'cartsession'
 USE_THOUSAND_SEPARATOR = True
@@ -98,9 +98,9 @@ TEMPLATES = [
                 'django.template.context_processors.csrf',
                 'django.contrib.messages.context_processors.messages',
 
-                'core.context_processors.category',
+                # 'core.context_processors.category',
                 'core.context_processors.location',
-                'core.context_processors.featured_product',
+                # 'core.context_processors.featured_product',
             ],
 
             'debug': DEBUG,
