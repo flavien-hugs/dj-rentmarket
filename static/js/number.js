@@ -1,4 +1,4 @@
-(function ($) {
+$(document).ready(function(){
     "use strict";
 
     // CustomEvent polyfill
@@ -182,4 +182,4 @@
             }
         });
     };
-})(jQuery);
+});

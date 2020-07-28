@@ -1,4 +1,4 @@
-(function ($) {
+$(document).ready(function(){
     "use strict";
 
     let passiveSupported = false;
@@ -865,4 +865,4 @@
     /*
     // Review
     */ 
-})(jQuery);
+});
