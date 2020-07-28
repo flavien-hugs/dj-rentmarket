@@ -59,8 +59,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField('Adresse email', unique=True, max_length=255)
-    full_name = models.CharField(
-        'Nom & prénoms', max_length=225, blank=True, null=True)
+    full_name = models.CharField('Nom & prénoms', max_length=225, blank=True)
     country = CountryField()
     city = models.CharField('Ville', max_length=50)
     phone_number = PhoneNumberField('Téléphone', null=True)
@@ -115,8 +114,7 @@ class EmailActivationQuerySet(models.query.QuerySet):
 
 class EmailActivationManager(models.Manager):
     def get_queryset(self):
-        return EmailActivationQuerySet(
-            self.model, using=self._db)
+        return EmailActivationQuerySet(self.model, using=self._db)
 
     def confirmed(self):
         return self.get_queryset().confirmed()
@@ -181,8 +179,7 @@ class EmailActivationModel(models.Model):
                     'accounts:email-activate',
                     kwargs={'key': self.key})
                 path = '{base}{path}'.format(
-                    base=base_url,
-                    path=key_path)
+                    base=base_url, path=key_path)
                 context = {
                     'path': path,
                     'email': self.email

@@ -8,6 +8,7 @@ from django.urls import reverse
 from django.utils import timezone
 from django.dispatch import receiver
 from django.utils.text import slugify
+from django.utils.safestring import mark_safe
 from django.contrib.auth import get_user_model
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
@@ -231,11 +232,24 @@ class ProductModel(models.Model):
         return reverse(
             'dashboard:product_update', kwargs={'slug': str(self.slug)})
 
+    # Get all image
+    def get_all_image(self):
+        return self.productimagemodel_set.all()
+
+    # Here I return the image
     def get_image_url(self):
         img = self.productimagemodel_set.first()
-        if img:
-            return img.img.url
-        return img
+        if not img:
+            return '/static/img/products/product-1.jpg'
+        return img.img.url
+
+    # Method to create a fake table field in read only mode
+    def product_image(self):
+        return mark_safe(
+            '<img src="{}" width="100" height="100" />'.format(
+                self.get_image_url()))
+
+    product_image.short_description = 'Image'
 
 
 @receiver(models.signals.pre_save, sender=ProductModel)
@@ -246,10 +260,31 @@ def product_pre_save_receiver(sender, instance, *args, **kwargs):
 
 class ProductImageModel(models.Model):
     product = models.ForeignKey(ProductModel, on_delete=models.CASCADE)
-    img = models.ImageField(upload_to=product_image_upload, blank=True)
+    img = models.FileField(upload_to=product_image_upload, blank=True)
 
     class Meta:
         verbose_name = 'Product Image'
+
+    def save(self):
+
+        # COMPRESS THE IMAGE HERE AND THEN SAVE IT
+        image = Image.open(self.img).convert('RGB')
+
+        # RESIZE/MODIFY THE IMAGE
+        image = image.resize((700, 700))
+
+        output = BytesIO()
+
+        # SAVE TO THE OUTPOUT_IO
+        image.save(output, format='JPEG', quality=90)
+
+        # change the imagefield value to be the newley modifed image value
+        self.img = InMemoryUploadedFile(
+            output, 'FileField',
+            "{}.jpg".format(self.product.name.split('.')[0]),
+            'image/jpeg', sys.getsizeof(output), None)
+
+        return super().save()
 
     def __str__(self):
         return self.product.name

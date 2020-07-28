@@ -39,7 +39,8 @@ class PaymentManager(models.Manager):
 
 
 class PaymentModel(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, blank=True)
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, null=True, blank=True)
     email = models.EmailField()
     active = models.BooleanField(default=True)
     updated = models.DateTimeField(auto_now=True)
@@ -117,7 +118,7 @@ class CardManager(models.Manager):
 
 class CardModel(models.Model):
     payment = models.ForeignKey(
-        PaymentModel, on_delete=models.CASCADE, blank=True)
+        PaymentModel, on_delete=models.CASCADE, null=True, blank=True)
     stripe_id = models.CharField(max_length=120)
     brand = models.CharField(max_length=120, null=True, blank=True)
     country = models.CharField(max_length=20, null=True, blank=True)
@@ -173,7 +174,8 @@ class ChargeManager(models.Manager):
 
 
 class ChargeModel(models.Model):
-    payment = models.ForeignKey(PaymentModel, on_delete=models.CASCADE, blank=True)
+    payment = models.ForeignKey(
+        PaymentModel, on_delete=models.CASCADE, null=True, blank=True)
     stripe_id = models.CharField(max_length=120)
     paid = models.BooleanField(default=False)
     refunded = models.BooleanField(default=False)

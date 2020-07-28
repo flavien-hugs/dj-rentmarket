@@ -11,7 +11,7 @@ from django.contrib.auth.mixins import(
 from shop.models import ProductModel
 from orders.models import OrdersModel
 from accounts.mixins import UserAccountMixin
-from dashboard.forms import ProductModelModelForm
+from dashboard.forms import ProductImageModelForm, ProductModelForm
 
 # GETTING MY MODEL USER
 User = get_user_model()
@@ -42,8 +42,13 @@ class UserEditeMixin(UserAccountMixin, object):
     def form_valid(self, form):
         message = """Product update successful !"""
         messages.success(self.request, message)
-        form.instance.user = self.get_account()
+        form.instance.user = self.request.user
         return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        kwargs['form_'] = ProductImageModelForm(
+            self.request.POST, self.request.FILES)
+        return super().get_context_data(**kwargs)
 
 
 class UserProductMixin(UserEditeMixin):
@@ -51,7 +56,7 @@ class UserProductMixin(UserEditeMixin):
 
 
 class UserProductEditMixin(UserProductMixin):
-    form_class = ProductModelModelForm
+    form_class = ProductModelForm
     template_name = 'dashboard/d_form.html'
     success_url = reverse_lazy('dashboard:dashboard')
 

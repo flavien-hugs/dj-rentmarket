@@ -1,5 +1,11 @@
 import random
+from location.models import LocationModel
 from shop.models import ProductModel, MainCategoryModel, CategoryModel
+
+
+def location(request):
+    location_obj, new_obj = LocationModel.objects.new_or_get(request)
+    return {'location': location_obj}
 
 
 # mélange la séquence x
@@ -18,7 +24,7 @@ def featured_product(request):
        pub_date__isnull=False).order_by('-pub_date')[:50],
         key=lambda x: random.random())
     context = {
-        'featured_product': random.sample(featured_product, k=2)
+        'featured_product': random.sample(featured_product, k=1)
     }
     return context
 

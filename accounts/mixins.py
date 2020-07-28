@@ -16,7 +16,7 @@ class UserAccountMixin(LoginRequiredMixin, object):
     product = []
 
     def get_account(self):
-        account = User.objects.filter(user=self.request.user)
+        account = User.objects.filter(full_name=self.request.user)
         if account.exists() and account.count() == 1:
             self.account = account.first()
             return account.first()

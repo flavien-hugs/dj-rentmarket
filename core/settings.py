@@ -103,6 +103,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
 
                 'core.context_processors.category',
+                'core.context_processors.location',
                 'core.context_processors.featured_product',
             ],
 
@@ -190,14 +191,16 @@ LOGOUT_REDIRECT_URL = 'home'
 FORCE_SESSION_TO_ONE = False
 FORCE_INACTIVE_USER_ENDSESSION = False
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'flavienhgs@gmail.com'
 EMAIL_HOST_PASSWORD = '58fl02ghs@!?'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'RentMarket <info@rm.com>'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 BASE_URL = '127.0.0.1:9865'
+
 
 PHONENUMBER_DEFAULT_REGION = "CI"
 PHONENUMBER_DB_FORMAT = "INTERNATIONAL"

@@ -17,9 +17,14 @@ urlpatterns = [
         extra_context={'page_title': 'Account'}),
         name='account'),
 
-    path('account/signup/', SignUpView.as_view(), name='signup'),
-    path('account/login/', LoginView.as_view(), name='login'),
-    path('account/logout/', LogoutView.as_view(), name='logout'),
+    path('account/signup/', SignUpView.as_view(
+        extra_context={'page_title': 'Registration'}
+        ), name='signup'),
+    path('account/login/', LoginView.as_view(
+        extra_context={'page_title': 'Login'}
+        ), name='login'),
+    path('account/logout/', LogoutView.as_view(
+        extra_context={'page_title': 'Logout'}), name='logout'),
 
     path('account/update/', AccountUpdateView.as_view(
         extra_context={'page_title': 'Change Your Account Detail'}),
@@ -27,15 +32,21 @@ urlpatterns = [
 
     path(
         'account/signup/guest/',
-        GuestSignUpView.as_view(), name='guest'),
+        GuestSignUpView.as_view(
+            extra_context={'page_title': 'Sign Up'}
+            ), name='guest'),
 
     path(
         'account/email/confirm/<key>/',
-        AccountEmailActivateView.as_view(), name='email-activate'),
+        AccountEmailActivateView.as_view(
+            extra_context={'page_title': 'Email Activation'}
+        ), name='email-activate'),
 
     path(
         'account/email/resend-activation/',
-        AccountEmailActivateView.as_view(), name='resend-activation'),
+        AccountEmailActivateView.as_view(
+            extra_context={'page_title': 'Resend Activation'}
+        ), name='resend-activation'),
 
     path('account/compte/<int:pk>/delete/', deleteAccount, name='delete'),
 

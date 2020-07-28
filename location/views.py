@@ -123,14 +123,13 @@ def checkout_home(request):
                 request.session['location_items'] = 0
                 del request.session['location_id']
                 if not payment.user:
-                    '''is this the best spot?'''
                     payment.set_card_inactive()
                 return redirect("location:success")
             else:
                 print(crg_msg)
                 return redirect("location:checkout")
     context = {
-        'page_title': 'Checkout',
+        'page_title': "Checkout process",
         "object": order_obj,
         "payment": payment,
         "login_form": login_form,

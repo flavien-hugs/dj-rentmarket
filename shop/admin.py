@@ -22,6 +22,7 @@ admin.site.register(ObjectViewedModel)
 class CategoryModelInline(admin.StackedInline):
     model = CategoryModel
     extra = 1
+    max_num = 1
 
     list_display = ('mcategory', 'name', 'keywords')
     list_display_links = ('name',)
@@ -51,6 +52,9 @@ class MainCategoryAdmin(admin.ModelAdmin):
 class ProductImageInline(admin.StackedInline):
     model = ProductImageModel
     extra = 1
+    max_num = 5
+    can_delete = False
+    files = ('product_image',)
 
 
 # WISHLIST ADMIN
@@ -87,7 +91,7 @@ class ProductModelAdmin(admin.ModelAdmin):
         'available', 'featured',
         'rent_date', 'pub_date')
     list_display_links = ('name',)
-
+    readonly_fields = ['product_image']
     fields = (
         'user',
         'category',
@@ -104,6 +108,9 @@ class ProductModelAdmin(admin.ModelAdmin):
     prepopulated_fields = {
         'slug': ('name', 'price', 'label')
     }
+
+    def product_image(self, obj):
+        return obj.productimageinline.product_image()
 
     def clean_date(self):
         if self.cleaned_data['rent_date'] <= self.cleaned_data['pub_date']:

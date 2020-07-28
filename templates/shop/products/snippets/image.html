@@ -1,4 +1,4 @@
-{% for object in object.productimagemodel_set.all %}
+{% for object in object.get_all_image %}
     <a title="{{ object.product.name }}" href="{{ object.img.url }}" target="_blank">
         <img src="{{ object.img.url }}" alt="{{ object.product.name }}">
     </a>

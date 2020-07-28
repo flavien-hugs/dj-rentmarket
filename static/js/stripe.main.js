@@ -1,4 +1,5 @@
 $(document).ready(function(){
+    "use strict";
     /*
     // Checkout payment methods
     */
@@ -151,7 +152,7 @@ $(document).ready(function(){
                     var succesMsg = data.message || "Success! Your card was added."
                     card.clear()
                     if (nextUrl){
-                        succesMsg = succesMsg + "<br/><br/><i class='fa fa-spin fa-spinner'></i> Redirecting..."
+                        succesMsg = succesMsg + "Redirecting..."
                     }
                     if ($.alert){
                         $.alert(succesMsg)

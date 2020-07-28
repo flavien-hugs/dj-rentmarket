@@ -33,7 +33,8 @@ class LocationManager(models.Manager):
 
 
 class LocationModel(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, blank=True)
     product = models.ManyToManyField(ProductModel)
     subtotal = models.DecimalField(
         default=0.00, max_digits=100, decimal_places=2)

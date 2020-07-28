@@ -151,8 +151,8 @@
                                     {% for obj in orders|slice:'0:5' %}
                                         <tr>
                                             <td data-title="Produit">
-                                                <a href="{{ obj.get_absolute_url }}">
-                                                {{ obj.order_id|safe }}</a>
+                                                <span>
+                                                {{ obj.order_id|safe }}</span>
                                             </td>
 
                                             <td data-title="Status">
@@ -165,7 +165,7 @@
                                 </table>
                             </div>
 
-                            <a href="{% url 'dashboard:user_order' %}" class="btn btn-link btn-sm text-uppercase">views all orders</a>
+                            <a href="{% url 'dashboard:user_order' %}" class="btn btn-primary btn-sm text-uppercase">views all orders</a>
                         </div>
                     </div>
                 </div>

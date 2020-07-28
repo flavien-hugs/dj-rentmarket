@@ -1,44 +1,54 @@
 {% load widget_tweaks %}
 
-{% if form.non_field_errors %}
-    <div class="alert alert-danger" role="alert">
-        {% for error in form.non_field_errors %}
-        <p {% if forloop.last %} class="mb-0"{% endif %}>{{ error }}</p>
-        {% endfor %}
-    </div>
-{% endif %}
-
 <div class="form-group">
     <label for="{{ form.category.id_for_label }}">
     Product category</label>
-    <select name="{{ form.category.name }}" id="{{ form.category.id_for_label }}" class="form-control custom-select shadow-none">
+    <select name="{{ form.category.name }}" id="{{ form.category.id_for_label }}" class="form-control shadow-none" multiple="">
        {% for c in form.category %}{{ c }}{% endfor %}
     </select>
+
+    <div style="width:100%; margin-top:.25rem; font-size:80%; color:#dc3545;">
+        {% for error in form.category.errors %}{{ error }}{% endfor %}
+    </div>
 </div>
 
 <div class="form-group">
     <label for="{{ form.name.id_for_label }}">Product name</label>
-       {{ form.name|add_class:'form-control shadow-none'|attr:"placeholder:Enter product name"|attr:"onfocus:this.placeholder=''"|attr:"onblur:this.placeholder='Enter product name'" }}
+    {{ form.name|add_class:'form-control shadow-none'|attr:"placeholder:Enter product name"|attr:"onfocus:this.placeholder=''"|attr:"onblur:this.placeholder='Enter product name'" }}
+    
+    <div style="width:100%; margin-top:.25rem; font-size:80%; color:#dc3545;">
+        {% for error in form.name.errors %}{{ error }}{% endfor %}
+    </div>
 </div>
 
 <div class="form-row">
     <div class="form-group col-md-8">
         <label for="{{ form.price.id_for_label }}">Product price</label>
         {{ form.price|add_class:'form-control input-number shadow-none'|attr:"placeholder:Enter product price"|attr:"onfocus:this.placeholder=''"|attr:"onblur:this.placeholder='Enter product price'" }}
+
+        <div style="width:100%; margin-top:.25rem; font-size:80%; color:#dc3545;">
+            {% for error in form.price.errors %}{{ error }}{% endfor %}
+        </div>
     </div>
 
     <div class="form-group col-md-4">
         <label for="{{ form.label.id_for_label }}">Label</label>
-        {{ form.label|add_class:'form-control custom-select shadow-none' }}
+        {{ form.label|add_class:'form-control custom-select  shadow-none' }}
+
+        <div style="width:100%; margin-top:.25rem; font-size:80%; color:#dc3545;">
+            {% for error in form.label.errors %}{{ error }}{% endfor %}
+        </div>
     </div>
 </div>
 
 <div class="form-group">
     <div class="form-check">
         {{ form.featured|add_class:'form-check-input shadow-none' }}
-        <label class="ml-3 form-check-label" for="{{ form.featured.id_for_label }}">
-            Feature product ?
-        </label>
+        <label class="ml-3 form-check-label" for="{{ form.featured.id_for_label }}">Feature product ?</label>
+        
+        <div style="width:100%; margin-top:.25rem; font-size:80%; color:#dc3545;">
+            {% for error in form.featured.errors %}{{ error }}{% endfor %}
+        </div>
     </div>
 </div>
 
@@ -48,5 +58,9 @@
         <label class="ml-3 form-check-label" for="{{ form.available.id_for_label }}">
             This product is available ?
         </label>
+
+        <div style="width:100%; margin-top:.25rem; font-size:80%; color:#dc3545;">
+            {% for error in form.available.errors %}{{ error }}{% endfor %}
+        </div>
     </div>
 </div>
