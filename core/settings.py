@@ -30,7 +30,7 @@ DEFAULT_CHARSET = 'UTF-8'
 DEFAULT_CONTENT_TYPE = 'text/html'
 SITE_DESCRIPTION = ''
 META_KEYWORDS = ''
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 SITE_NAME = 'Rent Market'
 LOCATION_SESSION_ID = 'cartsession'
 USE_THOUSAND_SEPARATOR = True
@@ -53,15 +53,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',
 
-    # 'cloudinary_storage',
-    # 'cloudinary',
-
     'widget_tweaks',
     'django_countries',
     'phonenumber_field',
     'phonenumbers',
     'django_user_agents',
-    'django_social_share',
 
     'accounts.apps.AccountsConfig',
     'shop.apps.ShopConfig',
