@@ -214,6 +214,7 @@ cloudinary.config(
     cloud_name='unsta',
     api_key='746746447688237',
     api_secret='dPGznYS0Ba02DQPjqzr5GBtfrSY',
+    secure=True
 )
 
 # STRIPE PAYMENT

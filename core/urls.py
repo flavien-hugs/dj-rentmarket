@@ -31,7 +31,7 @@ urlpatterns = [
     path('delivery/', TemplateView.as_view(
         extra_context={'page_title': 'Delivery Information'},
         template_name='pages/delivery.html'), name='delivery'),
-    path('admin/', admin.site.urls),
+    path('xxx/', admin.site.urls),
 ]
 
 handler404 = TemplateView.as_view(
