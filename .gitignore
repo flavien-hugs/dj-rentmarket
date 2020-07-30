@@ -4,4 +4,4 @@ __pycache__
 .idea/*
 .git/*
 media/*
-env
+.env

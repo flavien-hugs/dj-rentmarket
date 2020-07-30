@@ -1,5 +1,5 @@
 import os
-import dj_database_url
+from decouple import config
 from django.core.exceptions import ImproperlyConfigured
 
 
@@ -25,7 +25,7 @@ SECRET_KEY = get_env_variable(
     'SECRET_KEY', 'zb9g!qw2vat#pfkd16*ylu2b+*&mcf42#1)%qfr_4@6*f72heo')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = TEMPLATE_DEBUG = True
+DEBUG = TEMPLATE_DEBUG = config('DEBUG', default=False, cast=bool)
 DEFAULT_CHARSET = 'UTF-8'
 DEFAULT_CONTENT_TYPE = 'text/html'
 SITE_DESCRIPTION = ''
@@ -121,6 +121,13 @@ DATABASES = {
     }
 }
 
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.db.DatabaseCache',
+        'LOCATION': 'db_cache',
+    }
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -155,15 +162,6 @@ LANGUAGE_CODE = 'fr'
 TIME_ZONE = 'UTC'
 USE_I18N = USE_L10N = USE_TZ = True
 
-# Parse database configuration from $DATABASE_URL
-# Change 'default' database configuration with
-# $DATABASE_URL.
-DATABASES['default'].update(
-    dj_database_url.config(
-        conn_max_age=500,
-        ssl_require=True)
-    )
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
@@ -188,14 +186,14 @@ FORCE_SESSION_TO_ONE = False
 FORCE_INACTIVE_USER_ENDSESSION = False
 
 
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'flavienhgs@gmail.com'
-EMAIL_HOST_PASSWORD = '58fl02ghs@!?'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='flavienhgs@gmail.com')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
+EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
 DEFAULT_FROM_EMAIL = 'RentMarket <info@rm.com>'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-BASE_URL = '127.0.0.1:9865'
+BASE_URL = ''
 
 
 PHONENUMBER_DEFAULT_REGION = "CI"
@@ -209,21 +207,3 @@ USER_AGENTS_CACHE = 'default'
 # STRIPE PAYMENT
 STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
 STRIPE_PUB_KEY = os.environ.get('STRIPE_PUB_KEY')
-
-
-HOST_SCHEME = "https://"
-X_FRAME_OPTIONS = 'DENY'
-CSRF_COOKIE_SECURE = True
-USE_X_FORWARDED_HOST = True
-SESSION_COOKIE_SECURE = False
-CORS_REPLACE_HTTPS_REFERER = False
-
-SECURE_FRAME_DENY = False
-SECURE_HSTS_SECONDS = 3600
-SECURE_SSL_REDIRECT = False
-# SECURE_HSTS_PRELOAD = True
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_REFERRER_POLICY = 'origin'
-SECURE_CONTENT_TYPE_NOSNIFF = True
-SECURE_HSTS_INCLUDE_SUBDOMAINS = False
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
