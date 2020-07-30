@@ -1,5 +1,6 @@
 from django.urls import path
 from django.contrib.auth.views import LogoutView
+from django.views.generic import TemplateView
 
 from accounts.views import(
     UserHomeView, AccountEmailActivateView, LoginView,
@@ -23,6 +24,11 @@ urlpatterns = [
     path('account/login/', LoginView.as_view(
         extra_context={'page_title': 'Login'}
         ), name='login'),
+    path('account/verify/', TemplateView.as_view(
+        extra_context={'page_title': 'Verify email'},
+        template_name='accounts/verify_email.html'),
+        name='verify',
+    ),
     path('account/logout/', LogoutView.as_view(
         extra_context={'page_title': 'Logout'}), name='logout'),
 

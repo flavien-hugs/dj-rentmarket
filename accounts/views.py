@@ -107,7 +107,7 @@ class LoginView(NextUrlMixin, RequestFormAttachMixin, FormView):
 class SignUpView(CreateView):
     form_class = SignUpForm
     template_name = 'accounts/signup.html'
-    success_url = reverse_lazy('accounts:login')
+    success_url = reverse_lazy('accounts:verify')
 
 
 class AccountUpdateView(LoginRequiredMixin, UpdateView):

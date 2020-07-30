@@ -190,14 +190,14 @@ LOGOUT_REDIRECT_URL = 'home'
 FORCE_SESSION_TO_ONE = False
 FORCE_INACTIVE_USER_ENDSESSION = False
 
-
-EMAIL_HOST = config('EMAIL_HOST', default='smtp.gmail.com')
-EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='flavienhgs@gmail.com')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
-EMAIL_PORT = config('EMAIL_PORT', default=587, cast=int)
-EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=True, cast=bool)
+# SENDGRID CONFIG
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+SENDGRID_API_KEY = config('SENDGRID_API_KEY')
+EMAIL_HOST = 'smtp-relay.sendinblue.com'
+EMAIL_HOST_USER = 'flavienhgs@gmail.com'
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = 'RentMarket <info@rm.com>'
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 BASE_URL = ''
 
 
