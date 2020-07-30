@@ -1,4 +1,5 @@
 <!-- .block-categories -->
+{% load cloudinary %}
 <div class="block block--highlighted block-categories block-categories--layout--compact">
     <div class="container">
         <div class="block-header">
@@ -12,7 +13,7 @@
                     <div class="category-card__body">
                         <div class="category-card__image">
                             <span>
-                                <img src="{{ obj.get_image_url }}" alt="{{ obj.name }}">
+                                {% cloudinary obj.img.url %}
                             </span>
                         </div>
 

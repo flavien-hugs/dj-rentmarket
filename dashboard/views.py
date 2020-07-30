@@ -11,7 +11,7 @@ from django.contrib.auth.mixins import(
 from shop.models import ProductModel
 from orders.models import OrdersModel
 from accounts.mixins import UserAccountMixin
-from dashboard.forms import ProductImageModelForm, ProductModelForm
+from dashboard.forms import ProductModelForm
 
 # GETTING MY MODEL USER
 User = get_user_model()
@@ -44,11 +44,6 @@ class UserEditeMixin(UserAccountMixin, object):
         messages.success(self.request, message)
         form.instance.user = self.request.user
         return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        kwargs['form_'] = ProductImageModelForm(
-            self.request.POST, self.request.FILES)
-        return super().get_context_data(**kwargs)
 
 
 class UserProductMixin(UserEditeMixin):

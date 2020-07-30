@@ -1,4 +1,5 @@
 import os
+import cloudinary
 from decouple import config
 from django.core.exceptions import ImproperlyConfigured
 
@@ -25,7 +26,7 @@ SECRET_KEY = get_env_variable(
     'SECRET_KEY', 'zb9g!qw2vat#pfkd16*ylu2b+*&mcf42#1)%qfr_4@6*f72heo')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = TEMPLATE_DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = TEMPLATE_DEBUG = config('DEBUG', default=True, cast=bool)
 DEFAULT_CHARSET = 'UTF-8'
 DEFAULT_CONTENT_TYPE = 'text/html'
 SITE_DESCRIPTION = ''
@@ -59,6 +60,7 @@ INSTALLED_APPS = [
     'phonenumbers',
     'django_user_agents',
     'django_social_share',
+    'cloudinary',
 
     'accounts.apps.AccountsConfig',
     'shop.apps.ShopConfig',
@@ -96,9 +98,11 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.template.context_processors.i18n',
+                'django.template.context_processors.media',
+                'django.template.context_processors.static',
                 'django.template.context_processors.csrf',
                 'django.contrib.messages.context_processors.messages',
-
+                'core.context_processors.consts',
                 'core.context_processors.category',
                 'core.context_processors.location',
                 'core.context_processors.featured_product',
@@ -171,13 +175,44 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 STATICFILES_FINDERS = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 ]
+
+
+# A sample logging configuration. The only tangible logging
+# performed by this configuration is to send an email to
+# the site admins on every HTTP 500 error when DEBUG=False.
+# See http://docs.djangoproject.com/en/dev/topics/logging for
+# more details on how to customize your logging configuration.
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
+    'handlers': {
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler'
+        }
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+    }
+}
+
 
 LOGIN_URL = 'accounts:login'
 LOGIN_REDIRECT_URL = 'dashboard:dashboard'
@@ -205,6 +240,13 @@ PHONENUMBER_DB_FORMAT = "INTERNATIONAL"
 USER_AGENTS_CACHE = 'default'
 
 
+# Cloudinary settings for Django.
+cloudinary.config(
+    cloud_name='unsta',
+    api_key='746746447688237',
+    api_secret='dPGznYS0Ba02DQPjqzr5GBtfrSY',
+)
+
 # STRIPE PAYMENT
-STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY')
-STRIPE_PUB_KEY = os.environ.get('STRIPE_PUB_KEY')
+STRIPE_SECRET_KEY = config('STRIPE_SECRET_KEY')
+STRIPE_PUB_KEY = config('STRIPE_PUB_KEY')

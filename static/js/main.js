@@ -1,4 +1,4 @@
-$(document).ready(function(){
+(function($){
     "use strict";
 
     let passiveSupported = false;
@@ -865,4 +865,4 @@ $(document).ready(function(){
     /*
     // Review
     */ 
-});
+})(jQuery);

@@ -3,8 +3,7 @@ from django.contrib import admin
 
 from shop.models import (
     MainCategoryModel, CategoryModel,
-    ProductModel, ProductImageModel,
-    ReviewModel, WishListModel)
+    ProductModel, ReviewModel, WishListModel)
 
 from orders.models import OrdersModel
 
@@ -48,15 +47,6 @@ class MainCategoryAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('name',)}
 
 
-# PRODUCT ADMIN
-class ProductImageInline(admin.StackedInline):
-    model = ProductImageModel
-    extra = 1
-    max_num = 5
-    can_delete = False
-    files = ('product_image',)
-
-
 # WISHLIST ADMIN
 class WishListInline(admin.StackedInline):
     model = WishListModel
@@ -83,7 +73,7 @@ class ReviewModelInline(admin.ModelAdmin):
 # PRODUCT ADMIN
 @admin.register(ProductModel)
 class ProductModelAdmin(admin.ModelAdmin):
-    inlines = [ProductImageInline, WishListInline]
+    inlines = [WishListInline]
 
     date_hierarchy = 'updated'
     list_display = (
@@ -98,7 +88,8 @@ class ProductModelAdmin(admin.ModelAdmin):
         ('name', 'slug'),
         ('label', 'price'), 'rent_date',
         ('available', 'featured'),
-        'desc',
+        'desc', ('img', 'img_1', 'img_2'),
+        ('img_3', 'img_4')
     )
     list_filter = [
         'available', 'category',

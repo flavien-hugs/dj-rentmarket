@@ -1,5 +1,16 @@
-{% for object in object.get_all_image %}
-    <a title="{{ object.product.name }}" href="{{ object.img.url }}" target="_blank">
-        <img src="{{ object.img.url }}" alt="{{ object.product.name }}">
-    </a>
-{% endfor %}
+{% load cloudinary %}
+<a title="{{ object.product.name }}" href="{{ object.img.url }}" target="_blank">
+    {% cloudinary object.img.url %}
+</a>
+<a title="{{ object.product.name }}" href="{{ object.img.url }}" target="_blank">
+    {% cloudinary object.img_1.url %}
+</a>
+<a title="{{ object.product.name }}" href="{{ object.img.url }}" target="_blank">
+    {% cloudinary object.img_2.url %}
+</a>
+<a title="{{ object.product.name }}" href="{{ object.img.url }}" target="_blank">
+    {% cloudinary object.img_3.url %}
+</a>
+<a title="{{ object.product.name }}" href="{{ object.img.url }}" target="_blank">
+    {% cloudinary object.img_4.url %}
+</a>

@@ -1,4 +1,4 @@
-{% load humanize %}
+{% load humanize cloudinary %}
 <div class="block-products-carousel__column">
     <div class="block-products-carousel__cell">
         <div class="product-card">
@@ -20,7 +20,7 @@
 
             <div class="product-card__image">
                 <a title="{{ instance.name }}" href="{{ instance.get_absolute_url }}">
-                    <img src="{{ instance.get_image_url }}" alt="{{ instance.name }}">
+                    {% cloudinary instance.img.url %}
                 </a>
             </div>
 
@@ -50,6 +50,7 @@
                 <div class="product-card__availability">Availability:
                     <span class="text-success">
                         {{ instance.available }}
+                    </span>
                 </div>
                 <div class="product-card__prices">{{ instance.price|intcomma }}</div>
 

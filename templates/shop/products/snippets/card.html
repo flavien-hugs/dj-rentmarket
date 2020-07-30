@@ -1,4 +1,5 @@
-{% load humanize %}
+{% load cloudinary humanize %}
+
 <div class="products-list__item">
     <div class="product-card">
         <button class="product-card__quickview" type="button">
@@ -17,7 +18,7 @@
 
         <div class="product-card__image">
             <a title="{{ obj.name }}" href="{{ obj.get_absolute_url }}">
-                <img src="{{ obj.get_image_url }}" alt="{{ obj.name }}">
+                {% cloudinary obj.img.url %}
             </a>
         </div>
 

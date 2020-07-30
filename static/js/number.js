@@ -1,4 +1,4 @@
-$(document).ready(function(){
+(function ($) {
     "use strict";
 
     // CustomEvent polyfill
@@ -182,4 +182,4 @@ $(document).ready(function(){
             }
         });
     };
-});
+})(jQuery);

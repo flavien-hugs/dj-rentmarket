@@ -1,6 +1,29 @@
 import random
+import cloudinary
 from location.models import LocationModel
 from shop.models import ProductModel, MainCategoryModel, CategoryModel
+
+
+def consts(request):
+    return dict(ICON_EFFECTS = dict(
+        format="jgp",
+        type="facebook",
+        transformation=[
+            dict(height=700, width=700,
+                crop="thumb",
+                gravity="face",
+                effect="sepia"),
+            dict(angle=10),
+        ]
+    ),
+
+    THUMBNAIL = {
+        "format": "jpg",
+        "crop": "fill",
+        "height": 150, "width": 150,
+    },
+
+    CLOUDINARY_CLOUD_NAME = cloudinary.config().cloud_name)
 
 
 def location(request):
@@ -24,7 +47,7 @@ def featured_product(request):
        pub_date__isnull=False).order_by('-pub_date')[:50],
         key=lambda x: random.random())
     context = {
-        'featured_product': random.sample(featured_product, k=1)
+        'featured_product': random.sample(featured_product, k=2)
     }
     return context
 

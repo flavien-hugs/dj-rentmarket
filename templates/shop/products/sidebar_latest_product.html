@@ -1,5 +1,5 @@
 {% load static %}{% get_static_prefix as STATIC_PREFIX %}
-{% load humanize %}
+{% load humanize cloudinary %}
 <div class="block-sidebar__item d-none d-lg-block">
     <div class="widget-products widget">
         <h4 class="widget__title">Latest Products</h4>
@@ -8,7 +8,7 @@
                 <div class="widget-products__item">
                     <div class="widget-products__image">
                         <a title="{{ obj.name }}" href="{{ obj.get_absolute_url }}">
-                            <img src="{{ obj.get_image_url }}" alt="{{ obj.name }}">
+                            {% cloudinary obj.img.url %}
                         </a>
                     </div>
 
