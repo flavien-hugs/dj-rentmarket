@@ -9,7 +9,9 @@ class ProductModelForm(forms.ModelForm):
         model = ProductModel
         fields = [
             'category', 'name', 'price',
-            'label', 'desc', 'featured', 'available']
+            'label', 'desc', 'featured',
+            'available', 'img', 'img_1',
+            'img_2', 'img_3', 'img_4']
 
     def clean_price(self):
         price = self.fields['price']

@@ -14,3 +14,35 @@
      {% for error in form.img.errors %}{{ error }}{% endfor %}
      </div>
 </div>
+
+<div class="form-group">
+     {{ form.img_1|add_class:'shadow-none'|attr:'type:file' }}
+
+     <div style="width:100%; margin-top:.25rem; font-size:80%; color:#dc3545;">
+     {% for error in form.img_1.errors %}{{ error }}{% endfor %}
+     </div>
+</div>
+
+<div class="form-group">
+     {{ form.img_2|add_class:'shadow-none'|attr:'type:file' }}
+
+     <div style="width:100%; margin-top:.25rem; font-size:80%; color:#dc3545;">
+     {% for error in form.img_2.errors %}{{ error }}{% endfor %}
+     </div>
+</div>
+
+<div class="form-group">
+     {{ form.img_3|add_class:'shadow-none'|attr:'type:file' }}
+
+     <div style="width:100%; margin-top:.25rem; font-size:80%; color:#dc3545;">
+     {% for error in form.img_3.errors %}{{ error }}{% endfor %}
+     </div>
+</div>
+
+<div class="form-group">
+     {{ form.img_4|add_class:'shadow-none'|attr:'type:file' }}
+
+     <div style="width:100%; margin-top:.25rem; font-size:80%; color:#dc3545;">
+     {% for error in form.img_4.errors %}{{ error }}{% endfor %}
+     </div>
+</div>
