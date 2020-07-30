@@ -1,29 +1,6 @@
 import random
-import cloudinary
 from location.models import LocationModel
 from shop.models import ProductModel, MainCategoryModel, CategoryModel
-
-
-def consts(request):
-    return dict(ICON_EFFECTS = dict(
-        format="jgp",
-        type="facebook",
-        transformation=[
-            dict(height=700, width=700,
-                crop="thumb",
-                gravity="face",
-                effect="sepia"),
-            dict(angle=10),
-        ]
-    ),
-
-    THUMBNAIL = {
-        "format": "jpg",
-        "crop": "fill",
-        "height": 150, "width": 150,
-    },
-
-    CLOUDINARY_CLOUD_NAME = cloudinary.config().cloud_name)
 
 
 def location(request):
