@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'phonenumbers',
     'django_user_agents',
+    'django_social_share',
 
     'accounts.apps.AccountsConfig',
     'shop.apps.ShopConfig',
