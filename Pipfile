@@ -23,6 +23,7 @@ ua-parser="*"
 user-agents="*"
 stripe='*'
 django-social-share='*'
+cloudinary='*'
 
 
 [requires]
