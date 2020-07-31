@@ -1,6 +1,16 @@
 import random
+from core import settings
 from location.models import LocationModel
 from shop.models import ProductModel, MainCategoryModel, CategoryModel
+
+
+def meta(request):
+    return {
+        'site_name': settings.SITE_NAME,
+        'site_desc': settings.SITE_DESCRIPTION,
+        'meta_keyw': settings.META_KEYWORDS,
+        'request': request
+    }
 
 
 def location(request):
@@ -23,14 +33,11 @@ def featured_product(request):
     featured_product = sorted(ProductModel.objects.featured().filter(
        pub_date__isnull=False).order_by('-pub_date')[:50],
         key=lambda x: random.random())
-    context = {
-        'featured_product': featured_product
-    }
-    return context
+
+    return {'featured_product': featured_product}
 
 
 def get_info_ur(request):
-
     device_type = ""
     browser_type = ""
     browser_version = ""

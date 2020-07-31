@@ -49,6 +49,7 @@ class ProductDetailView(ObjectViewMixin, DetailView):
     template_name = 'shop/products/product_detail.html'
 
     def get_context_data(self, **kwargs):
+
         kwargs['form'] = ReviewForm()
         kwargs['category'] = CategoryModel.objects.all()
         kwargs['page_title'] = self.object.name

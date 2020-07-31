@@ -1,5 +1,5 @@
 {% extends "shop/index.html" %}
-{% load humanize shoptags %}
+{% load humanize shoptags cloudinary %}
 
 {% block slideshow %}{% endblock slideshow %}
 
@@ -31,7 +31,7 @@
 
                                 <td class="cart-table__column cart-table__column--image">
                                     <a href="{{ obj.get_absolute_url }}">
-                                        <img src="{{ obj.get_image_url }}" alt="{{ obj.name }}">
+                                        {% cloudinary obj.img.url %}
                                     </a>
                                 </td>
 

@@ -1,4 +1,4 @@
-{% load humanize %}
+{% load humanize cloudinary %}
 
 <div class="dropcart">
     {% if location.product.exists %}
@@ -7,7 +7,7 @@
                 <div class="dropcart__product">
                     <div class="dropcart__product-image">
                         <a href="{{ obj.get_absolute_url }}">
-                            <img src="{{ obj.get_image_url }}" alt="{{ obj.name }}">
+                            {% cloudinary object.img.url %}
                         </a>
                     </div>
                     <div class="dropcart__product-info">

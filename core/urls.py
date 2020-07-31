@@ -3,6 +3,18 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
+from django.contrib.sitemaps.views import sitemap
+from django.views.decorators.cache import cache_page
+
+from core.sitemaps import(
+    StaticViewSitemap, CategorySitemapView,
+    ProductSitemapView)
+
+sitemaps = {
+    'static': StaticViewSitemap,
+    'category': CategorySitemapView,
+    'product': ProductSitemapView,
+}
 
 
 urlpatterns = [
@@ -31,6 +43,10 @@ urlpatterns = [
     path('delivery/', TemplateView.as_view(
         extra_context={'page_title': 'Delivery Information'},
         template_name='pages/delivery.html'), name='delivery'),
+    path(
+        'sitemap.xml',
+        sitemap, {'sitemaps': sitemaps},
+        name='django.contrib.sitemaps.views.sitemap'),
     path('xxx/', admin.site.urls),
 ]
 

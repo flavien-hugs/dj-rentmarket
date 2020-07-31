@@ -79,7 +79,7 @@ class ProductModelAdmin(admin.ModelAdmin):
     list_display = (
         'user', 'name', 'price',
         'available', 'featured',
-        'rent_date', 'pub_date')
+        'rent_date', 'pub_date', 'views')
     list_display_links = ('name',)
     readonly_fields = ['product_image']
     fields = (

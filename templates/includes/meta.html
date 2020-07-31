@@ -1,16 +1,21 @@
+<!--[if IE 7]><html class="ie ie7"><![endif]-->
+<!--[if IE 8]><html class="ie ie8"><![endif]-->
+<!--[if IE 9]><html class="ie ie9"><![endif]-->
 <base href="{{ request.get_host }}">
 <meta charset="utf-8" >
-<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-<meta http-equiv="X-UA-Compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, shrink-to-fit=no">
+<meta http-equiv="X-UA-Compatible" content="ie=edge,chrome=1">
+<meta http-equiv="Content-Type" content="text/html;X-Content-Type-Options=nosniff">
+<meta name="title" content="{% if page_title %} {{ page_title }} {% else %} {{ site_name }} {% endif %}">
 <meta name="google" content="nositelinkssearchbox">
 <meta name="format-detection" content="telephone=no">
 <meta name="publisher" content="flavien-hugs">
 <meta name="author" content="flavien-hugs">
-<meta name="keywords" content="">
-<meta name="robots" content="index, follow, all">
-<meta name="DC.Title" content="">
-<meta name="DC.Subject" content="">
-<meta name="DC.Description" content="">
+<meta name="keywords" content="{{ page_title }}-{{ meta_keyw }}">
+<meta name="robots" content="index,follow,all">
+<meta name="DC.Title" content="{% if page_title %} {{ page_title }} {% else %} {{ site_name }} {% endif %}">
+<meta name="DC.Subject" content="{{ page_title }}">
+<meta name="DC.Description" content="{{ site_desc }}">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="description" content="Vous retrouverez tous ce dont vous aurez besoin dans votre quotidien">
 <meta name="rights" content="&copy; tous droits réservés">
@@ -21,8 +26,8 @@
 <meta name="Rating" content="General">
 <meta name="Location" content="Bouaké, Côte d'Ivoire">
 <meta name="abstract" content="URL et liens raccourcis et suivi des liens avancés.">
-<meta name="application-name" content="">
-<meta name="msapplication-tooltip" content="">
+<meta name="application-name" content="{{ site_name }}">
+<meta name="msapplication-tooltip" content="{{ site_name }}">
 <meta name="msapplication-starturl" content="{{ request.get_host }}">
 <meta name="generator" content="Pelican">
 
@@ -37,9 +42,10 @@
 <!-- OpenGraph -->
 <meta property="og:site_name" content="{{ request.get_host }}">
 <meta property="og:url" content="{{ request.get_host }}">
-<meta property="og:title" content="">
-<meta property="og:description" content="">
-<meta property="og:type" content="website">
+<meta property="og:title" content="{{ site_name }} &amp;{{ site_desc }}">
+<meta property="og:description" content="Vous avez besoin d'un produit, matériel urgement et vous n'avez pas de moyen pour vous en offrir maintenant ? Commender et acheter en ligne tous les produits Essentiels, Supermarché, Produits de nettoyage, Vitamines, Jeux Vidéos, TV, Puériculture  et plus encore, Toutes les marques à petits prix : Dettol, Samsung, Tecno, LG, HP, Nike ✈ Livraison rapide partout en Côte d'Ivoire : Abidjan, Bouaké, Paiement à la livraison ">
+<meta property="og:locale" content="fr_CI">
+<meta property="og:type" content="product">
 <meta property="og:image" content="">
 <meta property="og:image:secure_url" content="">
 <meta property="og:image:type" content="image/png">

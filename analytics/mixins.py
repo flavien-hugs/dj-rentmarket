@@ -9,4 +9,5 @@ class ObjectViewMixin(object):
                 instance.__class__,
                 instance=instance,
                 request=self.request)
+
         return super().get_context_data(*args, **kwargs)

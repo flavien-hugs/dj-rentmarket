@@ -29,10 +29,12 @@ SECRET_KEY = get_env_variable(
 DEBUG = TEMPLATE_DEBUG = config('DEBUG', default=True, cast=bool)
 DEFAULT_CHARSET = 'UTF-8'
 DEFAULT_CONTENT_TYPE = 'text/html'
-SITE_DESCRIPTION = ''
-META_KEYWORDS = ''
+SITE_DESCRIPTION = 'Vous retrouverez tous ce dont\
+    vous aurez besoin pour le quotidien'
+META_KEYWORDS = 'shopping, location, ecommerce, accessories,\
+    TV, Audio, smartphone, Mode, Electromenager'
 ALLOWED_HOSTS = []
-SITE_NAME = 'Rent Market'
+SITE_NAME = 'RentMarket'
 LOCATION_SESSION_ID = 'cartsession'
 USE_THOUSAND_SEPARATOR = True
 THOUSAND_SEPARATOR = ' '
@@ -46,6 +48,7 @@ SITE_ID = 1
 
 # Application definition
 INSTALLED_APPS = [
+    'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -53,6 +56,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'django.contrib.sitemaps',
 
     'widget_tweaks',
     'django_countries',
@@ -102,6 +106,8 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.csrf',
                 'django.contrib.messages.context_processors.messages',
+
+                'core.context_processors.meta',
                 'core.context_processors.category',
                 'core.context_processors.location',
                 'core.context_processors.featured_product',

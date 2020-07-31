@@ -1,15 +1,16 @@
-import os
+# import os
 # import sys
 # from PIL import Image
 # from io import BytesIO
 from django.db import models
-from django.db.models import Q
+from django.db.models import F, Q
 from django.urls import reverse
 from django.utils import timezone
 from django.dispatch import receiver
-from django.utils.text import slugify
-from django.utils.safestring import mark_safe
+from django.shortcuts import get_object_or_404
+# from django.utils.safestring import mark_safe
 from django.contrib.auth import get_user_model
+from django.contrib.sitemaps import ping_google
 # from django.core.files.uploadedfile import InMemoryUploadedFile
 
 import cloudinary
@@ -93,9 +94,11 @@ class CategoryModel(models.Model):
     def __str__(self):
         return '{} ({})'.format(self.mcategory.name, self.name)
 
-    def save(self):
-        if not self.slug:
-            self.slug = slugify(self.name)
+    def save(self, force_insert=False, force_update=False):
+        try:
+            ping_google()
+        except Exception:
+            pass
         return super().save()
 
     def get_absolute_url(self):
@@ -204,6 +207,13 @@ class ProductModel(models.Model):
             self.name, ", ".join(
                 cat.name for cat in self.category.all()),)
 
+    def save(self, force_insert=False, force_update=False):
+        try:
+            ping_google()
+        except Exception:
+            pass
+        return super().save()
+
     def get_absolute_url(self):
         return reverse(
             'shop:product_detail', kwargs={'slug': str(self.slug)})
@@ -220,9 +230,15 @@ class ProductModel(models.Model):
         return reverse(
             'dashboard:product_update', kwargs={'slug': str(self.slug)})
 
-    # Get all image
-    def get_all_image(self):
-        return self.productimagemodel_set.all()
+    @property
+    def product_view_count(self, request):
+        url = get_object_or_404(ProductModel, slug=self.slug)
+        session_key = 'vues_{}'.format(url.pk)
+        if not request.session.get(session_key, False):
+            url.views += 1
+            url.save()
+            request.session[session_key] = True
+        return 0
 
     # # Here I return the image
     # def get_image_url(self):
