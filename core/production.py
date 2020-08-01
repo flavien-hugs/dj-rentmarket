@@ -6,7 +6,6 @@ import dj_database_url
 from core.settings import *
 
 DEBUG = TEMPLATE_DEBUG = False
-COMPRESS_ENABLED = False
 BASE_URL = 'https://rtmarket.herokuapp.com'
 ALLOWED_HOSTS = ['.herokuapp.com']
 

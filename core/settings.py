@@ -192,7 +192,7 @@ STATICFILES_FINDERS = [
 # Compress Static files (CSS, JavaScript)
 # https://django-compressor.readthedocs.io/en/latest/
 
-COMPRESS_ENABLED = False
+COMPRESS_ENABLED = True
 COMPRESS_CSS_HASHING_METHOD = 'content'
 COMPRESS_CSS_FILTERS = [
     'compressor.filters.css_default.CssAbsoluteFilter',
