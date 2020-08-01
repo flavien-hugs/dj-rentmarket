@@ -24,6 +24,8 @@ user-agents="*"
 stripe='*'
 django-social-share='*'
 cloudinary='*'
+django-compressor='*'
+django-htmlmin='*'
 
 
 [requires]

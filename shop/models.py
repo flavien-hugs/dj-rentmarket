@@ -1,33 +1,18 @@
-# import os
-# import sys
-# from PIL import Image
-# from io import BytesIO
 from django.db import models
 from django.db.models import Q
 from django.urls import reverse
 from django.utils import timezone
 from django.dispatch import receiver
-# from django.utils.safestring import mark_safe
 from django.contrib.auth import get_user_model
 from django.contrib.sitemaps import ping_google
-# from django.core.files.uploadedfile import InMemoryUploadedFile
 
 import cloudinary
 from core.utils import unique_slug_generator
 from cloudinary.models import CloudinaryField
 
 User = get_user_model()
-
-
+NULL_AND_BLANK = {'null': True, 'blank': True}
 LABEL = (('NEW', 'NEW'), ('SALE', 'SALE'), ('HOT', 'HOT'))
-
-
-# def category(instance, filename):
-#     f, ext = os.path.splitext(filename)
-#     if ext not in ['.jpg', '.png', '.jpeg']:
-#         raise NameError('Format interdit')
-#     new_filename = "{}{}".format(instance.slug, ext)
-#     return '/'.join(['img/category/', new_filename])
 
 
 class MainCategoryModel(models.Model):
@@ -41,30 +26,7 @@ class MainCategoryModel(models.Model):
 
     class Meta:
         ordering = ('name',)
-        verbose_name = 'category'
-
-    # def save(self):
-    #     if not self.slug:
-    #         self.slug = slugify(self.name)
-
-    #     # COMPRESS THE IMAGE HERE AND THEN SAVE IT
-    #     image = Image.open(self.img).convert('RGB')
-
-    #     # RESIZE/MODIFY THE IMAGE
-    #     image = image.resize((700, 700))
-
-    #     output = BytesIO()
-
-    #     # SAVE TO THE OUTPOUT_IO
-    #     image.save(output, format='JPEG', quality=90)
-
-    #     # change the imagefield value to be the newley modifed image value
-    #     self.img = InMemoryUploadedFile(
-    #         output, 'ImageField',
-    #         "{}.jpg".format(self.img.name.split('.')[0]),
-    #         'image/jpeg', sys.getsizeof(output), None)
-
-    #     return super().save()
+        verbose_name_plural = 'categories'
 
     def get_absolute_url(self):
         return reverse('shop:detail_category', kwargs={'slug': str(self.slug)})
@@ -78,13 +40,11 @@ def delete_file(sender, instance, **kwargs):
 class CategoryModel(models.Model):
     mcategory = models.ForeignKey(
         MainCategoryModel,
-        on_delete=models.SET_NULL,
-        blank=True, null=True)
+        on_delete=models.SET_NULL, **NULL_AND_BLANK)
     name = models.CharField('sub-category', max_length=200, db_index=True)
     slug = models.SlugField(max_length=200, unique=True, db_index=True)
     keywords = models.CharField(
-        'keywords', max_length=200, blank=True,
-        help_text='Ensemble de mots-clés SEO')
+        'keywords', max_length=200, blank=True)
 
     class Meta:
         ordering = ('name',)
@@ -114,15 +74,6 @@ class CategoryModel(models.Model):
 def category_pre_save_receiver(sender, instance, *args, **kwargs):
     if not instance.slug:
         instance.slug = unique_slug_generator(instance)
-
-
-# PRODUCT STRUCTURE MODEL
-# def product_image_upload(instance, filename):
-#     f, ext = os.path.splitext(filename)
-#     if ext not in ['.jpg', '.png', '.jpeg']:
-#         raise NameError('Format interdit')
-#     new_filename = "{}{}".format(instance.product.slug, ext)
-#     return '/'.join(['img/product/', new_filename])
 
 
 class ProductModelQuerySet(models.query.QuerySet):
@@ -181,11 +132,11 @@ class ProductModel(models.Model):
     featured = models.BooleanField('featured', default=False)
     slug = models.SlugField(
         max_length=200, unique=True, db_index=True, blank=True)
-    img = CloudinaryField('product')
-    img_1 = CloudinaryField('product')
-    img_2 = CloudinaryField('product')
-    img_3 = CloudinaryField('product')
-    img_4 = CloudinaryField('product')
+    img = CloudinaryField('p_image_1')
+    img_1 = CloudinaryField('p_image_2')
+    img_2 = CloudinaryField('p_image_3')
+    img_3 = CloudinaryField('p_image_4')
+    img_4 = CloudinaryField('p_image_5')
     desc = models.TextField('description', blank=True)
     price = models.DecimalField('price', max_digits=10, decimal_places=2)
     available = models.BooleanField('available', default=True)
@@ -228,21 +179,6 @@ class ProductModel(models.Model):
     def get_update_url(self):
         return reverse(
             'dashboard:product_update', kwargs={'slug': str(self.slug)})
-
-    # # Here I return the image
-    # def get_image_url(self):
-    #     img = self.productimagemodel_set.first()
-    #     if not img:
-    #         return '/static/img/products/product-1.jpg'
-    #     return img.img.url
-
-    # Method to create a fake table field in read only mode
-    # def product_image(self):
-    #     return mark_safe(
-    #         '<img src="{}" width="100" height="100" />'.format(
-    #             self.get_image_url()))
-
-    # product_image.short_description = 'Image'
 
 
 @receiver(models.signals.pre_save, sender=ProductModel)

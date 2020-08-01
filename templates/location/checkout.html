@@ -181,3 +181,9 @@
         </div>
     </div>
 {% endblock content %}
+
+{% block js %}
+<script src="https://js.stripe.com/v3/"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jsrender/0.9.88/jsrender.min.js'></script>
+{% include 'layouts/stripe.html' %}
+{% endblock js %}

@@ -45,7 +45,7 @@ class UserEditeMixin(UserAccountMixin, object):
         messages.success(self.request, message)
         self.object = form.save(commit=False)
         self.object.user = self.request.user
-        self.object.save()
+        self.object.save_m2m()
         return HttpResponseRedirect(self.get_success_url())
 
 

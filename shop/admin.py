@@ -88,8 +88,8 @@ class ProductModelAdmin(admin.ModelAdmin):
         ('name', 'slug'),
         ('label', 'price'), 'rent_date',
         ('available', 'featured'),
-        'desc', ('img', 'img_1', 'img_2'),
-        ('img_3', 'img_4')
+        'desc', ('img', 'img_1'),
+        ('img_2', 'img_3'), 'img_4',
     )
     list_filter = [
         'available', 'category',
