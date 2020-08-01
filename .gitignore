@@ -3,6 +3,5 @@ __pycache__
 *.sqlite3
 .idea/*
 .git/*
-statictfiles/CACHE/css/*
-statictfiles/CACHE/js/*
+/statictfiles/*
 .env
