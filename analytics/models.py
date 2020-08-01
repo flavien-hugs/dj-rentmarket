@@ -14,6 +14,8 @@ from shop.models import CategoryModel
 
 User = get_user_model()
 
+NULL_AND_BLANK = {'null': True, 'blank': True}
+
 FORCE_SESSION_TO_ONE = getattr(
     settings, 'FORCE_SESSION_TO_ONE', False)
 FORCE_INACTIVE_USER_ENDSESSION = getattr(
@@ -42,10 +44,10 @@ class ObjectViewedManager(models.Manager):
 
 class ObjectViewedModel(models.Model):
     user = models.ForeignKey(
-        User, on_delete=models.SET_NULL, blank=True, null=True)
-    ip_address = models.CharField(max_length=225, blank=True, null=True)
+        User, on_delete=models.SET_NULL, **NULL_AND_BLANK)
+    ip_address = models.CharField(max_length=225, **NULL_AND_BLANK)
     content_type = models.ForeignKey(
-        ContentType, on_delete=models.SET_NULL, null=True)
+        ContentType, on_delete=models.SET_NULL, **NULL_AND_BLANK)
     object_id = models.PositiveIntegerField()
     content_object = GenericForeignKey('content_type', 'object_id')
     created = models.DateTimeField(auto_now_add=True)
@@ -81,9 +83,9 @@ object_viewed_signal.connect(object_viewed_receiver)
 
 class UserSessionModel(models.Model):
     user = models.ForeignKey(
-        User, on_delete=models.SET_NULL, blank=True, null=True)
-    ip_address = models.CharField(max_length=225, blank=True, null=True)
-    session_key = models.CharField(max_length=225, blank=True, null=True)
+        User, on_delete=models.SET_NULL, **NULL_AND_BLANK)
+    ip_address = models.CharField(max_length=225, **NULL_AND_BLANK)
+    session_key = models.CharField(max_length=225, **NULL_AND_BLANK)
     timestamp = models.DateTimeField(auto_now_add=True)
     is_active = models.BooleanField(default=True)
     is_ended = models.BooleanField(default=False)
@@ -148,13 +150,9 @@ class CategoryViewManager(models.Manager):
 
 
 class CategoryView(models.Model):
-    user = models.ForeignKey(
-        User, on_delete=models.SET_NULL,
-        blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, **NULL_AND_BLANK)
     category = models.ForeignKey(
-        CategoryModel,
-        on_delete=models.SET_NULL,
-        blank=True, null=True)
+        CategoryModel, on_delete=models.SET_NULL, **NULL_AND_BLANK)
     count = models.IntegerField(default=0)
 
     objects = CategoryViewManager()

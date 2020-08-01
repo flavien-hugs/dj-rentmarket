@@ -87,6 +87,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django_user_agents.middleware.UserAgentMiddleware',
+
+    'core.middleware.CoreMiddleware',
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -205,7 +207,7 @@ EMAIL_HOST_USER = 'flavienhgs@gmail.com'
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = 'RentMarket <info@rm.com>'
 BASE_URL = ''
-
+SESSION_COOKIE_SECURE = True
 
 PHONENUMBER_DEFAULT_REGION = "CI"
 PHONENUMBER_DB_FORMAT = "INTERNATIONAL"

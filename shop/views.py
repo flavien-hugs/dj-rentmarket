@@ -1,4 +1,5 @@
 import random
+from django.db.models import F
 from django.urls import reverse
 from django.utils import timezone
 from django.urls import reverse_lazy
@@ -6,12 +7,28 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DetailView
 from django.http import HttpResponse, HttpResponseRedirect
 
+
 from shop.forms import ReviewForm
 from shop.models import (
     ProductModel, CategoryModel, ReviewModel, WishListModel)
 
 from analytics.models import CategoryView
 from analytics.mixins import ObjectViewMixin
+
+
+class ProductViewCounter(object):
+    permanent = False
+    query_string = True
+
+    def get_redirect_url(self, *args, **kwargs):
+        slug = kwargs['slug']
+        url = get_object_or_404(ProductModel, slug=slug, available=True)
+        session_key = 'vues_{}'.format(url.pk)
+        if not self.request.session.get(session_key, False):
+            url.views = F('views') + 1
+            url.save()
+            self.request.session[session_key] = True
+        return super().get_redirect_url(*args, **kwargs)
 
 
 # SEARCHVIEW
@@ -34,9 +51,9 @@ class SearchView(ListView):
 
 # PRODUCT ALL
 class ProductListView(ListView):
+    paginate_by = 100
     queryset = ProductModel.objects.get_available()
     template_name = 'shop/products/product_list.html'
-    paginate_by = 30
 
     def get_context_data(self, **kwargs):
         kwargs['count'] = ProductModel.objects.get_available().count()
@@ -44,7 +61,7 @@ class ProductListView(ListView):
 
 
 # DETAIL PRODUIT
-class ProductDetailView(ObjectViewMixin, DetailView):
+class ProductDetailView(ObjectViewMixin, ProductViewCounter, DetailView):
     model = ProductModel
     template_name = 'shop/products/product_detail.html'
 
@@ -108,18 +125,16 @@ def wishlist(request, slug):
 def addReview(request, slug):
     product = get_object_or_404(ProductModel, slug=slug, available=True)
     if request.method == 'POST':
-        form = ReviewForm(request.POST or None, request.user or None)
+        form = ReviewForm(request.POST or None)
         if form.is_valid():
             rating = form.cleaned_data['rating']
             name = form.cleaned_data['name']
             email = form.cleaned_data['email']
             comment = form.cleaned_data['comment']
-            ReviewModel.objects.get_or_create(
+            ReviewModel.objects.create(
                 product=product, rating=rating,
                 name=name, email=email,
                 comment=comment, date=timezone.now())
-
             return HttpResponseRedirect(
                 reverse('shop:product_detail', args=(slug,)))
-
-    return HttpResponse()
+    return HttpResponse("request method")

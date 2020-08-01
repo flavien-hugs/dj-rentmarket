@@ -6,14 +6,16 @@
 
 Ce projet est une tentative de développer une plateforme de marché numérique multi-fournisseurs en plus du cadre de Django et d'offrir aux vendeurs de mettre en location leurs produits.
 
+Elle permet de creer un catalogue, où les utilisateurs peuvent parcourir les produits disponibles, les mettre en vente, ajouter de nouveaux produits et gérer leurs comptes.
+
 Le développement en est encore à ses débuts.
 Les demandes d'extraction avec corrections et améliorations sont cependant les bienvenues.
 
 
-## Caractéristiques
-* Catégories de produits
+## Les principales fonctionnalités qui ont été mises en œuvre actuellement sont les suivantes:
+* Les utilisateurs peuvent consulter la liste et les informations détaillées des produits.
+* Les utilisateurs connectés peuvent créer, visualiser et voter pour les modèles.
 * Liste, évaluation et conservation des produits
-* Vendeurs
 * Tableau de bord du vendeur
 * Analyse de base
 

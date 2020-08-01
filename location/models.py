@@ -7,6 +7,8 @@ from shop.models import ProductModel
 
 User = get_user_model()
 
+NULL_AND_BLANK = {'null': True, 'blank': True}
+
 
 class LocationManager(models.Manager):
     def new_or_get(self, request):
@@ -34,7 +36,7 @@ class LocationManager(models.Manager):
 
 class LocationModel(models.Model):
     user = models.ForeignKey(
-        User, on_delete=models.SET_NULL, null=True, blank=True)
+        User, on_delete=models.SET_NULL, **NULL_AND_BLANK)
     product = models.ManyToManyField(ProductModel)
     subtotal = models.DecimalField(
         default=0.00, max_digits=100, decimal_places=2)

@@ -25,7 +25,8 @@ urlpatterns = [
         extra_context={'page_title': 'Login'}
         ), name='login'),
     path('account/verify/', TemplateView.as_view(
-        extra_context={'page_title': 'Verify email'},
+        extra_context={
+            'page_title': 'Activation link sent, please check your email.'},
         template_name='accounts/verify_email.html'),
         name='verify',
     ),

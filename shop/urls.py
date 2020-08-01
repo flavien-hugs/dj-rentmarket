@@ -13,6 +13,7 @@ urlpatterns = [
         SearchView.as_view(),
         name="search"),
 
+    # url product
     path(
         'list/',
         ProductListView.as_view(

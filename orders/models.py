@@ -22,6 +22,8 @@ ORDER_STATUS = (
     ('refunded', 'Refunded'),
 )
 
+NULL_AND_BLANK = {'null': True, 'blank': True}
+
 
 class OrderManagerQuerySet(models.query.QuerySet):
     def recent(self):
@@ -117,17 +119,16 @@ class OrdersModel(models.Model):
     order_id = models.CharField('ID Order', max_length=255, blank=True)
     shipping_address = models.ForeignKey(
         AddressModel, on_delete=models.SET_NULL,
-        null=True, blank=True,
-        related_name="shipping_address")
+        related_name="shipping_address", **NULL_AND_BLANK)
     billing_address = models.ForeignKey(
         AddressModel, on_delete=models.SET_NULL,
-        related_name="billing_address", null=True, blank=True)
-    shipping_address_final = models.TextField(blank=True, null=True)
-    billing_address_final = models.TextField(blank=True, null=True)
+        related_name="billing_address", **NULL_AND_BLANK)
+    shipping_address_final = models.TextField(**NULL_AND_BLANK)
+    billing_address_final = models.TextField(**NULL_AND_BLANK)
     payment = models.ForeignKey(
-        PaymentModel, on_delete=models.CASCADE, null=True, blank=True)
+        PaymentModel, on_delete=models.CASCADE, **NULL_AND_BLANK)
     location = models.ForeignKey(
-        LocationModel, on_delete=models.CASCADE, null=True, blank=True)
+        LocationModel, on_delete=models.CASCADE, **NULL_AND_BLANK)
     shipping_total = models.DecimalField(
         default=5.99, max_digits=100, decimal_places=2)
     total = models.DecimalField(default=0.00, max_digits=100, decimal_places=2)

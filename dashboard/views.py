@@ -7,6 +7,7 @@ from django.views.generic import(
 from django.views.generic.base import RedirectView
 from django.contrib.auth.mixins import(
     LoginRequiredMixin, PermissionRequiredMixin)
+from django.http import HttpResponseRedirect
 
 from shop.models import ProductModel
 from orders.models import OrdersModel
@@ -42,8 +43,10 @@ class UserEditeMixin(UserAccountMixin, object):
     def form_valid(self, form):
         message = """Product update successful !"""
         messages.success(self.request, message)
-        form.instance.user = self.request.user
-        return super().form_valid(form)
+        self.object = form.save(commit=False)
+        self.object.user = self.request.user
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class UserProductMixin(UserEditeMixin):

@@ -3,11 +3,10 @@
 # from PIL import Image
 # from io import BytesIO
 from django.db import models
-from django.db.models import F, Q
+from django.db.models import Q
 from django.urls import reverse
 from django.utils import timezone
 from django.dispatch import receiver
-from django.shortcuts import get_object_or_404
 # from django.utils.safestring import mark_safe
 from django.contrib.auth import get_user_model
 from django.contrib.sitemaps import ping_google
@@ -229,16 +228,6 @@ class ProductModel(models.Model):
     def get_update_url(self):
         return reverse(
             'dashboard:product_update', kwargs={'slug': str(self.slug)})
-
-    @property
-    def product_view_count(self, request):
-        url = get_object_or_404(ProductModel, slug=self.slug)
-        session_key = 'vues_{}'.format(url.pk)
-        if not request.session.get(session_key, False):
-            url.views += 1
-            url.save()
-            request.session[session_key] = True
-        return 0
 
     # # Here I return the image
     # def get_image_url(self):

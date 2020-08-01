@@ -18,6 +18,8 @@ from phonenumber_field.modelfields import PhoneNumberField
 DEFAULT_ACTIVATION_DAYS = getattr(
     settings, 'DEFAULT_ACTIVATION_DAYS', 7)
 
+NULL_AND_BLANK = {'null': True, 'blank': True}
+
 
 # MODEL MANAGER
 class UserManager(BaseUserManager):
@@ -59,10 +61,11 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField('Adresse email', unique=True, max_length=255)
-    full_name = models.CharField('Nom & prénoms', max_length=225, null=True, blank=True)
+    full_name = models.CharField(
+        'Name & Nickname', max_length=225, **NULL_AND_BLANK)
     country = CountryField()
-    city = models.CharField('Ville', max_length=50)
-    phone_number = PhoneNumberField('Téléphone', null=True)
+    city = models.CharField('City', max_length=50)
+    phone_number = PhoneNumberField('Phone Number', null=True)
     joined = models.DateField('joined date', auto_now_add=timezone.now)
     is_active = models.BooleanField(default=True)
     admin = models.BooleanField(default=False)
@@ -126,9 +129,9 @@ class EmailActivationManager(models.Manager):
 
 
 class EmailActivationModel(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, **NULL_AND_BLANK)
     email = models.EmailField()
-    key = models.CharField(max_length=120, blank=True, null=True)
+    key = models.CharField(max_length=120, **NULL_AND_BLANK)
     activated = models.BooleanField(default=False)
     forced_expired = models.BooleanField(default=False)
     expired = models.IntegerField(default=7)
@@ -174,7 +177,7 @@ class EmailActivationModel(models.Model):
             if self.key:
                 base_url = getattr(
                     settings,
-                    'BASE_URL', 'https://unsta.pythonanywhere.com')
+                    'BASE_URL', 'https://rtmarket.herokuapp.com')
                 key_path = reverse(
                     'accounts:email-activate',
                     kwargs={'key': self.key})
@@ -221,4 +224,4 @@ class GuestEmailModel(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.email
+        return '{}({})'.format(self.email, self.active)

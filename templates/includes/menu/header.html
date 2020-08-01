@@ -3,21 +3,21 @@
     <div class="topbar__container container">
         <div class="topbar__row">
             <div class="topbar__item topbar__item--link">
-                <a title="À propos de nous" class="topbar-link" href="{% url "about" %}">À propos de nous</a>
+                <a title="À propos de nous" class="topbar-link" href="{% url "about" %}">About Us</a>
             </div>
             <div class="topbar__item topbar__item--link">
-                <a title="Contactez-nous" class="topbar-link" href="{% url "contact" %}">Contactez-nous</a>
+                <a title="Contactez-nous" class="topbar-link" href="{% url "contact" %}">Contact Us</a>
             </div>
 
             <div class="topbar__item topbar__item--link">
-                <a title="Suivi de la commande" class="topbar-link" href="{% url "location:track" %}">Suivi de la commande</a>
+                <a title="Suivi de la commande" class="topbar-link" href="{% url "location:track" %}">Track Order</a>
             </div>
 
             <div class="topbar__spring"></div>
 
             <div class="topbar__item">
                 <div class="topbar-dropdown">
-                    <button class="topbar-dropdown__btn text-uppercase font-weight-bold" type="button">mon compte
+                    <button class="topbar-dropdown__btn text-uppercase font-weight-bold" type="button">account
                         <svg width="7px" height="5px">
                             <use xlink:href="{{ STATIC_PREFIX }}img/svg/sprite.svg#arrow-rounded-down-7x5"></use>
                         </svg>
@@ -29,24 +29,24 @@
                             {% if request.user.is_authenticated %}
                                 <li>
                                     <a href="{% url "dashboard:dashboard" %}">
-                                        Mon Compte
+                                        account
                                     </a>
                                 </li>
 
                                 <div class="dropdown-divider"></div>
 
                                 <li>
-                                    <a href="{% url "accounts:logout" %}">deconnexion</a>
+                                    <a href="{% url "accounts:logout" %}">logout</a>
                                 </li>
 
                             {% else %}
                     
                                 <li>
-                                    <a href="{% url "accounts:login" %}">connexion</a>
+                                    <a href="{% url "accounts:login" %}">login</a>
                                 </li>
 
                                 <li>
-                                    <a href="{% url "accounts:signup" %}">inscription</a>
+                                    <a href="{% url "accounts:signup" %}">register</a>
                                 </li>
                             {% endif %}
                         </ul>
@@ -58,7 +58,7 @@
             <div class="topbar__item">
                 <div class="topbar-dropdown text-uppercase">
                     <button class="topbar-dropdown__btn text-uppercase" type="button">
-                        Monnaie:
+                        currency:
                         <span class="topbar__item-value">XOF</span>
                         <svg width="7px" height="5px">
                             <use xlink:href="{{ STATIC_PREFIX }}img/svg/sprite.svg#arrow-rounded-down-7x5">
@@ -79,7 +79,7 @@
 
             <div class="topbar__item">
                 <div class="topbar-dropdown text-uppercase">
-                    <button class="topbar-dropdown__btn text-uppercase" type="button">langue:
+                    <button class="topbar-dropdown__btn text-uppercase" type="button">language:
                         <span class="topbar__item-value">FR</span>
                         <svg width="7px" height="5px"><use xlink:href="{{ STATIC_PREFIX }}img/svg/sprite.svg#arrow-rounded-down-7x5"></use></svg>
                     </button>
@@ -99,7 +99,7 @@
                                 <a href="#">
                                     <div class="menu__icon">
                                         <img srcset="{{ STATIC_PREFIX }}img/lang/language-2.png, {{ STATIC_PREFIX }}img/lang/language-2@2x.png 2x" src="{{ STATIC_PREFIX }}img/lang/language-2.png" alt="French">
-                                    </div>Français
+                                    </div>French
                                 </a>
                             </li>
                         </ul>

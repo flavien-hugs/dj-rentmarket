@@ -45,12 +45,10 @@ class UserAccountMixin(LoginRequiredMixin, object):
     def get_total_sale(self):
         payment = self.get_payment().aggregate(Sum("price"))
         total_sale = payment["price__sum"]
-        print(total_sale)
         return total_sale
 
     def get_today_sale(self):
         payment = self.get_payment_today(
             ).aggregate(Sum("price"), Avg("price"))
         total_sale = payment["price__sum"]
-        print(total_sale)
         return total_sale
