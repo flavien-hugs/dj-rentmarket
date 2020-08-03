@@ -4,10 +4,14 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
 from django.contrib.sitemaps.views import sitemap
+from django.conf.urls import handler404, handler500
 
 from core.sitemaps import(
     StaticViewSitemap, CategorySitemapView,
     ProductSitemapView)
+
+handler404 = core.views.handler404
+handler500 = core.views.handler500
 
 sitemaps = {
     'static': StaticViewSitemap,
@@ -48,12 +52,6 @@ urlpatterns = [
         name='django.contrib.sitemaps.views.sitemap'),
     path('xxx/', admin.site.urls),
 ]
-
-handler404 = TemplateView.as_view(
-    template_name='pages/erreurs/error404.html')
-
-handler404 = TemplateView.as_view(
-    template_name='pages/erreurs/error500.html')
 
 if settings.DEBUG:
     urlpatterns += static(

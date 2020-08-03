@@ -1,11 +1,16 @@
 language: python
+
   python:
-    - "3.8.5"
+    - "3.6"
+  
   services:
     - sqlite3
+  
   env:
     -DJANGO=3.0.8 DB=sqlite3
+  
   install:
     - pip install -r requirements.txt
+  
   script:
     - ./manage.py test

@@ -20,3 +20,11 @@ def contact(request):
         'page_title': 'Contact Us',
     }
     return render(request, template, context)
+
+
+def handler404(request):
+    return render(request, 'pages/erreurs/404.html', status=404)
+
+
+def handler500(request):
+    return render(request, 'pages/erreurs/500.html', status=500)
