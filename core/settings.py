@@ -30,7 +30,7 @@ DEBUG = TEMPLATE_DEBUG = config('DEBUG', default=True, cast=bool)
 DEFAULT_CHARSET = 'UTF-8'
 DEFAULT_CONTENT_TYPE = 'text/html'
 SITE_DESCRIPTION = 'Vous retrouverez tous ce dont\
-    vous aurez besoin pour le quotidien'
+    vous aurez besoin pour le quotidien.'
 META_KEYWORDS = 'shopping, location, ecommerce, accessories,\
     TV, Audio, smartphone, Mode, Electromenager'
 ALLOWED_HOSTS = []
@@ -80,7 +80,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'django.middleware.cache.UpdateCacheMiddleware',
+    # 'django.middleware.cache.UpdateCacheMiddleware',
     'htmlmin.middleware.HtmlMinifyMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -89,7 +89,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.cache.FetchFromCacheMiddleware',
+    # 'django.middleware.cache.FetchFromCacheMiddleware',
     'htmlmin.middleware.MarkRequestMiddleware',
 
     'django_user_agents.middleware.UserAgentMiddleware',
@@ -222,7 +222,7 @@ BASE_URL = ''
 SESSION_COOKIE_SECURE = True
 
 PHONENUMBER_DEFAULT_REGION = "CI"
-PHONENUMBER_DB_FORMAT = "INTERNATIONAL"
+PHONENUMBER_DB_FORMAT = "NATIONAL"
 
 # Name of cache backend to cache user agents. If it not specified default
 # cache alias will be used. Set to `None` to disable caching.

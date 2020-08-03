@@ -8,6 +8,7 @@ from django.contrib.auth import(
 from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
 from phonenumber_field.formfields import PhoneNumberField
+from phonenumber_field.widgets import PhoneNumberPrefixWidget
 
 from accounts.models import EmailActivationModel, GuestEmailModel
 
@@ -74,14 +75,28 @@ class LoginForm(forms.Form):
 
 class SignUpForm(forms.ModelForm):
     email = forms.EmailField(
-        label='Adresse email', max_length=50, required=True)
-    country = CountryField(blank_label='selectionner votre pays').formfield()
-    city = forms.CharField(label='Ville', max_length=10, required=True)
-    phone_number = PhoneNumberField(label='Numéro de téléphone')
+        required=True,
+        widget=forms.EmailInput(
+            attrs={'placeholder': 'Adresse email'}))
+    country = CountryField(
+        blank_label='Select your country').formfield()
+    city = forms.CharField(
+        widget=forms.TextInput(attrs={'placeholder': 'City'}))
+    phone_number = PhoneNumberField(
+        initial='+225',
+        widget=PhoneNumberPrefixWidget(
+            attrs={'placeholder': 'Phone number'}))
     password1 = forms.CharField(
-        label='password', widget=forms.PasswordInput())
+        widget=forms.PasswordInput(
+            attrs={'placeholder': 'Password'}))
     password2 = forms.CharField(
-        label='confirm password', widget=forms.PasswordInput())
+        widget=forms.PasswordInput(
+            attrs={'placeholder': 'Confirm Password'}))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['full_name'].widget.attrs.update(
+            {'placeholder': 'First & Last Name'})
 
     class Meta:
         model = User

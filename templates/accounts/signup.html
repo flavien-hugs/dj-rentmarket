@@ -1,8 +1,9 @@
 {% extends "accounts/base.html" %}
+{% load widget_tweaks %}
 
 {% block auth_content %}
 <h4 class="card-title text-uppercase text-center">
-Inscription</h4>
+Create your account</h4>
 
 {% if form.non_field_errors %}
     <div class="alert alert-danger" role="alert">
@@ -20,11 +21,12 @@ Inscription</h4>
     {% include 'layouts/form.html' %}
     
     <!-- Submit Button -->
-    <button style="background-color:#dc3545;" class="btn btn-block btn-lg font-weight-bold text-white" type="submit">Create an account</button>
+    <button style="background-color:#dc3545;" class="btn btn-block font-weight-bold py-2 text-white" type="submit">Create your account</button>
     <!-- /.end button login -->
-
-    <div class="text-center mt-3">
-        You already have an account? <a href="{% url "accounts:login" %}" class="text-dark font-weight-bold"><u>Login</u></a>
+    
+    <!-- Already Registered -->
+    <div class="text-center w-100 mt-3">
+        You already have an account?<p class="text-muted font-weight-bold"> <a href="{% url "accounts:login" %}" class="text-dark font-weight-bold"><u>Login</u></a></p>
     </div>
 </form>
 {% endblock auth_content %}

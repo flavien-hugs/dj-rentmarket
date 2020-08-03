@@ -1,0 +1,12 @@
+{
+    "name": "rentMarket",
+
+    "description": "Vous retrouverez tous ce dont vous aurez besoin pour le quotidien",
+
+    "repository": "https://github.com/flavien-hugs/RentMarket",
+
+    "scripts": {
+        "postdeploy": "./manage.py makemigrations && ./manage.py migrate"
+    }
+
+}

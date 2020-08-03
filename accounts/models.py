@@ -62,7 +62,7 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField('Adresse email', unique=True, max_length=255)
     full_name = models.CharField(
-        'Name & Nickname', max_length=225, **NULL_AND_BLANK)
+        'First & Last Name', max_length=225, **NULL_AND_BLANK)
     country = CountryField()
     city = models.CharField('City', max_length=50)
     phone_number = PhoneNumberField('Phone Number', null=True)
