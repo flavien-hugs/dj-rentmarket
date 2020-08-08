@@ -26,6 +26,8 @@ django-social-share='*'
 cloudinary='*'
 django-compressor='*'
 django-htmlmin='*'
+pandas='*'
+django-redis='*'
 
 
 [requires]

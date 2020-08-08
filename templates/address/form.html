@@ -11,7 +11,8 @@
 <form method="post" action='{% if action_url %}{{ action_url }}{% else %}{% url "accounts:login" %}{% endif %}' novalidate>
   {% csrf_token %}
 
-  {% if next_url %}<input type='hidden' name='next' value='{{ next_url }}'>
+  {% if next_url %}
+  <input type='hidden' name='next' value='{{ next_url }}'>
   {% endif %}
 
   {% if address_type %}<input type='hidden' name='address_type' value='{{ address_type }}'>

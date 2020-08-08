@@ -49,10 +49,6 @@
                                     {% url "address:checkout_address_create" as checkout_address_create %}
 
                                     {% include 'address/form.html' with form=address_form next_url=request.build_absolute_uri action_url=checkout_address_create address_type='shipping' %}
-
-                                    <div class="pt-5 text-muted">
-                                        {% lorem %}
-                                    </div>
                                 </div>
                             </div>
 
@@ -104,7 +100,7 @@
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="card-title">
-                                        Add Payment Card</div>
+                                        Choose Payment Card</div>
                                         <div class='form-group stripe-payment-form' data-token='{{ publish_key }}' data-next-url='{{ request.build_absolute_uri }}' data-btn-title='Add Payment Method'></div>
                                     </div>
                                 </div>
@@ -168,7 +164,9 @@
 
                                             <form class='py-5' method='POST'>
                                                 {% csrf_token %}
-                                                <button type="submit" class="text-center btn btn-success">Finalize Checkout</button>
+                                                <div class="text-center">
+                                                    <input type="submit" class="btn btn-success my-3" value="Finalize Checkout">
+                                                </div>
                                             </form>
                                         </div>
                                     </div>

@@ -7,13 +7,13 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, DetailView
 from django.http import HttpResponse, HttpResponseRedirect
 
-
 from shop.forms import ReviewForm
-from shop.models import (
-    ProductModel, CategoryModel, ReviewModel, WishListModel)
-
+from shop.recommender import Recommender
 from analytics.models import CategoryView
 from analytics.mixins import ObjectViewMixin
+
+from shop.models import (
+    ProductModel, CategoryModel, ReviewModel, WishListModel)
 
 
 class ProductViewCounter(object):
@@ -75,6 +75,11 @@ class ProductDetailView(ObjectViewMixin, ProductViewCounter, DetailView):
             ProductModel.objects.get_related(
                 instance=self.get_object())[:25],
             key=lambda x: random.random())
+
+        r = Recommender()
+        kwargs['recommender'] = r.suggest_products(
+            [self.object], 10)
+        print(kwargs['recommender'])
 
         if self.request.user.is_authenticated:
             kwargs['history_product'] = sorted(

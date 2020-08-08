@@ -3,10 +3,8 @@ from django import forms
 from shop.models import ReviewModel
 
 RATING = (
-    (1, 'une étoile'),
-    (2, 'deux étoiles'),
-    (3, 'trois étoiles'),
-    (4, 'quatres étoiles'),
+    (1, 'une étoile'), (2, 'deux étoiles'),
+    (3, 'trois étoiles'), (4, 'quatres étoiles'),
     (5, 'cinq étoiles'),
 )
 

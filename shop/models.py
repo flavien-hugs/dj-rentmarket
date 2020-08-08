@@ -104,7 +104,7 @@ class ProductModelManager(models.Manager):
     def get_available(self, *args, **kwargs):
         return self.get_queryset().available()
 
-    def get_product_by_id(self, id):
+    def get_product_id(self, id):
         qs = self.get_queryset().filter(id=id)
         if qs.count() == 1:
             return qs.first()
@@ -201,7 +201,7 @@ class WishListModel(models.Model):
 class ReviewModel(models.Model):
     product = models.ForeignKey(
         ProductModel, on_delete=models.SET_NULL, null=True)
-    name = models.CharField('name', blank=True, max_length=50)
+    name = models.CharField('name', max_length=50, blank=True)
     email = models.EmailField('email', blank=True)
     comment = models.TextField('comment', blank=True)
     date = models.DateField('date', default=timezone.now)

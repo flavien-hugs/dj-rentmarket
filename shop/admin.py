@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib import admin
+from django.db.models import Avg
 
 from shop.models import (
     MainCategoryModel, CategoryModel,
@@ -77,11 +78,8 @@ class ProductModelAdmin(admin.ModelAdmin):
 
     date_hierarchy = 'updated'
     list_display = (
-        'user', 'name', 'price',
-        'available', 'featured',
-        'rent_date', 'pub_date', 'views')
-    list_display_links = ('name',)
-    readonly_fields = ['product_image']
+        'user', 'id', 'price', 'pub_date', 'average', 'views')
+    list_display_links = ('id',)
     fields = (
         'user',
         'category',
@@ -94,25 +92,21 @@ class ProductModelAdmin(admin.ModelAdmin):
     list_filter = [
         'available', 'category',
         'label', 'rent_date', 'pub_date']
-    list_editable = ['price', 'available']
+    list_editable = ['price']
     search_fields = ['name', 'price']
     prepopulated_fields = {
         'slug': ('name', 'price', 'label')
     }
 
-    def product_image(self, obj):
-        return obj.productimageinline.product_image()
+    def average(self, obj):
+        result = ReviewModel.objects.filter(
+            product=obj).aggregate(Avg('rating'))
+        return result['rating__avg']
 
     def clean_date(self):
         if self.cleaned_data['rent_date'] <= self.cleaned_data['pub_date']:
             raise forms.ValidationError(
                 'Rent Date not inferieur for Pub date.')
         return self.cleaned_data['rent_date']
-
-    def save_model(self, request, obj, form, change):
-        super().save_model(request, obj, form, change)
-        obj.save()
-        for afile in request.FILES.getlist('photos_multiple'):
-            obj.productimagemodels.create(img=afile)
 
 admin.site.register(OrdersModel)

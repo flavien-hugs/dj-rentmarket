@@ -17,8 +17,7 @@ class AddressModel(models.Model):
     payment = models.ForeignKey(
         PaymentModel, on_delete=models.CASCADE)
     full_name = models.CharField(
-        'Full Name', max_length=255, blank=True,
-        help_text='Shipping to? Who is it for?')
+        'Full Name', max_length=255, blank=True)
     country = CountryField(blank_label='Choose your country')
     city = models.CharField('City', max_length=255)
     address_delivery = models.CharField(

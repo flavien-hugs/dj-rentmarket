@@ -8,8 +8,8 @@
     <div class="row">
         <div class="input-group col-lg-12 mb-4">
             <div class="input-group-prepend">
-                <span class="input-group-text bg-white px-3 border-md border-right-0">
-                    <i class="fa {% if field.name == 'full_name' %}fa-user {% elif field.name == 'email' %} fa-envelope {% elif field.name == 'city' %} fa-city {% elif field.name == 'country' %} fa-globe {% elif field.name == 'phone_number' %} fa-mobile-alt {% elif field.name == 'password' %} fa-lock {% elif field.name == 'password1' %} fa-lock {% elif field.name == 'password2' %} fa-lock {% endif %} text-muted"></i>
+                <span class="input-group-text bg-white px-3 border-md border-right-0" {% if field.name == 'address_delivery' %}class='hidden'{% endif %}>
+                    <i class="fa {% if field.name == 'full_name' %}fa-user {% elif field.name == 'email' %} fa-envelope {% elif field.name == 'city' %} fa-map {% elif field.name == 'country' %} fa-globe {% elif field.name == 'phone_number' %} fa-mobile-alt {% elif field.name == 'password' %} fa-lock {% elif field.name == 'password1' %} fa-lock {% elif field.name == 'password2' %} fa-lock {% elif field.name == 'postal_code' %} fa-certificate {% endif %} text-muted"aria-hidden="true"></i>
                 </span>
             </div>
 
