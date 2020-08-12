@@ -31,13 +31,13 @@ MIDDLEWARE += [
 
 # Keep our policy as strict as possible
 # Content Security Policy
-CSP_DEFAULT_SRC = ("'none'", )
+"""CSP_DEFAULT_SRC = ("'none'", )
 CSP_CONNECT_SRC = ("'self'", )
 CSP_OBJECT_SRC = ("'none'", )
 CSP_BASE_URI = ("'none'", )
 CSP_FRAME_ANCESTORS = ("'none'", )
 CSP_FORM_ACTION = ("'self'", )
-CSP_INCLUDE_NONCE_IN = ('script-src',)
+CSP_INCLUDE_NONCE_IN = ('script-src',)"""
 
 # https://docs.djangoproject.com/fr/3.0/ref/settings/
 # Let's Encrypt ssl/tls https
