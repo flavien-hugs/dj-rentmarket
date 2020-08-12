@@ -28,6 +28,7 @@ django-compressor='*'
 django-htmlmin='*'
 pandas='*'
 django-redis='*'
+django-csp='*'
 
 
 [requires]
