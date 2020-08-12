@@ -25,7 +25,8 @@ INSTALLED_APPS += ['whitenoise.runserver_nostatic']
 # 'django.middleware.security.SecurityMiddleware',
 MIDDLEWARE += [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware'
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'csp.middleware.CSPMiddleware',
 ]
 
 # Keep our policy as strict as possible
