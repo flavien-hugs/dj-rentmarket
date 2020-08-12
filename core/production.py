@@ -30,28 +30,32 @@ MIDDLEWARE += [
 ]
 
 # Keep our policy as strict as possible
-CSP_DEFAULT_SRC = ("'none'",)
-CSP_STYLE_SRC = ("'self'", 'fonts.googleapis.com')
-CSP_SCRIPT_SRC = ("'self'",)
-CSP_FONT_SRC = ("'self'", 'fonts.gstatic.com')
-CSP_IMG_SRC = ("'self'",)
+# Content Security Policy
+CSP_DEFAULT_SRC = ("'none'", )
+CSP_CONNECT_SRC = ("'self'", )
+CSP_OBJECT_SRC = ("'none'", )
+CSP_BASE_URI = ("'none'", )
+CSP_FRAME_ANCESTORS = ("'none'", )
+CSP_FORM_ACTION = ("'self'", )
+CSP_INCLUDE_NONCE_IN = ('script-src',)
 
 # https://docs.djangoproject.com/fr/3.0/ref/settings/
 # Let's Encrypt ssl/tls https
-SECURE_SSL_HOST = 'https://rtmarket.herokuapp.com'
+
 HOST_SCHEME = "https://"
 X_FRAME_OPTIONS = 'DENY'
-CSRF_COOKIE_SECURE = True
-USE_X_FORWARDED_HOST = True
-CORS_REPLACE_HTTPS_REFERER = True
 SECURE_FRAME_DENY = True
+CSRF_COOKIE_SECURE = True
 SECURE_SSL_REDIRECT = True
 SECURE_HSTS_PRELOAD = True
+USE_X_FORWARDED_HOST = True
 SECURE_HSTS_SECONDS = 15768000
 SECURE_BROWSER_XSS_FILTER = True
-SECURE_REFERRER_POLICY = 'origin-when-cross-origin'
+CORS_REPLACE_HTTPS_REFERER = True
 SECURE_CONTENT_TYPE_NOSNIFF = True
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_SSL_HOST = 'https://rtmarket.herokuapp.com'
+SECURE_REFERRER_POLICY = 'origin-when-cross-origin'
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 
