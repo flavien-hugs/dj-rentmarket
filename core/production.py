@@ -28,14 +28,14 @@ MIDDLEWARE += [
     'whitenoise.middleware.WhiteNoiseMiddleware'
 ]
 
-
+# https://docs.djangoproject.com/fr/3.0/ref/settings/
 # Let's Encrypt ssl/tls https
+SECURE_SSL_HOST = 'https://rtmarket.herokuapp.com'
 HOST_SCHEME = "https://"
 X_FRAME_OPTIONS = 'DENY'
 CSRF_COOKIE_SECURE = True
 USE_X_FORWARDED_HOST = True
 CORS_REPLACE_HTTPS_REFERER = True
-
 SECURE_FRAME_DENY = True
 SECURE_SSL_REDIRECT = True
 SECURE_HSTS_PRELOAD = True
