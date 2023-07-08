@@ -32,7 +32,7 @@ maxminddb==1.5.4
 numpy==1.19.1
 pandas==1.1.0
 phonenumbers==8.12.6
-Pillow==7.1.2
+Pillow==9.3.0
 pkg-resources==0.0.0
 psycopg2==2.8.5
 pycparser==2.20
